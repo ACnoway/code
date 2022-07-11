@@ -15,7 +15,7 @@
             "cppStandard": "c++14",
             "intelliSenseMode": "windows-gcc-x64",
             "compilerArgs": [
-                "-Wall",
+                //"-Wall",
                 "-std=c++14"
             ]
         }

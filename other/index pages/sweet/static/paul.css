@@ -1,0 +1,283 @@
+@charset "UTF-8";
+
+/* ----
+
+# Sweet
+# By: Dreamer-Paul
+# Last Update: 2021.4.17
+
+一个简洁的个人首页，可以调用博客最新文章。
+
+本代码为奇趣保罗原创，并遵守 MIT 开源协议。欢迎访问我的博客：https://paugram.com
+
+---- */
+
+/* 0 - 全局
+-------------------------------- */
+html, body{
+    height: 100%;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+*, *:before, *:after{
+    box-sizing: border-box;
+}
+
+a{
+    color: #3498db;
+    text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6{
+    font-weight: lighter;
+}
+
+p{
+    margin-bottom: 1em;
+}
+p:last-child{
+    margin-bottom: 0;
+}
+
+body{
+    color: #222;
+    width: 100%;
+    margin: auto;
+    display: table;
+    max-width: 20em;
+    font-weight: lighter;
+    vertical-align: middle;
+    background: #fff center/cover no-repeat fixed;
+    font: 16px/1.5 '思源黑体 CN', 'Microsoft Yahei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+}
+
+@media screen and (min-width: 1930px){
+    body{
+        font-size: 1.3em;
+    }
+}
+
+.text-right{
+    text-align: right;
+}
+
+.text-center{
+    text-align: center;
+}
+
+/* 1 - 载入动画
+-------------------------------- */
+#loader{
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 6;
+    display: none;
+    position: fixed;
+    /* display: flex; */
+    background: #fff;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    transition: opacity .3s, visibility .3s;
+}
+#loader.hidden{
+    opacity: 0;
+    visibility: hidden;
+}
+#loader img{
+    max-width: 10em;
+    border-radius: 100%;
+    border: 3px #fff solid;
+    box-shadow: 0 0 0 3px #1979ca;
+}
+#loader:before, #loader:after{
+    content: '';
+    width: 20em;
+    height: 3px;
+    margin: 1em;
+    display: block;
+    background: #1979ca;
+    animation: loader-line-left 1s both;
+}
+#loader:after{
+    animation: loader-line-right 1s both;
+}
+
+@keyframes loader-line-left {
+    0%{ transform: scaleX(0); transform-origin: left; }
+    50%{ transform: scaleX(1); transform-origin: left; }
+    100%{ transform: scaleX(0); transform-origin: right; }
+}
+@keyframes loader-line-right {
+    0%{ transform: scaleX(0);  transform-origin: right; }
+    50%{ transform: scaleX(1);  transform-origin: left; }
+    100%{ transform: scaleX(0);  transform-origin: left; }
+}
+
+/* 2 - 正文
+-------------------------------- */
+main{
+    max-width: 25em;
+    display: table-cell;
+    vertical-align: middle;
+}
+main .content{
+    width: 100%;
+    padding: 1em;
+    margin: 3em 0;
+    background: #fff;
+    border-radius: 5px;
+    /* animation: content .5s 2.2s both; */
+    box-shadow: 0 0 20px rgba(0, 0, 0, .2);
+}
+
+@keyframes content {
+    0%{
+        opacity: 0;
+        transform: translateY(-3em);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* - 作者 */
+main .me{
+    margin-top: -3em;
+    margin-bottom: 1em;
+    text-align: center;
+}
+main .me .avatar{
+    max-width: 6em;
+    border-radius: 100%;
+    border: 5px #fff solid;
+}
+main .me .name{
+    margin-top: .25em;
+}
+
+/* - 段落 */
+main section{
+    display: none;
+    margin: 2em 0;
+    animation: section .3s;
+}
+main section.active{
+    display: block;
+}
+
+@keyframes section {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+/* - 首页 */
+#main{
+    grid-gap: 3.25em 1em;
+    text-align: center;
+    grid-template-columns: repeat(3, 1fr);
+}
+#main.active{
+    display: grid;
+}
+#main a{
+    transition: transform .3s;
+}
+#main a:hover{
+    transform: scale(1.1);
+}
+#main i{
+    display: block;
+    font-size: 2.5em;
+    margin-bottom: .3em;
+}
+#main .title{
+    color: #666;
+    display: block;
+}
+
+/* - 文章和作品 */
+#articles a, #products a{
+    color: inherit;
+    display: block;
+    max-width: 18em;
+    overflow: hidden;
+    position: relative;
+
+    padding-right: 5em;
+    margin-bottom: .75em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+#articles a:last-child, #products a:last-child{
+    margin-bottom: 0;
+}
+#articles .meta, #products .meta{
+    right: 0;
+    color: #999;
+    position: absolute;
+}
+
+/* - 关于 */
+#about{
+    line-height: 1.8;
+}
+
+/* - 操作 */
+.actions{
+    display: flex;
+    color: #fff;
+    user-select: none;
+    background: #1979ca;
+    margin: 0 -1em -1em -1em;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.actions .item{
+    flex: 1;
+    padding: .75em 0;
+    cursor: pointer;
+    position: relative;
+    text-align: center;
+    display: inline-block;
+    transition: transform .3s;
+}
+.actions .item.active{
+    text-shadow: 0 0 5px #fff;
+}
+.actions .item.active:before{
+    top: -1em;
+    left: calc(50% - .5em);
+    content: "";
+    display: block;
+    position: absolute;
+    border: .5em solid transparent;
+    border-bottom-color: #1979ca;
+}
+
+/* 3 - 页尾
+-------------------------------- */
+footer{
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: #fff;
+    padding: 1em 0;
+    position: fixed;
+    text-align: center;
+    background: linear-gradient(to top, rgba(0, 0, 0, .6) 30%, transparent);
+}
+footer a{
+    color: #fff;
+}
