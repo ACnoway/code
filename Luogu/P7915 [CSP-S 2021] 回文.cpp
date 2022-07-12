@@ -1,6 +1,7 @@
 //TODO 双端队列，https://www.luogu.com.cn/blog/101868/solution-p7915
 #include <iostream>
 #include <cstdio>
+#include <deque>
 using namespace std;
 inline int read(){
     int x=0,f=1;
@@ -42,7 +43,7 @@ int main()
         p++;
         while(p<=n) b.s[a.r++]=t[p++];
         while(b.r>b.l){
-
+            
         }
     }
     return 0;
