@@ -1,18 +1,36 @@
-#include<iostream>
-#define int unsigned long long
+#include <iostream>
+#include <cstdio>
+#define INF 999999999
 using namespace std;
-int a[130][130];
-int d,n;
-signed main()
-{
-    cin>>d>>n;
-    int x,y,k;
-    for(int i=1;i<=n;++i){
-        cin>>x>>y>>k;
-        a[x][y]+=k;
-    }
-    for(int i=1;i<=129;++i){
-        for(int j=1;j<=129;++j) a[i][j]+=a[i-1][j]+a[i][j-1]-a[i-1][j-1];
-    }
-    return 0;
+inline int in(){
+    int X=0,w=0; char ch=0;
+    while(!isdigit(ch)) {w|=ch=='-';ch=getchar();}
+    while(isdigit(ch)) X=(X<<3)+(X<<1)+(ch^48),ch=getchar();
+    return w?-X:X;
+}
+int data[200][200],d,n,sum,Max=-INF;
+int main(){
+	d=in();
+	n=in();
+	for (int i=1;i<=n;i++){
+		int x,y;
+		x=in();
+		y=in();
+		data[x+20][y+20]=in();
+	}
+	for (int i=0;i<=128;i++)
+		for (int j=0;j<=128;j++){
+			int t=0;
+			for (int k=i-d+20;k<=i+d+20;k++)
+				for (int l=j-d+20;l<=j+d+20;l++){
+					t+=data[k][l];
+				}
+			if (t>Max){
+				Max=t;
+				sum=1;
+			}
+			else if (t==Max) sum++;
+		}
+	printf("%d %d\n",sum,Max);
+	return 0;
 }
