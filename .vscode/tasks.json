@@ -66,6 +66,9 @@
             "type": "shell",
             "label": "git push",
             "command": "git.exe",
+            "args": [
+                "push",
+            ],
             "problemMatcher":{
                 "pattern":{
                     "regexp": "[\\s\\S]*",
