@@ -37,9 +37,6 @@
                 "add",
                 "."
             ],
-            "presentation": {
-                "panel": "new",
-            },
             "problemMatcher":{
                 "pattern":{
                     "regexp": "[\\s\\S]*",
