@@ -9,7 +9,6 @@
                 "${file}",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
-                //"-Wall",
                 "-std=c++20"
             ],
             "options": {
@@ -39,18 +38,48 @@
                 "."
             ],
             "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
                 "panel": "new",
-                "showReuseMessage": true,
-                "clear": false
+            },
+            "problemMatcher":{
+                "pattern":{
+                    "regexp": "[\\s\\S]*",
+                }
             }
         },
         {
             "type": "shell",
             "label": "git commit",
             "command": "git.exe",
+            "args": [
+                "commit",
+                "-m",
+                "${input:commitText}"
+            ],
+            "problemMatcher":{
+                "pattern":{
+                    "regexp": "[\\s\\S]*",
+                }
+            },
+            "dependsOn":["git add"],
+        },
+        {
+            "type": "shell",
+            "label": "git push",
+            "command": "git.exe",
+            "problemMatcher":{
+                "pattern":{
+                    "regexp": "[\\s\\S]*",
+                }
+            },
+            "dependsOn":["git commit"],
+        }
+    ],
+    "inputs": [
+        {
+            "id": "commitText",
+            "type": "promptString",
+            "description": "输入commit的备注",
+            "default": "update"
         }
     ],
     "version": "2.0.0"

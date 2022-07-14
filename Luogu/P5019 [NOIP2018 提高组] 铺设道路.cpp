@@ -12,6 +12,7 @@ int main()
         if(now>last) ans+=now-last;
         last=now;
     }
+    
     cout<<ans<<endl;
     return 0;
 }
