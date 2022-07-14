@@ -30,6 +30,28 @@
             },
             "detail": "编译器: F:/lou/software/TDM-GCC10.3.0/bin/g++.exe"
         },
+        {
+            "type": "shell",
+            "label": "git add",
+            "command": "git.exe",
+            "args": [
+                "add",
+                "."
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": true,
+                "clear": false
+            }
+        },
+        {
+            "type": "shell",
+            "label": "git commit",
+            "command": "git.exe",
+        }
     ],
     "version": "2.0.0"
 }
