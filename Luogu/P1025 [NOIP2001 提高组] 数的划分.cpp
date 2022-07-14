@@ -12,7 +12,6 @@ int main()
 {
     cin>>n>>k;
     dfs(1,0,0);
-    
     cout<<cnt<<endl;
     return 0;
 }
