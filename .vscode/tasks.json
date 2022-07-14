@@ -66,6 +66,9 @@
             "args": [
                 "push",
             ],
+            "presentation": {
+                "focus": true,
+            },
             "problemMatcher":{
                 "pattern":{
                     "regexp": "[\\s\\S]*",
