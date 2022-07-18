@@ -9,7 +9,7 @@ int main()
 		int a;
 		cin>>a;
 		degree-=a;
-	} 
+	}
 	cout<<degree;
 	return 0;
 }

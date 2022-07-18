@@ -1,6 +1,5 @@
 #include<cstdio>
 #include<cmath> 
-
 int main()
 {
 	const double PI=3.14159;

@@ -7,7 +7,7 @@ int main()
 {
 	double n,big=0,small=11,add=0,score[1001];
 	cin>>n;
-	for(int i=0;i<n;i++){ //获取分数 
+	for(int i=0;i<n;i++){//获取分数 
 		double a;
 		cin>>a;
 		add+=a; //分数总和 

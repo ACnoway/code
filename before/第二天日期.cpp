@@ -23,4 +23,4 @@ int main()
 	if(m>12) m=1,y++;
 	cout<<y<<"-"<<m<<"-"<<d;
 	return 0;
- } 
+}
