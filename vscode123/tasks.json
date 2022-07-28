@@ -41,7 +41,7 @@
             ],
             "problemMatcher":{
                 "pattern":{
-                    "regexp": "[\\s\\S]*",
+                    "regexp": "[\\s\\S]*"
                 }
             }
         },
@@ -56,27 +56,27 @@
             ],
             "problemMatcher":{
                 "pattern":{
-                    "regexp": "[\\s\\S]*",
+                    "regexp": "[\\s\\S]*"
                 }
             },
-            "dependsOn":["git add"],
+            "dependsOn":["git add"]
         },
         {
             "type": "shell",
             "label": "git push",
             "command": "git.exe",
             "args": [
-                "push",
+                "push"
             ],
             "presentation": {
-                "focus": true,
+                "focus": true
             },
             "problemMatcher":{
                 "pattern":{
-                    "regexp": "[\\s\\S]*",
+                    "regexp": "[\\s\\S]*"
                 }
             },
-            "dependsOn":["git commit"],
+            "dependsOn":["git commit"]
         }
     ],
     "inputs": [
@@ -84,7 +84,7 @@
             "id": "commitText",
             "type": "promptString",
             "description": "输入commit的备注",
-            "default": "update",
+            "default": "update"
         }
     ],
     "version": "2.0.0"
