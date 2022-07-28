@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "*.in": "plaintext",
+        "*.out": "plaintext",
+        "*.prob": "json",
+        "cstdio": "cpp",
+        "iostream": "cpp",
+        "ostream": "cpp",
+        "chrono": "cpp",
+        "condition_variable": "cpp",
+        "algorithm": "cpp",
+        "utility": "cpp"
+    },
+}

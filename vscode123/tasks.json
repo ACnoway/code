@@ -1,0 +1,91 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++.exe 生成活动文件",
+            "command": "F:/lou/software/TDM-GCC10.3.0/bin/gcc.exe",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "-Wall",
+                "-std=c++14"
+            ],
+            "options": {
+                "cwd": "F:/lou/software/TDM-GCC10.3.0/bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new"
+            },
+            "detail": "编译器: F:/lou/software/TDM-GCC10.3.0/bin/g++.exe"
+        },
+        {
+            "type": "shell",
+            "label": "git add",
+            "command": "git.exe",
+            "args": [
+                "add",
+                "."
+            ],
+            "problemMatcher":{
+                "pattern":{
+                    "regexp": "[\\s\\S]*",
+                }
+            }
+        },
+        {
+            "type": "shell",
+            "label": "git commit",
+            "command": "git.exe",
+            "args": [
+                "commit",
+                "-m",
+                "${input:commitText}"
+            ],
+            "problemMatcher":{
+                "pattern":{
+                    "regexp": "[\\s\\S]*",
+                }
+            },
+            "dependsOn":["git add"],
+        },
+        {
+            "type": "shell",
+            "label": "git push",
+            "command": "git.exe",
+            "args": [
+                "push",
+            ],
+            "presentation": {
+                "focus": true,
+            },
+            "problemMatcher":{
+                "pattern":{
+                    "regexp": "[\\s\\S]*",
+                }
+            },
+            "dependsOn":["git commit"],
+        }
+    ],
+    "inputs": [
+        {
+            "id": "commitText",
+            "type": "promptString",
+            "description": "输入commit的备注",
+            "default": "update",
+        }
+    ],
+    "version": "2.0.0"
+}
