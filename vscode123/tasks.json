@@ -52,7 +52,7 @@
             "args": [
                 "commit",
                 "-m",
-                "${input:commitText}"
+                "${relativeFileDirname}/${fileBasenameNoExtension}"
             ],
             "problemMatcher":{
                 "pattern":{
