@@ -1,83 +1,51 @@
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <algorithm>
-
+#include<iostream>
+#include<unordered_map>
+#define int long long
 using namespace std;
-
-const int N = 600010, M = N * 25;
-
-int n, m;
-int s[N];
-int tr[M][2], max_id[M];
-int root[N], idx;
-
-void insert(int i, int k, int p, int q)
-{
-    if (k < 0)
-    {
-        max_id[q] = i;
-        return;
-    }
-    int v = s[i] >> k & 1;
-    if (p)
-        tr[q][v ^ 1] = tr[p][v ^ 1];
-    tr[q][v] = ++idx;
-    insert(i, k - 1, tr[p][v], tr[q][v]);
-    max_id[q] = max(max_id[tr[q][0]], max_id[tr[q][1]]);
+const int N=400005;
+unordered_map<int,int> m;
+int p[N];
+int a[N][3];
+int b[N][2];
+int t,n;
+int find(int x){
+    if(p[x]!=x) p[x]=find(p[x]);
+    return p[x];
 }
-
-int query(int root, int C, int l)
+signed main()
 {
-    int p = root;
-    for (int i = 23; i >= 0; i--)
-    {
-        int v = C >> i & 1;
-        if (max_id[tr[p][v ^ 1]] >= l)
-            p = tr[p][v ^ 1];
-        else
-            p = tr[p][v];
-    }
-
-    return C ^ s[max_id[p]];
-}
-
-int main()
-{
-    scanf("%d%d", &n, &m);
-
-    max_id[0] = -1;
-    root[0] = ++idx;
-    insert(0, 23, 0, root[0]);
-
-    for (int i = 1; i <= n; i++)
-    {
-        int x;
-        scanf("%d", &x);
-        s[i] = s[i - 1] ^ x;
-        root[i] = ++idx;
-        insert(i, 23, root[i - 1], root[i]);
-    }
-
-    char op[2];
-    int l, r, x;
-    while (m--)
-    {
-        scanf("%s", op);
-        if (*op == 'A')
-        {
-            scanf("%d", &x);
-            n++;
-            s[n] = s[n - 1] ^ x;
-            root[n] = ++idx;
-            insert(n, 23, root[n - 1], root[n]);
+    #ifndef ONLINE_JUDGE
+        freopen("237.txt", "r", stdin);
+    #endif
+    int ca,cb;
+    bool flag;
+    cin>>t;
+    while(t--){
+        cin>>n;
+        ca=0;cb=0;
+        m.clear();
+        for(int i=0;i<N;++i) p[i]=i;
+        for(int i=1;i<=n;++i){
+            cin>>a[i][0]>>a[i][1]>>a[i][2];
+            if(!m[a[i][0]]) m[a[i][0]]=++ca;
+            if(!m[a[i][1]]) m[a[i][1]]=++ca;
+            if(a[i][2]==1){
+                p[find(m[a[i][0]])]=find(m[a[i][1]]);
+            }
+            else{
+                b[++cb][0]=a[i][0];
+                b[cb][1]=a[i][1];
+            }
         }
-        else
-        {
-            scanf("%d%d%d", &l, &r, &x);
-            printf("%d\n", query(root[r - 1], s[n] ^ x, l - 1));
+        flag=true;
+        for(int i=1;i<=cb;++i){
+            if(find(m[b[i][0]])==find(m[b[i][1]])){
+                flag=false;
+                break;
+            }
         }
+        if(flag) cout<<"YES"<<endl;
+        else cout<<"NO"<<endl;
     }
-
     return 0;
 }

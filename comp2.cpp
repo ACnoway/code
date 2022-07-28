@@ -1,78 +1,50 @@
-#include <iostream>
-
+#include<iostream>
+#include<unordered_map>
+#define int long long
 using namespace std;
-
-const int N = 600010, M = N * 25;
-
-int a[N];
-
-int max_id[M], s[N], tr[M][2], root[N], idx;
-
-void insert(int i, int k, int p, int q)
-{
-    if (k < 0)
-    {
-        max_id[q] = i;
-        return;
-    }
-    int v = s[i] >> k & 1;
-    if (p)
-        tr[q][v ^ 1] = tr[p][v ^ 1];
-    tr[q][v] = ++idx;
-    insert(i, k - 1, tr[p][v], tr[q][v]);
-    max_id[q] = max(max_id[tr[q][0]], max_id[tr[q][1]]);
+const int N=400005;
+unordered_map<int,int> m;
+int p[N];
+int no[N][2];
+int t,n;
+int find(int x){
+    if(p[x]!=x) p[x]=find(p[x]);
+    return p[x];
 }
-
-int query(int root, int C, int l)
+signed main()
 {
-    int p = root;
-    for (int i = 23; i >= 0; i--)
-    {
-        int v = C >> i & 1;
-        if (max_id[tr[p][v ^ 1]] >= l)
-            p = tr[p][v ^ 1];
-        else
-            p = tr[p][v];
-    }
-
-    return C ^ s[max_id[p]];
-}
-
-int main()
-{
-    int n, m;
-    cin >> n >> m;
-    max_id[0] = -1;
-    root[0] = ++idx;
-    insert(0, 23, 0, root[0]);
-    
-    for (int i = 1; i <= n; i++)
-    {
-        cin >> a[i];
-        s[i] = s[i - 1] ^ a[i];
-        root[i] = ++idx;
-        insert(i, 23, root[i - 1], root[i]);
-    }
-
-    for (int i = 1; i <= m; i++)
-    {
-        char o[2];
-        cin >> o;
-        if (*o == 'A')
-        {
-            int x;
-            cin >> x;
-            n++;
-            s[n] = s[n - 1] ^ x;
-            root[n] = ++idx;
-            insert(i, 23, root[n - 1], root[n]);
+    #ifndef ONLINE_JUDGE
+        freopen("237.txt", "r", stdin);
+    #endif
+    int a,b,e,ca,cb;
+    bool flag;
+    cin>>t;
+    while(t--){
+        cin>>n;
+        ca=0;cb=0;
+        m.clear();
+        for(int i=0;i<=2*n;++i) p[i]=i;
+        for(int i=1;i<=n;++i){
+            cin>>a>>b>>e;
+            if(m[a]==0) m[a]=++ca;
+            if(m[b]==0) m[b]=++ca;
+            if(e){
+                p[find(m[a])]=find(m[b]);
+            }
+            else{
+                no[++cb][0]=a;
+                no[cb][1]=b;
+            }
         }
-        else
-        {
-            int l, r, x;
-            cin >> l >> r >> x;
-            cout << query(root[r - 1], s[n] ^ x, l - 1) << endl;
+        flag=true;
+        for(int i=1;i<=cb;++i){
+            if(find(m[no[i][0]])==find(m[no[i][1]])){
+                flag=false;
+                break;
+            }
         }
+        if(flag) cout<<"YES"<<endl;
+        else cout<<"NO"<<endl;
     }
     return 0;
 }
