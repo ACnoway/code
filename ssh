@@ -1,0 +1,13 @@
+Host *
+    ServerAliveInterval 60
+    ServerAliveCountMax 30
+
+Host server
+  HostName 120.48.33.56
+  Port 112
+  User lzyt
+
+Host web
+  HostName 180.76.175.233
+  Port 603
+  User lzyt
