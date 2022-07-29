@@ -6,7 +6,7 @@ int n,m;
 int p[2000];
 struct node{
     int x,y,t;
-    bool operator <(const node x)const{
+    bool operator <(node x)const{
         return t<x.t;
     }
 }a[100005];
