@@ -28,7 +28,7 @@ int main()
             cin>>x[j]>>y[j]>>z[j];
             if(z[j]+r>=h) f1[++c1]=j;
             if(z[j]-r<=0) f2[++c2]=j;
-            for(int k=1;k<j/* ! */;++k){
+            for(int k=1;k<j;++k){
                 if((x[j]-x[k])*(x[j]-x[k])+(y[j]-y[k])*(y[j]-y[k])>4*r*r) continue;
                 if(dis(x[j],y[j],z[j],x[k],y[k],z[k])<=4*r*r){
                     int a1=find(j),a2=find(k);
