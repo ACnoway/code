@@ -3,7 +3,6 @@
 #include<cmath>
 using namespace std;
 const int N=100005;
-const int INF=2147483644;
 int s,n,q,w,b1,b2,inc,de,l,h,op;
 int a[N],f[N],ll[N],hh[N];
 bool hs[N];
@@ -20,11 +19,6 @@ inline int read(){
     }
     return x*f;
 }
-inline void write(int x){
-    if(x<0){x=-x;putchar('-');}
-    if(x>9) write(x/10);
-    putchar(x%10+'0');
-}
 int main()
 {
     s=read();
@@ -36,7 +30,50 @@ int main()
     inc=read();
     de=read();
     for(int i=1;i<=n;++i) a[i]=read();
-    int st,mi,en,ans,tmp;
+    int st,mi,en,ans;
+    if(s==5){
+        for(int i=1;i<=n;++i){
+            if(abs(a[i]-w)<=b1) f[i]=inc;
+            else if(abs(a[i]-w)<=b2) f[i]=0;
+            else f[i]=de;
+        }
+        while(q--){
+            op=read();
+            if(op==1){
+                ans=-0x3f3f3f;
+                l=read();
+                h=read();
+                l=read();
+                int le=1,re=1;
+                int m=f[1],sum=f[1];
+
+                for(int i=2;i<=n;++i){
+                    if(m>0){
+                        m+=a[i];
+                        re=i;
+                    }
+                    else{
+                        m=a[i];
+                        le=i;
+                    }
+                    if(m>sum){
+                        sum=m;
+                    }
+                    if(l>=le&&l<=re) ans=max(ans,m);
+                }
+                cout<<ans<<endl;
+            }
+            else{
+                w=read();
+                for(int i=1;i<=n;++i){
+                    if(abs(a[i]-w)<=b1) f[i]=inc;
+                    else if(abs(a[i]-w)<=b2) f[i]=0;
+                    else f[i]=de;
+                }
+            }
+        }
+        return 0;
+    }
     for(int i=1;i<=n;++i){
         if(abs(a[i]-w)<=b1) f[i]=inc;
         else if(abs(a[i]-w)<=b2) f[i]=0;
@@ -46,7 +83,7 @@ int main()
     while(q--){
         op=read();
         if(op==1){
-            ans=-INF;
+            ans=-0x3f3f3f;
             l=read();
             h=read();
             for(int i=0;i<=n;++i) hs[i]=0;
@@ -58,29 +95,14 @@ int main()
                 en=mi;
                 while(!hs[st]&&st>0) st--;
                 while(!hs[en]&&en<=n) en++;
-                //st++;en--;
-                tmp=INF;
-                for(int i=st;i<mi;++i){
-                    if(f[i]<tmp){
-                        tmp=f[i];
-                        st=i;
+                st++;en--;
+                for(int j=st;j<=mi;++j){
+                    for(int k=mi;k<=en;++k){
+                        ans=max(ans,f[k]-f[j-1]);
                     }
                 }
-                tmp=-INF;
-                for(int i=en;i>=mi;--i){
-                    if(f[i]>tmp){
-                        tmp=f[i];
-                        en=i;
-                    }
-                }
-                cout<<"MI"<<mi<<endl;
-                for(int i=1;i<=n;++i) cout<<f[i]<<' ';
-                cout<<endl;
-                cout<<"ST"<<st<<" EN"<<en<<endl;
-                ans=max(ans,f[en]-f[st]);
             }
-            write(ans);
-            putchar('\n');
+            cout<<ans<<endl;
         }
         else{
             w=read();
