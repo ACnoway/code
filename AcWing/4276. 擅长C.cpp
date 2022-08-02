@@ -2,32 +2,34 @@
 #include<cctype>
 using namespace std;
 string a[30][10];
-string s;
+string o[303];
+string s="";
 int main()
 {
     for(int i=0;i<26;++i){
         for(int j=0;j<7;++j) cin>>a[i][j];
     }
-    cin>>s;
-    int w=0,i=0;
-    while(w<s.size()){
-        for(;w<s.size();++w){
-            if(s[w]<'A'||s[w]>'Z') break;
-        }
-        if(i==w){
-            i=++w;
-            continue;
-        }
+    getchar();
+    string in;
+    while(getline(cin,in)) s+=in;
+    for(int i=0;i<303;++i) o[i]="";
+    int n=0;
+    for(int i=0;i<s.size();++i){
+        if((s[i]<'A'||s[i]>'Z')&&o[n]!="") n++;
+        else if(s[i]>='A'&&s[i]<='Z') o[n]+=s[i];
+    }
+    if(s[s.size()-1]>='A'&&s[s.size()-1]<='Z') n++;
+    string tmp="";
+    for(int i=0;i<n;++i){
         for(int j=0;j<7;++j){
-            for(int t=i;t<w;++t){
-                cout<<a[s[t]-'A'][j];
-                if(t+1<w) putchar(' ');
+            tmp="";
+            for(int k=0;k<o[i].size();++k){
+                tmp+=a[o[i][k]-'A'][j];
+                if(k<o[i].size()-1) tmp+=' ';
             }
-            cout<<endl;
+            cout<<tmp<<endl;
         }
-        if(w+1<s.size()) cout<<endl;
-        w++;
-        i=w;
+        if(i<n-1) cout<<endl;
     }
     return 0;
 }
