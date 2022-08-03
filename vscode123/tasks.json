@@ -34,7 +34,7 @@
         {
             "type": "shell",
             "label": "git add",
-            "command": "git.exe",
+            "command": "git",
             "args": [
                 "add",
                 "."
@@ -48,7 +48,7 @@
         {
             "type": "shell",
             "label": "git commit",
-            "command": "git.exe",
+            "command": "git",
             "args": [
                 "commit",
                 "-m",
@@ -64,7 +64,7 @@
         {
             "type": "shell",
             "label": "git push",
-            "command": "git.exe",
+            "command": "git",
             "args": [
                 "push"
             ],
