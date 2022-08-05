@@ -27,73 +27,73 @@ struct splay
 		int val;
 		node *ch[2],*parent,**root;
 		int siz,cnt;
-		//���캯��
+		//构造函数
 		node(int value,node *parent,node **root):
 			val(value),parent(parent),root(root)
 			{ch[0]=ch[1]=nullptr;siz=cnt=1;}
 
-		int relation(){//���ӻ����Һ���
+		int relation(){//左孩子还是右孩子
 			return this==parent->ch[0]?0:1;
 		}
 
-		void maintain(){//ά��size
+		void maintain(){//维护size
 			siz=cnt;
 			if(ch[0]) siz+=ch[0]->siz;
 			if(ch[1]) siz+=ch[1]->siz;
 		}
 		void rotate(){
-		//��ת�����������������ݵ�ǰ�ڵ����ĸ��������ж�
+		//旋转（左旋还是右旋根据当前节点是哪个孩子来判断
 			node *old=parent;
 			int r=relation();
 
-			//ά���Լ��ĸ��ڵ�
+			//维护自己的父节点
 			parent=old->parent;
 			if(old->parent){
-				//������游��ά���游�ĺ��ӣ����Լ��İֻ����Լ�
+				//如果有祖父，维护祖父的孩子，把自己的爸换成自己
 				old->parent->ch[old->relation()]=this;
 			}
-			parent=old->parent;//�����游�ڵ�
+			parent=old->parent;//更新祖父节点
 			
-			//�Լ��ĺ��Ӵ����Լ���λ��
+			//自己的孩子代替自己的位置
 			old->ch[r]=ch[r^1];
 			if(ch[r^1]){
 				ch[r^1]->parent=old;
-				//ά�����ӵĸ��ڵ�
+				//维护孩子的父节点
 			}
 			ch[r^1]=old;
-			//���Լ������Լ�����
+			//让自己爸做自己孩子
 
-			old->parent=this;//ά���Լ��ֵĸ��ڵ�
+			old->parent=this;//维护自己爸的父节点
 			
 			old->maintain();
 			maintain();
 
 			if(!parent){
-				//ά��ָ�����ָ�룬
-				//�����ǰָ��û�и��ڵ㣬��ǰָ��Ϊ��
+				//维护指向根的指针，
+				//如果当前指针没有父节点，则当前指针为根
 				*root=this;
 			}
 		}
 
-		//����Ҫ��splay����
-		//       �βγ�ʼ������û���β����β�Ĭ��Ϊ�Ⱥź����
+		//最重要的splay！！
+		//       形参初始化，若没有形参则形参默认为等号后面的
 		node *splay(node **target=nullptr){
 			if(!target) target=root;
-			//�ı����target������this
-			//û���β�ʱ��target����root
-			//����ָ��rootָ���ĸ�ָ��target��ָ���ĸ�ָ��
+			//改变的是target而不是this
+			//没有形参时，target就是root
+			//二重指针root指向哪个指针target就指向哪个指针
 			while(this!=*target){
 				if(parent==*target){
-					//������ڵ���Ŀ��ڵ����ת�Լ�һ��
+					//如果父节点是目标节点就旋转自己一次
 					rotate();
 				}
 				else if(relation()==parent->relation()){
-					//һ���ͣ�����ת���ڵ㣬����ת�Լ�
+					//一字型，先旋转父节点，再旋转自己
 					parent->rotate();
 					rotate();
 				}
 				else{
-					//֮���Σ���ת�Լ�����
+					//之字形，旋转自己两次
 					rotate();
 					rotate();
 				}
@@ -101,14 +101,14 @@ struct splay
 			return *target;
 		}
 
-		node *pred(){//ֱ��ǰ��
-			node *v=ch[0];//�����������ҵ�����
+		node *pred(){//直接前驱
+			node *v=ch[0];//左子树的最右的子树
 			while(v->ch[1]) v=v->ch[1];
 			return v;
 		}
 
-		node *succ(){//ֱ�Ӻ��
-			node *v=ch[1];//�����������������
+		node *succ(){//直接后继
+			node *v=ch[1];//右子树的最左的子树
 			while(v->ch[0]) v=v->ch[0];
 			return v;
 		}
@@ -125,8 +125,8 @@ struct splay
 	}
 
 	node *insert(int x){
-		//vֻ����˫��ָ�룡����
-		//vָ���ָ���ı䣬�õ�ָ���RE
+		//v只能用双重指针！！！
+		//v指向的指针会改变，用单指针会RE
 		node **v=&root,*fa=nullptr;
 		while((*v)&&(*v)->val!=x){
 			fa=*v;
@@ -141,9 +141,9 @@ struct splay
 			(*v)=new node(x,fa,&root);
 		}
 
-		//splay֮��vָ���ָ����ܲ������²���Ľڵ�
+		//splay之后v指向的指针可能不再是新插入的节点
 		(*v)->splay();
-		//ֱ�ӷ��ظ�
+		//直接返回根
 		return root;
 	}
 
@@ -157,8 +157,8 @@ struct splay
 	void erase(node *v){
 		node *pred=v->pred(),*succ=v->succ();
 		/*
-		��ǰ����ת�����ڵ㣬�����ת��ǰ�����Һ���
-		�����Ļ�ǰ���ͺ���м�ֻ��Ҫ�ҵĽڵ�x
+		将前驱旋转到根节点，后继旋转到前驱的右孩子
+		这样的话前驱和后继中间只有要找的节点x
 
 		pre
 		   \
@@ -166,10 +166,10 @@ struct splay
 		  /
 		 x
 
-		 ��Ϊǰ����С��x�����ģ�����Ǵ���x����С��
-		 �������Ļ� pre<x<nxt ��û������x����
-		 ���ݶ��������������ʣ���ת��x�ں�̽ڵ��������ΪҶ�ڵ�
-		 ֱ��ɾ��x����
+		 因为前驱是小于x且最大的，后继是大于x且最小的
+		 那这样的话 pre<x<nxt 且没有其他x满足
+		 根据二叉排序树的性质，旋转后x在后继节点的左孩子且为叶节点
+		 直接删除x即可
 		*/
 		pred->splay();
 		succ->splay(&pred->ch[1]);
@@ -183,8 +183,8 @@ struct splay
 			succ->ch[0]=nullptr;
 		}
 
-		//ά��size����Ϊɾ��xӰ���ֻ��ǰ���ͺ�̣�����ֻ��ά��
-		//ǰ���ͺ�̵�size�Ϳ���
+		//维护size，因为删掉x影响的只有前驱和后继，所以只用维护
+		//前驱和后继的size就可以
 		succ->siz--;
 		pred->siz--;
 	}
@@ -198,11 +198,11 @@ struct splay
 	int pred(int x){
 		node *v=find(x);
 		if(!v){
-			//����������뵽�����Ϊһ����ʱ�ڵ�
-			//ֱ�Ӳ��������ʱ�ڵ��ǰ���Ϳ�����
+			//把这个数插入到树里，作为一个临时节点
+			//直接查找这个临时节点的前驱就可以了
 			v=insert(x);
 			int res=v->pred()->val;
-			erase(v);//�ǵ����ɾ����ʱ�ڵ�
+			erase(v);//记得最后删除临时节点
 			return res;
 		}
 		else{
@@ -213,11 +213,11 @@ struct splay
 	int succ(int x){
 		node *v=find(x);
 		if(!v){
-			//����������뵽�����Ϊһ����ʱ�ڵ�
-			//ֱ�Ӳ��������ʱ�ڵ�ĺ�̾Ϳ�����
+			//把这个数插入到树里，作为一个临时节点
+			//直接查找这个临时节点的后继就可以了
 			v=insert(x);
 			int res=v->succ()->val;
-			erase(v);//�ǵ����ɾ����ʱ�ڵ�
+			erase(v);//记得最后删除临时节点
 			return res;
 		}
 		else{
@@ -229,9 +229,9 @@ struct splay
 		node *v=find(x);
 		if(!v){
 			v=insert(x);
-			//v�Ѿ��Ǹ��ˣ�ֱ�Ӳ���������С����
+			//v已经是根了，直接查左子树大小即可
 			int res=v->rank();
-			erase(v);//ɾ����ʱ�ڵ�
+			erase(v);//删除临时节点
 			return res;
 		}
 		else{
@@ -243,13 +243,13 @@ struct splay
 
 		node *v=root;
 		while(!(k>=v->rank()&&k<v->rank()+v->cnt)){
-			//��k���ǵ�ǰ�ڵ������ʱ
+			//当k不是当前节点的排名时
 			if(k<v->rank()){
-				//Ҫ���k�ȵ�ǰ�ڵ������С��ȥ��������
+				//要查的k比当前节点的排名小，去左子树找
 				v=v->ch[0];
 			}
 			else{
-				//�����ڵݹ��kth(v,k-v->rank()-v->cnt)
+				//类似于递归的kth(v,k-v->rank()-v->cnt)
 				k-=v->rank()+v->cnt;
 				v=v->ch[1];
 			}
