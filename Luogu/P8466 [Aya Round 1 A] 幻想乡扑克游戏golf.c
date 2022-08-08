@@ -1,0 +1,1 @@
+i,n,c[99],p;main(){for(scanf("%d\n",&n);n--;){i=0;memset(c,0,1024);do i|=++c[p=getchar()]>3;while(p^10);puts(i+c['X']*c['D']?"yes":"no");}}
