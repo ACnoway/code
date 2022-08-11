@@ -1,4 +1,4 @@
-//看了一圈题解，好像我这个是个新解法，但是懒得写题解了t
+//看了一圈题解，好像我这个是个新解法，但是懒得写题解了
 #include<iostream>
 #include<cstdio>
 #include<algorithm>
