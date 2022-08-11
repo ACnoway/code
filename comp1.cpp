@@ -1,51 +1,44 @@
-#include<iostream>
-#include<unordered_map>
-#define int long long
+#include <bits/stdc++.h>
 using namespace std;
-const int N=400005;
-unordered_map<int,int> m;
-int p[N];
-int a[N][3];
-int b[N][2];
-int t,n;
-int find(int x){
-    if(p[x]!=x) p[x]=find(p[x]);
-    return p[x];
-}
-signed main()
+#define LL long long
+const int N = 300010;
+
+int n, s;
+LL t[N], c[N], f[N];
+int q[N];
+int main()
 {
-    #ifndef ONLINE_JUDGE
-        freopen("237.txt", "r", stdin);
-    #endif
-    int ca,cb;
-    bool flag;
-    cin>>t;
-    while(t--){
-        cin>>n;
-        ca=0;cb=0;
-        m.clear();
-        for(int i=0;i<N;++i) p[i]=i;
-        for(int i=1;i<=n;++i){
-            cin>>a[i][0]>>a[i][1]>>a[i][2];
-            if(!m[a[i][0]]) m[a[i][0]]=++ca;
-            if(!m[a[i][1]]) m[a[i][1]]=++ca;
-            if(a[i][2]==1){
-                p[find(m[a[i][0]])]=find(m[a[i][1]]);
-            }
-            else{
-                b[++cb][0]=a[i][0];
-                b[cb][1]=a[i][1];
-            }
-        }
-        flag=true;
-        for(int i=1;i<=cb;++i){
-            if(find(m[b[i][0]])==find(m[b[i][1]])){
-                flag=false;
-                break;
-            }
-        }
-        if(flag) cout<<"YES"<<endl;
-        else cout<<"NO"<<endl;
+    scanf("%d%d", &n, &s);
+    for (int i = 1; i <= n; ++i)
+    {
+        scanf("%d%d", &t[i], &c[i]);
+        t[i] += t[i - 1], c[i] += c[i - 1];
     }
+    int hh = 0, tt = 0;
+    q[0] = 0;
+    for (int i = 1; i <= n; ++i)
+    {
+        int l = hh, r = tt;
+        while (l < r)
+        {
+            int mid = l + r >> 1;
+            if (f[q[mid + 1]] - f[q[mid]] > (t[i] + s) * (c[q[mid + 1]] - c[q[mid]]))
+            {
+                r = mid;
+            }
+            else
+            {
+                l = mid + 1;
+            }
+        }
+        int j = q[r];
+        f[i] = f[j] - (t[i] + s) * c[j] + t[i] * c[i] + s * c[n];
+        while (hh < tt && (f[q[tt]] - f[q[tt - 1]]) * (c[i] - c[q[tt]]) >= (f[i] - f[q[tt]]) * (c[q[tt]] - c[q[tt - 1]]))
+        {
+            --tt;
+        }
+        q[++tt] = i;
+    }
+    printf("%lld", f[n]);
     return 0;
 }
