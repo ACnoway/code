@@ -1,3 +1,4 @@
+//唯一分解定理不用判断因子是不是质数，从最小的质数2直接开始试除就行
 #include<iostream>
 #include<cstdio>
 #include<algorithm>
