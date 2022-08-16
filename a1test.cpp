@@ -1,70 +1,47 @@
 #include <iostream>
-#include <cstdio>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
-inline int read(){
-    int x=0,f=1;
-    char c=getchar();
-    while(c<'0'||c>'9'){
-        if(c=='-') f=-1;
-        c=getchar();
+
+#define x first
+#define y second 
+const int N = 505;
+typedef pair<int, int> PII;
+int s[N][N];
+int n, m, k;
+int res;
+vector<PII> state;
+
+bool cmp(PII a, PII b){
+    if(a.x > b.x) return false;
+    else{
+        if(a.x < b.x) return true;
+        else if(a.x == b.x) return a.y < b.y;
     }
-    while(c>='0'&&c<='9'){
-        x=(x<<3)+(x<<1)+(c^48);
-        c=getchar();
+}
+
+int main(){
+    cin >> n >> m >> k;
+    for(int i = 1; i <= n; i ++){
+        for(int j = 1; j <= m; j ++){
+            scanf("%d", &s[i][j]);
+            if(s[i][j] <= k) res ++;
+            s[i][j] += s[i - 1][j] + s[i][j - 1] - s[i - 1][j - 1];
+            state.push_back({i, j});
+        }
     }
-    return x*f;
-}
-inline void write(int x){
-    if(x<0){x=-x;putchar('-');}
-    if(x>9) write(x/10);
-    putchar(x%10+'0');
-}
-int n,mn,mw,c1,c2,ans;
-int a1[100005][2],a2[100005][2];
-int main()
-{
-    n=read();
-    mn=read();
-    mw=read();
-    for(int i=1;i<=mn;++i){
-        int st=read(),en=read();
-        bool flag=false;
-        for(int i=1;i<=c1;++i){
-            if(st>a1[i][1]){
-                a1[i][1]=en;
-                a1[i][0]++;
-                flag=true;
-                break;
+    sort(state.begin(), state.end());
+    for(int i = 0; i < state.size(); i ++){
+        for(int j = i + 1; j < state.size(); j ++){
+            int x1 = state[i].x, y1 = state[i].y, x2 = state[j].x, y2 = state[j].y;
+            if(x1 <= x2 && y1 <= y2){
+                int sum = s[x2][y2] - s[x1 - 1][y2] - s[x2][y1 - 1] + s[x1 - 1][y1 - 1];
+                if(sum <= k) res ++;
+                else break;
             }
         }
-        if(!flag){
-            a1[++c1][1]=en;
-            a1[c1][0]++;
-        }
     }
-    for(int i=1;i<=mw;++i){
-        int st=read(),en=read();
-        bool flag=false;
-        for(int i=1;i<=c2;++i){
-            if(st>a2[i][1]){
-                a2[i][1]=en;
-                a2[i][0]++;
-                flag=true;
-                break;
-            }
-        }
-        if(!flag){
-            a2[++c2][1]=en;
-            a2[c2][0]++;
-        }
-    }
-    for(int i=1;i<=n;++i){
-        a1[i][0]+=a1[i-1][0];
-        a2[i][0]+=a2[i-1][0];
-    }
-    for(int i=1;i<=n;++i){
-        ans=max(a1[i][0]+a2[n-i][0],ans);
-    }
-    cout<<ans<<endl;
+    cout << res;
     return 0;
 }
