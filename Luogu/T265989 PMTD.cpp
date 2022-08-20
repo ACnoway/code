@@ -1,30 +1,39 @@
 #include<iostream>
 #include<cstdio>
-#include<algorithm>
-#include<cmath>
-#ifdef ONLINE_JUDGE
-#define debug(x)
-#else
-#define debug(x) cout<<' '<<#x<<'='<<x<<endl;
-#endif
 using namespace std;
-int n,m;
-long long a[1000006];
+int n,m,x;
+inline int read(){
+    int x=0,f=1;
+    char c=getchar();
+    while(c<'0'||c>'9'){
+        if(c=='-') f=-1;
+        c=getchar();
+    }
+    while(c>='0'&&c<='9'){
+        x=(x<<3)+(x<<1)+(c^48);
+        c=getchar();
+    }
+    return x*f;
+}
+inline void write(long long x){
+    if(x>9) write(x/10);
+    putchar(x%10+'0');
+}
 int main()
 {
-    cin>>n>>m;
+    n=read();
+    m=read();
     if(n==1){
-        cout<<0;
+        putchar('0');
         return 0;
     }
-    long long mi=10000000000,ma=0;
-    for(int i=0;i<n;++i) cin>>a[i],mi=min(mi,a[i]),ma=max(ma,a[i]);
-    for(int i=0;i<m;++i){
-        if(ma<2) ma+=2;
-        else ma<<=1;
-    }
-    debug(ma);
-    debug(mi);
-    cout<<ma-mi<<endl;
+    int mi=1000000009;
+    long long ma=0;
+    for(int i=0;i<n;++i) x=read(),mi=min(mi,x),ma=max(ma,(long long)x);
+    if(ma<2) ma+=2;
+    else ma<<=1;
+    m--;
+    while(m--) ma<<=1;
+    write(ma-mi);
     return 0;
 }
