@@ -39,4 +39,3 @@ a = gett(url)
 while a != "":
     time.sleep(1)
     a = gett("https://www.23qb.com" + a)
-
