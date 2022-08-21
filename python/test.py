@@ -19,7 +19,7 @@ def gett(url):
     soup = BeautifulSoup(r.text, "html.parser")
     print((re.findall("<title>(.*?)_铅笔小说",str(soup.select('head title')[0]))[0]),end='')
     if url.find("_")==-1:
-        f.write((re.findall("<title>(.*?)_铅笔小说",str(soup.select('head title')[0]))[0])+'\n')
+        f.write('\n'+(re.findall("<title>(.*?)_铅笔小说",str(soup.select('head title')[0]))[0])+"\n\n")
     temp = soup.select(
         '.bg6 .mlfy_main #mlfy_main_text p'
     )
