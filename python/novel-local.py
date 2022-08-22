@@ -21,9 +21,9 @@ class main_UI(QtWidgets.QWidget):
         self.resize(500, 700)
         self.setWindowTitle("本地小说阅读器")
         self.layout = QtWidgets.QGridLayout()
-        #预览四个边都预留20pixs的边界
+        # 预览四个边都预留20pixs的边界
         self.layout.setContentsMargins(20, 20, 20, 20)
-        #网格之间设置10pixs的间隔
+        # 网格之间设置10pixs的间隔
         self.layout.setSpacing(10)
         self.layout.setRowMinimumHeight(0, 30)
         self.search = QtWidgets.QLineEdit(self)
