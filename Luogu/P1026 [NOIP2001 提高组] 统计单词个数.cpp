@@ -18,6 +18,8 @@ int have(int x,int end){
     }
     return 0;
 }
+// https://www.luogu.com.cn/blog/user4693/solution-p1026
+// 输入从0开始之后炸了
 int main()
 {
     cin>>n>>k;
