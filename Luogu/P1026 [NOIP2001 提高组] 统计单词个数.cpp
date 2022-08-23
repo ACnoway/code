@@ -14,7 +14,7 @@ string a,b,wo[10];
 int have(int x,int end){
     for(int i=0;i<s;++i){
         int p=a.find(wo[i],x);
-        if(p==x) return 1;
+        if(p==x&&wo[i].size()<=end-x+1) return 1;
     }
     return 0;
 }
