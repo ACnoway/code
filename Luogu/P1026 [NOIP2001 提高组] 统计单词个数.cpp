@@ -18,8 +18,6 @@ int have(int x,int end){
     }
     return 0;
 }
-// https://www.luogu.com.cn/blog/user4693/solution-p1026
-// 输入从0开始之后炸了
 int main()
 {
     cin>>n>>k;
@@ -33,13 +31,13 @@ int main()
     for(int j=n-1;j>=0;--j){
         for(int i=j;i>=0;--i) w[i][j]=w[i+1][j]+have(i,j);
     }
-    f[0][0]=w[0][0];
+    f[0][1]=w[0][0];
     for(int i=1;i<=k;++i) f[i][i]=f[i-1][i-1]+w[i][i];
     for(int i=0;i<n;++i) f[i][1]=w[0][i];
     for(int i=0;i<n;++i){
         for(int j=2;j<=k&&j<=i;++j){
-            for(int r=j;r<i;++r){
-                if(f[i][j]<f[r][j-1]+w[r][i]) f[i][j]=f[r][j-1]+w[r][i];
+            for(int r=j-1;r<i;++r){
+                if(f[i][j]<f[r][j-1]+w[r+1][i]) f[i][j]=f[r][j-1]+w[r+1][i];
             }
         }
     }

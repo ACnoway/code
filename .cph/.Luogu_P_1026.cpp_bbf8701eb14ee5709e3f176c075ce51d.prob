@@ -1,0 +1,1 @@
+{"batch":{"id":"exlg","size":1},"name":"Luogu_P1026","group":"Luogu","url":"https://www.luogu.com.cn/problem/P1026","interactive":"false","memoryLimit":128,"timeLimit":1000,"tests":[],"input":{"type":"stdin"},"output":{"type":"stdout"},"language":{"java":{"mainClass":"Main","taskClass":"P1026"}},"testType":"single","srcPath":"e:\\lou\\code\\Luogu_P_1026.cpp"}
