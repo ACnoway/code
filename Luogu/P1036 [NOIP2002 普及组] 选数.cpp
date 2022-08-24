@@ -2,6 +2,7 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
+#define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -23,21 +24,21 @@ void shai(int nn){
         }
     }
 }
-void dfs(int kk,int now){
+void dfs(int p,int kk,int now){
     if(kk==k+1){
         if(isp[now]) ans++;
         return;
     }
-    for(int i=0;i<n;++i){
+    for(int i=p;i<n;++i){
         if(!v[i]){
             v[i]=1;
-            dfs(kk+1,now+a[i]);
+            dfs(i+1,kk+1,now+a[i]);
             v[i]=0;
         }
     }
     return;
 }
-int main()
+signed main()
 {
     cin>>n>>k;
     for(int i=0;i<n;++i){
@@ -45,7 +46,7 @@ int main()
         sum+=a[i];
     }
     shai(sum);
-    dfs(1,0);
+    dfs(0,1,0);
     cout<<ans<<endl;
     return 0;
 }
