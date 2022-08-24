@@ -1,7 +1,5 @@
 #include<bits/stdc++.h>
-#define int __int128_t
 using namespace std;
-int a;
 inline int read(){
     int x=0,f=1;
     char c=getchar();
@@ -20,9 +18,17 @@ inline void write(int x){
     if(x>9) write(x/10);
     putchar(x%10+'0');
 }
-signed main()
+struct node{
+    int a,b;
+    bool operator<(const node&oth)const{
+        return a<oth.a;
+    }
+};
+set<node>s;
+int main()
 {
-    a=read();
-    write(a);
+    s.insert({1,2});
+    s.insert({1,3});
+    printf("%d",(*s.lower_bound({1,4})).b);
     return 0;
 }
