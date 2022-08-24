@@ -1,51 +1,28 @@
-#include<iostream>
-#include<cstdio>
-#include<algorithm>
-#include<cmath>
-#ifdef ONLINE_JUDGE
-#define debug(x)
-#else
-#define debug(x) cout<<' '<<#x<<'='<<x<<endl;
-#endif
+#include<bits/stdc++.h>
+#define int __int128_t
 using namespace std;
-int n,k,cnt,sum,ans;
-bool isp[100000008];
-int p[10000007];
-int a[30];
-bool v[30];
-void shai(int nn){
-    for(int i=2;i<=nn;++i) isp[i]=true;
-    for(int i=2;i<=nn;++i){
-        if(isp[i]) p[++cnt]=i;
-        for(int j=1;j<=cnt&&i*p[j]<=nn;++j){
-            isp[i*p[j]]=false;
-            if(i%p[j]==0) break;
-        }
+int a;
+inline int read(){
+    int x=0,f=1;
+    char c=getchar();
+    while(c<'0'||c>'9'){
+        if(c=='-') f=-1;
+        c=getchar();
     }
+    while(c>='0'&&c<='9'){
+        x=(x<<3)+(x<<1)+(c^48);
+        c=getchar();
+    }
+    return x*f;
 }
-void dfs(int kk,int now){
-    if(kk==k+1){
-        if(isp[now]) ans++;
-        return;
-    }
-    for(int i=0;i<n;++i){
-        if(!v[i]){
-            v[i]=1;
-            dfs(kk+1,now+a[i]);
-            v[i]=0;
-        }
-    }
-    return;
+inline void write(int x){
+    if(x<0){x=-x;putchar('-');}
+    if(x>9) write(x/10);
+    putchar(x%10+'0');
 }
-int main()
+signed main()
 {
-    cin>>n>>k;
-    for(int i=0;i<n;++i){
-        cin>>a[i];
-        sum+=a[i];
-    }
-    shai(sum);
-    dfs(1,0);
-    cout<<ans<<endl;
+    a=read();
+    write(a);
     return 0;
 }
