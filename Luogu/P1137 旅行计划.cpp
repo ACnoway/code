@@ -39,9 +39,7 @@ int main()
         for(int i=h[x];i!=-1;i=ne[i]){
             y=e[i];
             f[y]=max(f[y],f[x]+1);
-            if(--in[y]==0){
-                q[++tt]=y;
-            }
+            if(--in[y]==0) q[++tt]=y;
         }
     }
     for(int i=1;i<=n;++i) cout<<f[i]<<endl;
