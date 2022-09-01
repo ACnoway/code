@@ -16,8 +16,10 @@ int main()
     for(int i=1;i<=n;++i){
         int j;
         flag=true;
-        for(int j=0;j<=n;++j) v[j]=0;
+        for(j=0;j<=n;++j) v[j]=0;
+        j=a[i];
         while(j){
+            //cout<<"i="<<i<<" j="<<j<<endl;
             if(v[j]||f[j]==2){
                 flag=false;
                 break;
