@@ -1,0 +1,1 @@
+{"name":"Local: titleU230287 标题计数","url":"f:\\OI\\code\\Luogu\\titleU230287 标题计数.cpp","tests":[{"id":1662271756010,"input":"1\n\n#u#n#t#i#t#l#e#d#","output":"0"},{"id":1662274542108,"input":"1\n\n# a perfect title","output":"1"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"f:\\OI\\code\\Luogu\\titleU230287 标题计数.cpp","group":"local","local":true}
