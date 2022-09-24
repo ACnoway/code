@@ -27,10 +27,6 @@ inline void write(int x){
 }
 int main()
 {
-    srand(time(0));
-    freopen(".\\wa.in","w",stdout);
-    int d=1;
-    cout<<d<<endl;
-    for(int i=1;i<=d;++i) cout<<((rand()+rand()+1)*rand())%1000000000+1<<endl;
+    cout<<-8%-4<<endl;
     return 0;
 }
