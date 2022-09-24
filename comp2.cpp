@@ -1,100 +1,92 @@
-#include <iostream>
-#include <cstdio>
-#include <algorithm>
-using namespace std;
-inline int read(){
-    int x=0,f=1;
-    char c=getchar();
-    while(c<'0'||c>'9'){
-        if(c=='-') f=-1;
-        c=getchar();
-    }
-    while(c>='0'&&c<='9'){
-        x=(x<<3)+(x<<1)+(c^48);
-        c=getchar();
-    }
-    return x*f;
-}
-inline void write(int x){
-    if(x<0){x=-x;putchar('-');}
-    if(x>9) write(x/10);
-    putchar(x%10+'0');
-}
-struct node{
-    int s,e;
-    bool operator < (const node &x) const{
-        return s<x.s;
-    }
-}pn[100005],pw[100005];
-int n,mn,mw,c1,c2,ans;
-int a1[100005][2],a2[100005][2];
-int main()
-{
-    n=read();
-    mn=read();
-    mw=read();
-    for(int i=1;i<=mn;++i) pn[i].s=read(),pn[i].e=read();
-    for(int i=1;i<=mw;++i) pw[i].s=read(),pw[i].e=read();
-    sort(pn+1,pn+mn+1);
-    sort(pw+1,pw+mw+1);
-    int st,en;
-    int mi=100000008;
-    bool flag;
-    for(int i=1;i<=mn;++i){
-        st=pn[i].s;en=pn[i].e;
-        flag=false;
-        if(st<mi){
-            a1[++c1][1]=en;
-            a1[c1][0]++;
-            mi=min(mi,en);
-            continue;
-        }
-        for(int j=1;j<=c1;++j){
-            if(st>a1[j][1]){
-                a1[j][1]=en;
-                a1[j][0]++;
-                flag=true;
-                break;
-            }
-        }
-        if(!flag){
-            a1[++c1][1]=en;
-            a1[c1][0]++;
-        }
-        mi=min(mi,en);
-    }
-    mi=100000008;
-    for(int i=1;i<=mw;++i){
-        st=pw[i].s;en=pw[i].e;
-        flag=false;
-        if(st<mi){
-            a2[++c2][1]=en;
-            a2[c2][0]++;
-            mi=min(mi,en);
-            continue;
-        }
-        for(int j=1;j<=c2;++j){
-            if(st>a2[j][1]){
-                a2[j][1]=en;
-                a2[j][0]++;
-                flag=true;
-                break;
-            }
-        }
-        if(!flag){
-            a2[++c2][1]=en;
-            a2[c2][0]++;
-        }
-        mi=min(mi,en);
-    }
-    for(int i=1;i<=n;++i){
-        a1[i][0]+=a1[i-1][0];
-        a2[i][0]+=a2[i-1][0];
-    }
-    for(int i=0;i<=n;++i){
-        ans=max(a1[i][0]+a2[n-i][0],ans);
-    }
-    write(ans);
-    putchar('\n');
-    return 0;
-}
+ i=12
+ j=34
+     
+ i=1 
+ j=11
+
+ i=1
+ j=23
+
+ i=1
+ j=35
+
+ i=1
+ j=47
+
+ i=1
+ j=59
+
+ i=2
+ j=10
+
+ i=2
+ j=22
+
+ i=2
+ j=34
+
+ i=2
+ j=46
+
+ i=2
+ j=58
+
+ i=3
+ j=21
+
+ i=3
+ j=33
+
+ i=3
+ j=45
+
+ i=3
+ j=57
+
+ i=4
+ j=20
+
+ i=4
+ j=32
+
+ i=4
+ j=44
+
+ i=4
+ j=56
+
+ i=5
+ j=31
+
+ i=5
+ j=43
+
+ i=5
+ j=55
+
+ i=6
+ j=30
+
+ i=6
+ j=42
+
+ i=6
+ j=54
+
+ i=7
+ j=41
+
+ i=7
+ j=53
+
+ i=8
+ j=40
+
+ i=8
+ j=52
+
+ i=9
+ j=51
+
+ i=11
+ j=11

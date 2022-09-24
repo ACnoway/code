@@ -1,5 +1,12 @@
 #include<bits/stdc++.h>
+#ifdef ONLINE_JUDGE
+#define debug(x)
+#else
+#define debug(x) cout<<' '<<#x<<'='<<x<<endl;
+#endif
 using namespace std;
+int a[15][70];
+int d,t,ans,all;
 inline int read(){
     int x=0,f=1;
     char c=getchar();
@@ -18,17 +25,12 @@ inline void write(int x){
     if(x>9) write(x/10);
     putchar(x%10+'0');
 }
-struct node{
-    int a,b;
-    bool operator<(const node&oth)const{
-        return a<oth.a;
-    }
-};
-set<node>s;
 int main()
 {
-    s.insert({1,2});
-    s.insert({1,3});
-    printf("%d",(*s.lower_bound({1,4})).b);
+    srand(time(0));
+    freopen(".\\wa.in","w",stdout);
+    int d=1;
+    cout<<d<<endl;
+    for(int i=1;i<=d;++i) cout<<((rand()+rand()+1)*rand())%1000000000+1<<endl;
     return 0;
 }
