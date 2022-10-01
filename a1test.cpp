@@ -25,8 +25,12 @@ inline void write(int x){
     if(x>9) write(x/10);
     putchar(x%10+'0');
 }
+int gcd(int a,int b){
+    if(!b) return a;
+    return gcd(b,a%b);
+}
 int main()
 {
-    cout<<-8%-4<<endl;
+    cout<<gcd(30,89)<<endl;
     return 0;
 }
