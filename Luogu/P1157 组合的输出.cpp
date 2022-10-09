@@ -18,10 +18,14 @@ void dfs(int x,int y){
         return;
     }
     if(n-x<r-y+1) return;
-    
+    for(int i=x+1;i<=n;++i){
+        a[y]=i;
+        dfs(i,y+1);
+    }
 }
 int main()
 {
-    
+    cin>>n>>r;
+    dfs(0,1);
     return 0;
 }
