@@ -14,6 +14,7 @@ int face;
 int cf[3]={1,2,-1},dx[4][3]={{1,2,3},{0,0,0},{-1,-2,-3},{0,0,0}},dy[4][3]={{0,0,0},{1,2,3},{0,0,0},{-1,-2,-3}};
 int near[4][2]={{0,0},{1,0},{0,1},{1,1}};
 bool v[55][55][5];
+int abs(int a){ return (a>0?a:-a);}
 struct node{
     int x,y,num,fa;
 };
@@ -99,10 +100,10 @@ int main()
                 v[nx][ny][p.fa]=1;
             }
         }
-        for(int i=0;i<3;++i){
+        for(int i=0;i<2;++i){
             face=(p.fa+cf[i]+4)%4;
             if(!v[p.x][p.y][face]){
-                q.push({p.x,p.y,p.num+1,face});
+                q.push({p.x,p.y,p.num+abs(cf[i]),face});
                 v[p.x][p.y][face]=1;
             }
         }
