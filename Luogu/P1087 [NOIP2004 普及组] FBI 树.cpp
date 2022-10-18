@@ -17,25 +17,22 @@ inline int read(){
 }
 void dfs(int l,int r){
     if(l>r) return;
-    for(int i=l;i<=r;++i) cout<<a[i];
-    cout<<endl;
-    int mid=(l+r)>>1;
-    debug(l);debug(mid);debug(r);
-    dfs(l,mid-1);
-    dfs(mid+1,r);
-    /*
+    if(l<r){
+        int mid=(l+r)>>1;
+        dfs(l,mid);
+        dfs(mid+1,r);
+    }
     if(a[r]-a[l-1]==r-l+1) putchar('I');
     else if(a[r]-a[l-1]==0) putchar('B');
     else putchar('F');
-    */
 }
 int main()
 {
     cin>>n;
-    n=2<<(n-1);
+    n=1<<n;
     for(int i=1;i<=n;++i){
         a[i]=read();
-        f[i]+=a[i]+f[i-1];
+        a[i]+=a[i-1];
     }
     dfs(1,n);
     return 0;
