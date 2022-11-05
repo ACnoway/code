@@ -1,36 +1,24 @@
 #include<bits/stdc++.h>
+#ifdef ONLINE_JUDGE
+#define debug(x)
+#else
+#define debug(x) cout<<' '<<#x<<'='<<x<<endl;
+#endif
 using namespace std;
-#define int long long
-vector<vector<long long> >v;
-long long ans[500005];
-signed main(){
-    int n,k,q;
-    scanf("%lld%lld%lld",&n,&k,&q);
-    long long u,r;
-    
-    for(int i=1;i<=k;++i){
-        v.push_back(*new vector<long long>);
-        v[i].push_back(0);
-        for(int j=1;j<=n;++j){
-            scanf("%d",&u);
-            u+=v[i][j-1];
-            v[i].push_back(u);
-        }
-    }
-    for(int i=1;i<=n;++i){
-        u=0;
-        for(int j=1;j<=k;++j)if(v[j][i]>u)u=v[j][i];
-        ans[i]=u;
-    }
-    int l;
-    while(q--){
-        scanf("%lld%lld",&l,&r);
-        if(l==1)cout<<ans[r]<<'\21';
-        else{
-            u=0;
-            for(int j=1;j<=k;++j)if(v[j][r]-v[j][l-1]>u)u=v[j][r]-v[j][l-1];
-            cout<<u<<'\21';
-        }
+int main()
+{
+    freopen("p8818.txt","w",stdout);
+    srand(time(0));
+    int n=rand()%100+1,m=rand()%100+1,q=rand()%100+1;
+    cout<<n<<' '<<m<<' '<<q<<endl;
+    for(int i=1;i<=n;++i) cout<<(rand()%2?rand()%100+1:-1*(rand()%100+1))<<' ';
+    cout<<endl;
+    for(int i=1;i<=m;++i) cout<<(rand()%2?rand()%100+1:-1*(rand()%100+1))<<' ';
+    cout<<endl;
+    for(int i=0;i<q;++i){
+        int l1=rand()%n+1,l2=rand()%m+1;
+        int r1=rand()%(n-l1)+l1,r2=rand()%(m-l2)+l2;
+        cout<<l1<<' '<<r1<<' '<<l2<<' '<<r2<<endl;
     }
     return 0;
 }
