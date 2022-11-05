@@ -32,7 +32,7 @@ signed main()
     for(int i=2;i<=n;++i) cin>>a[i];
     for(int i=0;i<=n;++i){
         for(int j=0;j<=n;++j){
-            ff[i][j]=1000000;
+            ff[i][j]=10000000;
         }
     }
     //sort(a+2,a+n+1,cmp);
@@ -41,12 +41,17 @@ signed main()
         f[x][y]=f[y][x]=1;
         ff[x][y]=ff[y][x]=0;
     }
-    for(int k=1;k<=n;++k){
+    if(k==0){
+        dfs(1,1,0);
+        cout<<ans<<endl;
+        return 0;
+    }
+    for(int kk=1;kk<=n;++kk){
         for(int i=1;i<=n;++i){
             for(int j=1;j<=n;++j){
-                if(f[i][j]==1||f[i][k]==0||f[k][j]==0) continue;
+                if(f[i][j]==1||f[i][kk]==0||f[kk][j]==0) continue;
                 f[i][j]=f[j][i]=2;
-                ff[j][i]=ff[i][j]=min(ff[i][j],ff[i][k]+1+ff[k][j]);
+                ff[j][i]=ff[i][j]=min(ff[i][j],ff[i][kk]+1+ff[kk][j]);
             }
         }
     }
