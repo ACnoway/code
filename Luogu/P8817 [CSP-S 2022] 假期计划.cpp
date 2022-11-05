@@ -2,6 +2,7 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
+#define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -25,7 +26,7 @@ void dfs(int x,int t,int tmp){
         }
     }
 }
-int main()
+signed main()
 {
     cin>>n>>m>>k;
     for(int i=2;i<=n;++i) cin>>a[i];
