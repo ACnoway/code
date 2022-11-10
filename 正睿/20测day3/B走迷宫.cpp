@@ -11,7 +11,12 @@ void bfs(int x,int y){
 	queue<pii> q;
     pii p;
     int nx,ny;
-    
+    q.push({x,y});
+    while(!q.empty()){
+        p=q.front();
+        q.pop();
+        
+    }
 }
 int main()
 {
