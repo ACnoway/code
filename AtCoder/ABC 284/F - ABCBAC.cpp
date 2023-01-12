@@ -2,6 +2,7 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
+#define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -11,7 +12,7 @@ using namespace std;
 int v[30];
 int n,cnt,i;
 string s,t;
-int main()
+signed main()
 {
     cin>>n>>t;
     for(i=0;i<n;++i){
