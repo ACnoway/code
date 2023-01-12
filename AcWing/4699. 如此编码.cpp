@@ -20,6 +20,5 @@ int main()
         cout<<(m%a[i]-bef)/a[i-1]<<' ';
         bef=m%a[i];
     }
-    
     return 0;
 }
