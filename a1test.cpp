@@ -1,21 +1,13 @@
-#include<iostream>
-#include<cstdio>
-#include<algorithm>
-#include<cmath>
-#ifdef ONLINE_JUDGE
-#define debug(x)
-#else
-#define debug(x) cout<<' '<<#x<<'='<<x<<endl;
-#endif
+#include<bits/stdc++.h>
 using namespace std;
-string s,t;
-int q,l,r;
-bool flag;
 int main()
 {
-    freopen("3.in","w",stdout);
-    int n=100;
-    cout<<n<<endl;
-    for(int i=0;i<n;++i) putchar('1'),putchar(' ');
+    freopen("P1156.in","w",stdout);
+    srand(time(0));
+    int d=rand()%99+2,g=rand()%100+1;
+    cout<<d<<' '<<g<<endl;
+    for(int i=1;i<=g;++i){
+        cout<<rand()%1000+1<<' '<<rand()%30+1<<' '<<rand()%25<<endl;
+    }
     return 0;
 }
