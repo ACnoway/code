@@ -40,8 +40,8 @@ int main()
     }
     for(int i=n;i;--i){
         if(fb[i].v<fb[i+1].v){
-            fb[i].v=fb[i-1].v;
-            fb[i].p=fb[i-1].p;
+            fb[i].v=fb[i+1].v;
+            fb[i].p=fb[i+1].p;
         }
     }
     cout<<"v=";
