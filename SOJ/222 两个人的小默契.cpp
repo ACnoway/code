@@ -2,6 +2,7 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
+#define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -30,7 +31,7 @@ inline void write(int x){
     if(x>9) write(x/10);
     putchar(x%10+'0');
 }
-int main()
+signed main()
 {
     n=read();m=read();
     for(int i=1;i<=n;++i) a[i]=read();
