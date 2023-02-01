@@ -47,7 +47,7 @@ void build(int x,int l,int r){
     t[x].l=l;t[x].r=r;
     t[x].lt=0;
     if(l==r){
-        t[x].v=w[l];
+        t[x].v=wn[l];
         t[x].v%=mod;
         return;
     }
@@ -110,9 +110,94 @@ void dfs2(int x,int topf){
         dfs2(y,y);
     }
 }
+//处理任意两点间路径上的点权和
+inline int qrange(int x,int y){
+    ans=0;
+    while(top[x]!=top[y]){
+        if(dep[top[x]]<dep[top[y]]) swap(x,y);
+        ans+=search(1,id[top[x]],id[x]);
+        ans%=mod;
+        x=fa[top[x]];
+    }
+    if(dep[x]>dep[y]) swap(x,y);
+    ans+=search(1,id[x],id[y]);
+    return ans%mod;
+}
+//修改任意两点间路径上的点权
+inline void updrange(int x,int y,int k){
+    k%=mod;
+    while(top[x]!=top[y]){
+        if(dep[top[x]]<dep[top[y]]) swap(x,y);
+        add(1,id[top[x]],id[x],k);
+        x=fa[top[x]];
+    }
+    if(dep[x]>dep[y]) swap(x,y);
+    add(1,id[x],id[y],k);
+}
+//处理一点及其子树的点权和
+inline int qson(int x){
+    return search(1,id[x],id[x]+siz[x]-1);
+}
+//更改一点及其子树的点权
+inline void updson(int x,int k){
+    add(1,id[x],id[x]+siz[x]-1,k);
+}
+inline int read(){
+    int x=0,f=1;
+    char c=getchar();
+    while(c<'0'||c>'9'){
+        if(c=='-') f=-1;
+        c=getchar();
+    }
+    while(c>='0'&&c<='9'){
+        x=(x<<3)+(x<<1)+(c^48);
+        c=getchar();
+    }
+    return x*f;
+}
+inline void write(int x){
+    if(x<0){x=-x;putchar('-');}
+    if(x>9) write(x/10);
+    putchar(x%10+'0');
+}
 int main()
 {
-    cin>>n>>m>>r>>mod;
-    
+    n=read();m=read();r=read();mod=read();
+    for(int i=1;i<=n;++i) w[i]=read();
+    int k,u,v,z;
+    for(int i=1;i<=n;++i){
+        u=read();v=read();
+        addedge(u,v);addedge(v,u);
+    }
+    dfs1(r,0,1);
+    dfs2(r,r);
+    build(1,1,n);
+    while(m--){
+        k=read();
+        switch(k){
+            case 1:{
+                u=read();v=read();z=read();
+                updrange(u,v,z);
+                break;
+            }
+            case 2:{
+                u=read();v=read();
+                write(qrange(u,v));
+                putchar('\n');
+                break;
+            }
+            case 3:{
+                u=read();v=read();
+                updson(u,v);
+                break;
+            }
+            default:{
+                u=read();
+                write(qson(u));
+                putchar('\n');
+                break;
+            }
+        }
+    }
     return 0;
 }
