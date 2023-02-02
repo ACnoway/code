@@ -10,11 +10,11 @@
 #define debug(x) cout<<' '<<#x<<'='<<x<<endl;
 #endif
 using namespace std;
-const int maxn=200005;
+const int maxn=200060;
 
 int n,m,r,mod;
 //链式前向星存边，w和wn是权值
-int e,to[maxn],nxt[maxn],head[maxn],w[maxn],wn[maxn];
+int e,head[maxn],nxt[maxn],to[maxn],w[maxn],wn[maxn];
 //线段树
 struct node{
     int l,r,lt,v;
@@ -31,7 +31,7 @@ inline void addedge(int u,int v){
     head[u]=e;
 }
 
-//线段树
+//-------------------------------------- 以下为线段树 
 inline void pushdown(int x){
     if(t[x].lt){
         t[lson].lt+=t[x].lt;
@@ -57,9 +57,19 @@ void build(int x,int l,int r){
     t[x].v=(t[lson].v+t[rson].v)%mod;
     return;
 }
+int search(int x,int l,int r){
+    if(t[x].l>r||t[x].r<l) return 0;
+    if(t[x].l>=l&&t[x].r<=r) return t[x].v%mod;
+    pushdown(x);
+    int s=0;
+    if(t[lson].r>=l) s+=search(lson,l,r);
+    if(t[rson].l<=r) s+=search(rson,l,r);
+    return s%mod;
+}
 void add(int x,int l,int r,int k){
+    debug(1);
     if(t[x].r<l||t[x].l>r) return;
-    if(t[x].l>=l&&t[x].r<=r){
+    if(l<=t[x].l&&t[x].r<=r){
         t[x].v+=(t[x].r-t[x].l+1)*k;
         t[x].lt+=k;
         return;
@@ -69,15 +79,6 @@ void add(int x,int l,int r,int k){
     if(t[rson].l<=r) add(rson,l,r,k);
     t[x].v=(t[lson].v+t[rson].v)%mod;
     return;
-}
-int search(int x,int l,int r){
-    if(t[x].l>r||t[x].r<l) return 0;
-    if(t[x].l>=l&&t[x].r<=r) return t[x].v%mod;
-    pushdown(x);
-    int s=0;
-    if(t[lson].r>=l) s+=search(lson,l,r);
-    if(t[rson].l<=r) s+=search(rson,l,r);
-    return s%mod;
 }
 
 //树剖
@@ -165,7 +166,7 @@ int main()
     n=read();m=read();r=read();mod=read();
     for(int i=1;i<=n;++i) w[i]=read();
     int k,u,v,z;
-    for(int i=1;i<=n;++i){
+    for(int i=1;i<n;++i){
         u=read();v=read();
         addedge(u,v);addedge(v,u);
     }
