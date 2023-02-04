@@ -45,52 +45,10 @@ inline void write(int x){
 }
 int main()
 {
-    n=read();k=read();
-    for(int i=0;i<=n;++i){
-        fa[i].p=fb[i].p=i;
-        fa[i].v=maxn;
-        fb[i].v=-maxn;
+    string s;
+    cin>>s;
+    for(int i=0;i<s.size();++i){
+        cout<<(int)s[i]<<endl;
     }
-    for(int i=1;i<=n;++i){
-        a[i]=read();
-        if(a[i]==0) cnt++;
-        t[i]=cnt;
-        a[i]+=a[i-1];
-        if(fa[cnt+1].v>a[i]){
-            fa[cnt+1].v=a[i];
-            fa[cnt+1].p=i;
-        }
-        if(fb[cnt].v<a[i]){
-            fb[cnt].v=a[i];
-            fb[cnt].p=i;
-        }
-    }
-    for(int i=1;i<=cnt+1;++i){
-        if(fa[i].v>fa[i-1].v){
-            fa[i].v=fa[i-1].v;
-            fa[i].p=fa[i-1].p;
-        }
-    }
-    for(int i=cnt;i>=0;--i){
-        if(fb[i].v<fb[i+1].v){
-            fb[i].v=fb[i+1].v;
-            fb[i].p=fb[i+1].p;
-        }
-    }
-    /*cout<<"v=";
-    for(int i=1;i<=cnt;++i) cout<<fa[i].v<<' ';
-    cout<<endl<<"p=";
-    for(int i=1;i<=cnt;++i) cout<<fa[i].p<<' ';
-    cout<<endl;
-    cout<<"v=";
-    for(int i=1;i<=cnt;++i) cout<<fb[i].v<<' ';
-    cout<<endl<<"p=";
-    for(int i=1;i<=cnt;++i) cout<<fb[i].p<<' ';
-    cout<<endl;*/
-    for(int i=1;i<=cnt;++i){
-        ans=max(ans,get(i));
-        ans=max(ans,get1(i));
-    }
-    write(ans);putchar('\n');
     return 0;
 }
