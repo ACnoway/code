@@ -103,13 +103,15 @@ struct splay
 
 		node *pred(){//直接前驱
 			node *v=ch[0];//左子树的最右的子树
-			while(v->ch[1]) v=v->ch[1];
+			while(v&&v->ch[1]) v=v->ch[1];
+            if(v) v->splay();
 			return v;
 		}
 
 		node *succ(){//直接后继
 			node *v=ch[1];//右子树的最左的子树
-			while(v->ch[0]) v=v->ch[0];
+			while(v&&v->ch[0]) v=v->ch[0];
+            if(v) v->splay();
 			return v;
 		}
 
@@ -235,6 +237,7 @@ struct splay
 			return res;
 		}
 		else{
+            v->splay();
 			return v->rank();
 		}
 	}
@@ -254,7 +257,7 @@ struct splay
 				v=v->ch[1];
 			}
 		}
-		v->splay();
+		if(v) v->splay();
 		return v->val;
 	}
 } splay;
