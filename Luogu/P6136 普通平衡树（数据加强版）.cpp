@@ -33,7 +33,8 @@ struct splay
 			{ch[0]=ch[1]=nullptr;siz=cnt=1;}
 
 		int relation(){//左孩子还是右孩子
-			return this==parent->ch[0]?0:1;
+            if(!parent) return 0;
+			return this!=parent->ch[0];
 		}
 
 		void maintain(){//维护size
@@ -52,7 +53,6 @@ struct splay
 				//如果有祖父，维护祖父的孩子，把自己的爸换成自己
 				old->parent->ch[old->relation()]=this;
 			}
-			parent=old->parent;//更新祖父节点
 			
 			//自己的孩子代替自己的位置
 			old->ch[r]=ch[r^1];
@@ -102,6 +102,7 @@ struct splay
 		}
 
 		node *pred(){//直接前驱
+            this->splay();
 			node *v=ch[0];//左子树的最右的子树
 			while(v&&v->ch[1]) v=v->ch[1];
             if(v) v->splay();
@@ -109,6 +110,7 @@ struct splay
 		}
 
 		node *succ(){//直接后继
+            this->splay();
 			node *v=ch[1];//右子树的最左的子树
 			while(v&&v->ch[0]) v=v->ch[0];
             if(v) v->splay();
@@ -245,7 +247,7 @@ struct splay
 	int kth(int k){
 
 		node *v=root;
-		while(!(k>=v->rank()&&k<v->rank()+v->cnt)){
+		while(v&&!(k>=v->rank()&&k<v->rank()+v->cnt)){
 			//当k不是当前节点的排名时
 			if(k<v->rank()){
 				//要查的k比当前节点的排名小，去左子树找
