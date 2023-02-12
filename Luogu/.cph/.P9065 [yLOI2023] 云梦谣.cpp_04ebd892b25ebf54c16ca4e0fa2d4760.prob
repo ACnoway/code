@@ -1,0 +1,1 @@
+{"name":"Local: P9065 [yLOI2023] 云梦谣","url":"e:\\OI\\code\\Luogu\\P9065 [yLOI2023] 云梦谣.cpp","tests":[{"id":1676161433906,"input":"4 4 3\n1 1 2 0\n1 1 0 1\n1 0 1 1\n0 1 1 2\n3 1\n1 3\n4 4","output":"3"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\OI\\code\\Luogu\\P9065 [yLOI2023] 云梦谣.cpp","group":"local","local":true}
