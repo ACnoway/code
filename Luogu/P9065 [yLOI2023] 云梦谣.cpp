@@ -3,6 +3,7 @@
 #include<algorithm>
 #include<cmath>
 #include<queue>
+#include<vector>
 #define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
@@ -36,6 +37,7 @@ int n,m,k,nx,ny,ans=inf;
 int a[3003][3003],b[3003][3003];
 bool v[3003][3003];
 int dx[4]={1,0,-1,0},dy[4]={0,1,0,-1};
+vector<int> ps1,ps2;
 void bfs(int xs,int ys){
     queue<node> q;
     node p;
@@ -70,27 +72,57 @@ signed main()
         t[i].dis=inf;
     }
     bfs(n,m);
-    int mi=inf,mp=0;
+    int mi=inf;
     for(int i=1;i<=k;++i){
-        if(t[i].dis<mi) mi=t[i].dis,mp=i;
+        if(t[i].dis<mi){
+            mi=t[i].dis;
+            ps1.clear();ps1.push_back(i);
+        }
+        else if(t[i].dis==mi) ps1.push_back(i);
+        debug(t[i].dis);
     }
     for(int i=1;i<=k;++i) t[i].dis=inf;
     for(int i=0;i<=n;++i) for(int j=0;j<=m;++j) v[i][j]=0;
     bfs(1,1);
-    int tm=mi,tp=mp;
-    mi=inf;mp=0;
+    int tm=mi;
+    mi=inf;
     for(int i=1;i<=k;++i){
-        if(t[i].dis<mi) mi=t[i].dis,mp=i;
+        if(t[i].dis<mi){
+            mi=t[i].dis;
+            ps2.clear();ps2.push_back(i);
+        }
+        else if(t[i].dis==mi) ps2.push_back(i);
+        debug(t[i].dis);
     }
+    if(ps1.empty()||ps2.empty()){
+        if(ans==inf) write(-1);
+        else write(ans);
+        return 0;
+    }
+    int ap=ps1[0],bp=ps2[0];
     bool flag=0;
+    for(auto i:ps1){
+        for(auto j:ps2){
+            if(a[t[i].x][t[i].y]==a[t[j].x][t[j].y]){
+                ap=i;bp=j;
+                break;
+            }
+        }
+        if(flag) break;
+    }
+    flag=0;
     for(int i=0;i<4;++i){
-        if(t[tp].x+dx[i]==t[mp].x&&t[tp].y+dy[i]==t[mp].y){
+        if(t[ap].x+dx[i]==t[bp].x+dx[i]&&t[ap].y+dy[i]==t[bp].y+dy[i]){
             flag=1;
             break;
         }
     }
-    if(k==0||flag&&a[t[tp].x][t[tp].y]!=a[t[mp].x][t[mp].y]) write(ans);
-    else if(a[t[tp].x][t[tp].y]!=a[t[mp].x][t[mp].y]) write(tm+mi+2);
-    else write(tm+mi+1);
+    if(ans==inf&&tm==inf){
+        write(-1);
+        return 0;
+    }
+    if(k==0||flag&&a[t[ap].x][t[ap].y]!=a[t[bp].x][t[bp].y]) write(ans);
+    else if(a[t[ap].x][t[ap].y]!=a[t[bp].x][t[bp].y]) write(min(ans,tm+mi+(ap!=bp)+1));
+    else write(tm+mi+(ap!=bp));
     return 0;
 }
