@@ -18,14 +18,14 @@ void work()
 int qmin(int z,int y)
 {
     int x=int (log(y-z+1)/log(2));//注意y-z要加一才为区间长度
-    return min(mapi[z][x],mapi[y-(1<<x)+1][x]);//分别以左右两个端点为基础，向区间内跳1<<x的最
-//大值; 
+    return min(mapi[z][x],mapi[y-(1<<x)+1][x]);
+    //分别以左右两个端点为基础，向区间内跳1<<x的最大值; 
 }
 int qmax(int z,int y)
 {
     int x=int (log(y-z+1)/log(2));//注意y-z要加一才为区间长度
-    return max(mapa[z][x],mapa[y-(1<<x)+1][x]);//分别以左右两个端点为基础，向区间内跳1<<x的最
-//大值; 
+    return max(mapa[z][x],mapa[y-(1<<x)+1][x]);
+    //分别以左右两个端点为基础，向区间内跳1<<x的最大值; 
 }
 int main()
 {
