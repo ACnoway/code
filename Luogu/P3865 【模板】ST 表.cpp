@@ -28,24 +28,27 @@ inline void write(int x){
 }
 const int maxn=100005;
 int n,m;
-int a[maxn],f[maxn][21];
+int a[maxn],f[21][maxn];
+int query(int x,int y){
+    int z=log2(y-x+1);
+    return max(f[z][x],f[z][y-(1<<z)+1]);
+}
 int main()
 {
-    cin>>n>>m;
-    for(int i=1;i<=n;++i) cin>>a[i];
-    for(int i=1;i<=n;++i) f[i][0]=a[i];
+    n=read();m=read();
+    for(int i=1;i<=n;++i) a[i]=read();
+    for(int i=1;i<=n;++i) f[0][i]=a[i];
     //* j=0推出j=1, j=1推出j=2...
     for(int j=1;j<=20;++j){
-        for(int i=1;i+(1<<j)<n;++i){
-            f[i][j]
+        for(int i=1;i+(1<<j)-1<=n;++i){
+            f[j][i]=max(f[j-1][i],f[j-1][i+(1<<j-1)]);
         }
     }
     int l,r,ma;
     while(m--){
-        cin>>l>>r;
-        ma=0;
-        for(int i=l;i<=r;++i) ma=max(ma,a[i]);
-        cout<<ma<<endl;
+        l=read();r=read();
+        write(query(l,r));
+        putchar('\n');
     }
     return 0;
 }
