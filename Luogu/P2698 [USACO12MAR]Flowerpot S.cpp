@@ -2,11 +2,6 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
-#ifdef ONLINE_JUDGE
-#define debug(x)
-#else
-#define debug(x) cout<<' '<<#x<<'='<<x<<endl;
-#endif
 using namespace std;
 inline int read(){
     int x=0,f=1;
@@ -37,7 +32,6 @@ class node{
         }
 }a[maxn];
 bool check(int k){
-    bool flag=0;
     ha=hb=0;ta=tb=0;
     for(int i=1;i<=n;++i){
         while(ha<ta&&a[qa[ha]].x<a[i].x-k) ha++;
@@ -46,15 +40,11 @@ bool check(int k){
         while(hb<tb&&a[qb[tb-1]].y>a[i].y) tb--;
         qa[ta++]=i;
         qb[tb++]=i;
-        if(a[i].x-mix+1>=k){
-            debug(a[qa[ha]].y);debug(a[qb[hb]].y);
-            if(a[qa[ha]].y-a[qb[hb]].y>=d){
-                flag=1;
-                break;
-            }
+        if(a[i].x-mix+1>=k&&a[qa[ha]].y-a[qb[hb]].y>=d){
+            return 1;
         }
     }
-    return flag;
+    return 0;
 }
 int main()
 {
@@ -74,7 +64,6 @@ int main()
     int l=1,r=mx-mix+1,mid;
     while(l<r){
         mid=(l+r)>>1;
-        debug(l);debug(r);
         if(check(mid)) r=mid;
         else l=mid+1;
     }
