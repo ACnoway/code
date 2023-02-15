@@ -2,7 +2,6 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
-#define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -28,12 +27,44 @@ inline void write(int x){
     putchar(x%10+'0');
 }
 const int maxn=1003;
-int n,m,k;
-int a[maxn][maxn];
+int n,m,k,ha,ta,hi,ti;
+int qa[maxn],qi[maxn];
+int a[maxn][maxn],xa[maxn][maxn],xi[maxn][maxn],ya[maxn][maxn],yi[maxn][maxn];
 int main()
 {
     n=read();m=read();k=read();
     for(int i=1;i<=n;++i) for(int j=1;j<=m;++j) a[i][j]=read();
-    
+    for(int i=1;i<=n;++i){
+        ha=hi=ta=ti=0;
+        for(int j=1;j<=m;++j){
+            while(ha<ta&&qa[ha]<=j-k) ha++;
+            while(hi<ti&&qi[hi]<=j-k) hi++;
+            while(ha<ta&&a[i][qa[ta-1]]<a[i][j]) ta--;
+            while(hi<ti&&a[i][qi[ti-1]]>a[i][j]) ti--;
+            qa[ta++]=j;
+            qi[ti++]=j;
+            if(j>=k) xa[i][j-k+1]=a[i][qa[ha]],xi[i][j-k+1]=a[i][qi[hi]];
+        }
+    }
+    for(int i=1;i<=m-k+1;++i){
+        ha=ta=0;hi=ti=0;
+        for(int j=1;j<=n;++j){
+            while(ha<ta&&qa[ha]<=j-k) ha++;
+            while(hi<ti&&qi[hi]<=j-k) hi++;
+            while(ha<ta&&xa[qa[ta-1]][i]<xa[j][i]) ta--;
+            while(hi<ti&&xi[qi[ti-1]][i]>xi[j][i]) ti--;
+            qa[ta++]=j;
+            qi[ti++]=j;
+            if(j>=k) ya[j-k+1][i]=xa[qa[ha]][i],yi[j-k+1][i]=xi[qi[hi]][i];
+        }
+    }
+    int ans=1000000009;
+    for(int i=1;i+k-1<=n;++i){
+        for(int j=1;j+k-1<=m;++j){
+            ans=min(ans,ya[i][j]-yi[i][j]);
+        }
+    }
+    write(ans);
+    putchar('\n');
     return 0;
 }
