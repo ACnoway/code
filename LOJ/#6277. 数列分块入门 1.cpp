@@ -27,19 +27,31 @@ inline void write(int x){
     putchar(x%10+'0');
 }
 const int maxn=50004;
-int n;
-int a[maxn],bl[maxn],g[maxn][2],add[maxn];
+int n,siz,sum;
+int a[maxn],bl[maxn],g[maxn][2],lt[maxn];
+inline void add(int l,int r,int c){
+    for(int i=l;i<=min(bl[l]*siz,r);++i) a[i]+=c;
+    if(bl[l]!=bl[r]){
+        for(int i=(bl[r]-1)*siz+1;i<=min(r,n);++i) a[i]+=c;
+    }
+    for(int i=bl[l]+1;i<=bl[r]-1;++i) lt[i]+=c;
+}
 int main()
 {
     n=read();
     for(int i=1;i<=n;++i) a[i]=read();
-    int siz=sqrt(n),sum=n/siz;
+    siz=sqrt(n),sum=n/siz;
     if(siz*sum<n) sum++;
     for(int i=1;i<=sum;++i){
         g[i][0]=(i-1)*siz+1;
         g[i][1]=(n,i*siz);
         for(int j=g[i][0];j<=g[i][1];++j) bl[j]=i;
     }
-    
+    int op,l,r,c;
+    for(int i=1;i<=n;++i){
+        op=read();l=read();r=read();c=read();
+        if(op==0) add(l,r,c);
+        else write(a[r]+lt[bl[r]]),putchar('\n');
+    }
     return 0;
 }
