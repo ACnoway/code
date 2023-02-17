@@ -44,7 +44,7 @@ int main()
     if(siz*sum<n) sum++;
     for(int i=1;i<=sum;++i){
         g[i][0]=(i-1)*siz+1;
-        g[i][1]=(n,i*siz);
+        g[i][1]=min(n,i*siz);
         for(int j=g[i][0];j<=g[i][1];++j) bl[j]=i;
     }
     int op,l,r,c;
