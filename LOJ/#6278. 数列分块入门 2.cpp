@@ -33,8 +33,14 @@ int a[maxn],bl[maxn],g[maxn][2],lt[maxn];
 vector<int> v[502];
 inline void add(int l,int r,int c){
     for(int i=l;i<=min(bl[l]*siz,r);++i) a[i]+=c;
+    v[bl[l]].clear();
+    for(int i=(bl[l]-1)*siz+1;i<=min(bl[l]*siz,n);++i) v[bl[l]].push_back(a[i]);
+    sort(v[bl[l]].begin(),v[bl[l]].end());
     if(bl[l]!=bl[r]){
         for(int i=(bl[r]-1)*siz+1;i<=min(r,n);++i) a[i]+=c;
+        v[bl[r]].clear();
+        for(int i=(bl[r]-1)*siz+1;i<=min(bl[r]*siz,n);++i) v[bl[r]].push_back(a[i]);
+        sort(v[bl[r]].begin(),v[bl[r]].end());
     }
     for(int i=bl[l]+1;i<=bl[r]-1;++i) lt[i]+=c;
 }
@@ -48,10 +54,7 @@ inline void query(int l,int r,int c){
     }
     for(int i=bl[l]+1;i<=bl[r]-1;++i){
         cn=c-lt[i];
-        auto x=lower_bound(v[i].begin(),v[i].end(),cn);
-        if(x!=v[i].begin()){
-            ans+=x-v[i].begin();
-        }
+        ans+=lower_bound(v[i].begin(),v[i].end(),cn)-v[i].begin();
     }
     write(ans);
     putchar('\n');
@@ -64,7 +67,7 @@ int main()
     if(siz*sum<n) sum++;
     for(int i=1;i<=sum;++i){
         g[i][0]=(i-1)*siz+1;
-        g[i][1]=(n,i*siz);
+        g[i][1]=min(n,i*siz);
         for(int j=g[i][0];j<=g[i][1];++j) bl[j]=i,v[i].push_back(a[j]);
         sort(v[i].begin(),v[i].end());
     }
