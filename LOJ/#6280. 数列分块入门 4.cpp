@@ -42,7 +42,7 @@ inline void query(int l,int r,int c){
     if(bl[l]!=bl[r]){
         for(int i=g[bl[r]][0];i<=min(r,n);++i) ans=(ans+a[i]+lt[bl[r]])%c;
     }
-    for(int i=bl[l]+1;i<=bl[r]-1;++i) ans=(ans+he[i]+lt[i])%c;
+    for(int i=bl[l]+1;i<=bl[r]-1;++i) ans=(ans+he[i]+lt[i]*(g[i][1]-g[i][0]+1))%c;
     write(ans);
     putchar('\n');
 }
