@@ -87,9 +87,20 @@ int main()
         s1[i].c=read();
     }
     sort(s1+1,s1+1+n,cmp1);
-    for(int i=1;i<=n;++i){
+    for(int i=1;i<=n;++i){//去重
         top++;
-        if(s1[i].a!=)
+        if(s1[i].a!=s1[i+1].a||s1[i].b!=s1[i+1].b||s1[i].c!=s1[i].c){
+            m++;
+            s2[m].a=s1[i].a;
+            s2[m].b=s1[i].b;
+            s2[m].c=s1[i].c;
+            s2[m].cnt=top;
+            top=0;
+        }
     }
+    cdq(1,m);
+    for(int i=1;i<=m;++i)
+        su[s2[i].ans+s2[i].cnt-1]+=s2[i].cnt;
+    for(int i=0;i<n;++i) write(su[i]),putchar('\n');
     return 0;
 }
