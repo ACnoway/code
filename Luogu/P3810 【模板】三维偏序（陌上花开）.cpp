@@ -32,15 +32,22 @@ struct node{
 }s1[maxn],s2[maxn];
 int n,m,k,mx,top,su[maxn];
 int c[maxn];
-bool cmp1(node a,node b){
-    if(a.a!=b.a) return a.a<b.a;
-    if(a.b!=b.b) return a.b<b.b;
-    return a.c<b.c;
-}
-bool cmp2(node a,node b){
-    if(a.b!=b.b) return a.b<b.b;
-    return a.c<b.c;
-}
+bool cmp1(node x,node y)
+{
+	if(x.a==y.a)
+	{
+		if(x.b==y.b)return x.c<y.c;
+		else return x.b<y.b;
+	}
+	else return x.a<y.a;
+}//第一维排序
+
+bool cmp2(node x,node y)
+{
+	if(x.b==y.b)
+	return x.c<y.c;
+	else return x.b<y.b;
+}//第二维排序
 inline int lowbit(int x){
     return x&(-x);
 }
@@ -56,7 +63,7 @@ inline int query(int x){
         sum+=c[x];
         x-=lowbit(x);
     }
-    return x;
+    return sum;
 }
 void cdq(int l,int r){
     if(l==r) return;
@@ -80,16 +87,16 @@ int main()
 {
     n=read();
     k=read();
-    mk=k;//树状数组的区间
+    mx=k;//树状数组的区间
     for(int i=1;i<=n;++i){
         s1[i].a=read();
-        s1[i]=b=read();
+        s1[i].b=read();
         s1[i].c=read();
     }
     sort(s1+1,s1+1+n,cmp1);
     for(int i=1;i<=n;++i){//去重
         top++;
-        if(s1[i].a!=s1[i+1].a||s1[i].b!=s1[i+1].b||s1[i].c!=s1[i].c){
+        if(s1[i].a!=s1[i+1].a||s1[i].b!=s1[i+1].b||s1[i].c!=s1[i+1].c){
             m++;
             s2[m].a=s1[i].a;
             s2[m].b=s1[i].b;
