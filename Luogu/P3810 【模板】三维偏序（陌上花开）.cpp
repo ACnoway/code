@@ -32,22 +32,15 @@ struct node{
 }s1[maxn],s2[maxn];
 int n,m,k,mx,top,su[maxn];
 int c[maxn];
-bool cmp1(node x,node y)
-{
-	if(x.a==y.a)
-	{
-		if(x.b==y.b)return x.c<y.c;
-		else return x.b<y.b;
-	}
-	else return x.a<y.a;
-}//第一维排序
-
-bool cmp2(node x,node y)
-{
-	if(x.b==y.b)
-	return x.c<y.c;
-	else return x.b<y.b;
-}//第二维排序
+bool cmp1(node x,node y){
+    if(x.a!=y.a) return x.a<y.a;
+    if(x.b!=y.b) return x.b<y.b;
+    return x.c<y.c;
+}
+bool cmp2(node x,node y){
+    if(x.b!=y.b) return x.b<y.b;
+    return x.c<y.c;
+}
 inline int lowbit(int x){
     return x&(-x);
 }
