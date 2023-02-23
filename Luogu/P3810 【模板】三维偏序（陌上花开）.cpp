@@ -2,11 +2,6 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
-#ifdef ONLINE_JUDGE
-#define debug(x)
-#else
-#define debug(x) cout<<' '<<#x<<'='<<x<<endl;
-#endif
 using namespace std;
 inline int read(){
     int x=0,f=1;
@@ -30,7 +25,7 @@ const int maxn=200005;
 struct node{
     int a,b,c,cnt,ans;
 }s1[maxn],s2[maxn];
-int n,m,k,mx,top,su[maxn];
+int n,m,k,mx,top,ans[maxn];
 int c[maxn];
 bool cmp1(node x,node y){
     if(x.a!=y.a) return x.a<y.a;
@@ -100,7 +95,7 @@ int main()
     }
     cdq(1,m);
     for(int i=1;i<=m;++i)
-        su[s2[i].ans+s2[i].cnt-1]+=s2[i].cnt;
-    for(int i=0;i<n;++i) write(su[i]),putchar('\n');
+        ans[s2[i].ans+s2[i].cnt-1]+=s2[i].cnt;
+    for(int i=0;i<n;++i) write(ans[i]),putchar('\n');
     return 0;
 }
