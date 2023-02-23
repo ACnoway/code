@@ -28,12 +28,12 @@ struct cqs{
     int x,y;
 }a[maxn];
 bool cmp(cqs a,cqs b){
-    if(a.x==b.x) return a.y<b.y;
-    return a.x<b.x;
+    if(a.x!=b.x) return a.x<b.x;
+    return a.y<b.y;
 }
 bool cmp2(cqs a,cqs b){
-    if(a.y==b.y) return a.x<b.x;
-    return a.y<b.y;
+    if(a.y!=b.y) return a.y<b.y;
+    return a.x<b.x;
 }
 int main()
 {
