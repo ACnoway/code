@@ -1,7 +1,4 @@
 #include<iostream>
-#include<cstdio>
-#include<algorithm>
-#include<cmath>
 #include<cstring>
 #define int long long
 using namespace std;
@@ -44,11 +41,11 @@ signed main()
     int ans=0,f=0;
     for(int i=1;i<=n;++i){
         if(s[i]=='('){
-            f=(f+1ll*zuo[i]*you[i]%mod)%mod;
+            f=(f+zuo[i]*you[i]%mod)%mod;
         }
-        ans=ans+1ll*(i*f)%mod;
+        ans=ans+(i*f)%mod;
         if(s[i]==')'){
-            f=(f-1ll*zuo[i]*you[i]%mod+mod)%mod;
+            f=(f-zuo[i]*you[i]%mod+mod)%mod;
         }
     }
     write(ans);
