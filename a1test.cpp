@@ -1,46 +1,57 @@
 #include <iostream>
+#include <cstdio>
 #include <vector>
 #include <algorithm>
-#include <cstring>
-
+#define int long long
 using namespace std;
-
-const int MAXN = 1000005;
-
-char a[MAXN], b[MAXN];
-int n, q[MAXN], p[26], cnt[26];
-
-void solve() {
-    cin >> n;
-    cin >> a >> b;
-    memset(cnt, 0, sizeof(cnt));
-    for (int i = 0; i < n; i++) {
-        p[b[i] - 'A'] = i;
-        cnt[a[i] - 'A']++;
+const int maxn = 5e3 + 5, maxm = 1e6 + 5;
+int a[maxn], n;
+int read()
+{
+    int x = 0, f = 1;
+    char ch = getchar();
+    while (ch < '0' || ch > '9')
+    {
+        if (ch == '-')
+            f = -1;
+        ch = getchar();
     }
-    for (int i = 1; i < 26; i++) {
-        cnt[i] += cnt[i - 1];
+    while (ch >= '0' && ch <= '9')
+    {
+        x = (x << 1) + (x << 3) + (ch ^ 48);
+        ch = getchar();
     }
-    for (int i = 0; i < n; i++) {
-        q[i] = cnt[a[i] - 'A'] - 1;
-    }
-    int ans = 0;
-    for (int i = 0; i < n; i++) {
-        int j = p[a[i] - 'A'];
-        while (q[j] != i) {
-            swap(a[j], a[j - 1]);
-            swap(q[j], q[j - 1]);
-            ans++;
-            j--;
-            if (j <= 0) break;
+    return x * f;
+}
+int ans, vis[maxm * 2], cnt[maxm]; // 统计任意两点之间的异或和
+signed main()
+{
+    n = read();
+    for (int i = 1; i <= n; ++i)
+        a[i] = read(), cnt[a[i]]++;
+    for (int i = 1; i <= n; ++i)
+        for (int j = i + 1; j <= n; ++j)
+            vis[a[i] ^ a[j]]++;
+    // 就是记录一下有多少点对 是在这个区间范围内
+    for (int i = 1; i <= n; ++i)
+    {
+        for (int j = i + 1; j <= n; ++j)
+        {
+            if (a[i] == a[j])
+            {
+                ans -= (cnt[a[i]] - 2), ans -= (cnt[a[j]] - 2);
+                ans -= 1;
+                ans += vis[a[i] ^ a[j]];
+            }
+            else
+            {
+                ans -= (cnt[a[i]] - 1), ans -= (cnt[a[j]] - 1);
+                ans -= 1;
+                ans += vis[a[i] ^ a[j]];
+            }
         }
     }
-    cout << ans << endl;
-}
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    solve();
+    ans /= 6;
+    printf("%lld", ans);
     return 0;
 }
