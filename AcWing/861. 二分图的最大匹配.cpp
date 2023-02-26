@@ -26,6 +26,7 @@ inline void write(int x){
     if(x>9) write(x/10);
     putchar(x%10+'0');
 }
+
 const int maxn=502,maxm=100010;
 struct node{
     int nxt,to;
@@ -44,8 +45,13 @@ bool find(int x){
         int j=e[i].to;
         if(!st[j]){
             st[j]=1;
+            if(match[j]==0||find(match[j])){
+                match[j]=x;
+                return 1;
+            }
         }
     }
+    return 0;
 }
 int main()
 {
