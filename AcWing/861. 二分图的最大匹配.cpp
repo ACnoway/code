@@ -26,11 +26,10 @@ inline void write(int x){
     if(x>9) write(x/10);
     putchar(x%10+'0');
 }
-
 const int maxn=502,maxm=100010;
 struct node{
     int nxt,to;
-}e[maxn];
+}e[maxm];
 int idx,head[maxn];
 int n1,n2,m;
 int match[maxn];
