@@ -2,11 +2,8 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
-#ifdef ONLINE_JUDGE
-#define debug(x)
-#else
-#define debug(x) cout<<' '<<#x<<'='<<x<<endl;
-#endif
+#define ll long long
+#define int long long
 using namespace std;
 inline int read(){
     int x=0,f=1;
@@ -28,24 +25,49 @@ inline void write(int x){
 }
 const int maxn=500005;
 int n,k;
-int a[maxn],p[maxn];
-int main()
+int a[maxn],p[maxn],l[maxn],r[maxn];
+bool cmp(int x,int y){
+    return a[x]<a[y];
+}
+signed main()
 {
     n=read();
     k=read();
-    for(int i=1;i<=n;++i) a[i]=read();
-    int l,r,cnt=0;
     for(int i=1;i<=n;++i){
-        cnt=0;
-        for(r=1;cnt<k&&i+r<=n;++r){
-            if(a[i+r]>a[i]) cnt++;
-        }
-        r=i+r-1;
-        cnt=0;
-        for(l=1;cnt<k&&i-l>0;++l){
-            if(a[i-l]>a[i]) cnt++;
-        }
-        l=i-l+1;
+        a[i]=read();
+        p[i]=i;
     }
+    for(int i=1;i<=n;++i){
+        l[i]=i-1;
+        r[i]=i+1;
+    }
+    sort(p+1,p+n+1,cmp);
+    int id,li,lcnt,ri,rcnt,ls,rs,ans=0;
+    for(int i=1;i<=n;++i){
+        id=p[i];
+        lcnt=1;
+        for(li=id;l[li]&&lcnt<k;li=l[li],lcnt++);
+        ri=id;rcnt=0;
+        while(lcnt+rcnt<k&&r[ri]<=n){
+            ri=r[ri];
+            rcnt++;
+        }
+        if(lcnt+rcnt==k){
+            while(ri<=n){
+                ls=li-l[li];
+                rs=r[ri]-ri;
+                ans+=ls*rs*a[id];
+                if(li==id) break;
+                li=r[li];
+                ri=r[ri];
+            }
+        }
+        li=l[id];
+        ri=r[id];
+        r[li]=ri;
+        l[ri]=li;
+    }
+    write(ans);
+    putchar('\n');
     return 0;
 }
