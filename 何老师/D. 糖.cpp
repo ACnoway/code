@@ -43,8 +43,8 @@ signed main()
     buy[n]=LONG_LONG_MAX;
     sell[n]=-1;
     int bef=0,now=0,to=0,ma=0,mai=0,mi=0,mii=0,ans=0,lft=0,earn;
-    int lzc,lzm;
-    int ANS=LONG_LONG_MAX;
+    int lzc=0,lzm;
+    int ANS=LONG_LONG_MAX,tmp;
     while(now!=n){
         ma=0;
         mai=-1;
@@ -67,17 +67,18 @@ signed main()
         }
         debug(to+1);
         if(to==n){
+            tmp=ans;
             if(ma>buy[now]){
                 ans+=buy[now]*(c-lzc);
                 ans-=ma*(c-a[n]+a[now]);
             }
             else ans+=buy[now]*(a[n]-a[now]-lzc);
-            write(ans);
-            putchar('\n');
-            return 0;
+            ANS=min(ANS,ans);
+            ans=tmp;
         }
         if(buy[to]<buy[now]){
             ans+=(a[to]-a[now]-lzc)*buy[now];
+            debug(lzc);
             lzc=0;
             if(ma>buy[now]){
                 ans-=(c-a[to]+a[now])*ma;
@@ -94,6 +95,11 @@ signed main()
             }
         }
         now=mii;
+        debug(now);
+        if(mai==-1&&mii==-1) break;
+        debug(ans)
     }
+    write(ANS);
+    putchar('\n');
     return 0;
 }
