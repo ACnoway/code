@@ -24,11 +24,11 @@ struct node{
 	int two,three;
 	int id;
 }r[100010];
-bool cmp(node x,node y){
-	return x.a<y.a;
-}
 bool cnp(node x,node y){
 	return x.b==y.b?x.id<y.id:x.b<y.b;
+}
+bool cmp(node x,node y){
+	return x.a<y.a;
 }
 int ksm(int x,int y){
 	int ans=1;
