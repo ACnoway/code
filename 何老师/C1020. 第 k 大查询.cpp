@@ -2,7 +2,11 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
-#define int long long
+#ifdef ONLINE_JUDGE
+#define debug(x)
+#else
+#define debug(x) cout<<' '<<#x<<'='<<x<<endl;
+#endif
 using namespace std;
 inline int read(){
     int x=0,f=1;
@@ -22,29 +26,26 @@ inline void write(int x){
     if(x>9) write(x/10);
     putchar(x%10+'0');
 }
-const int maxn=5000005;
-int n,k,now,ans,ma;
-int a[maxn],t[maxn];
-signed main()
+const int maxn=500005;
+int n,k;
+int a[maxn],p[maxn];
+int main()
 {
     n=read();
     k=read();
     for(int i=1;i<=n;++i) a[i]=read();
-    for(int l=1;l<=n;++l){
-        for(int r=n;r>=l;--r){
-            if(r-l+1>=k){
-                ma=0;
-                for(int i=l;i<=r;++i) ma=max(ma,a[i]);
-                now=0;
-                for(int i=l;i<=r;++i){
-                    if(a[i]<=(ma-k+1)) now=max(now,a[i]);
-                }
-                ans+=now;
-                ma=0;
-            }
+    int l,r,cnt=0;
+    for(int i=1;i<=n;++i){
+        cnt=0;
+        for(r=1;cnt<k&&i+r<=n;++r){
+            if(a[i+r]>a[i]) cnt++;
         }
+        r=i+r-1;
+        cnt=0;
+        for(l=1;cnt<k&&i-l>0;++l){
+            if(a[i-l]>a[i]) cnt++;
+        }
+        l=i-l+1;
     }
-    write(ans);
-    putchar('\n');
     return 0;
 }
