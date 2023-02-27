@@ -1,99 +1,40 @@
+// LUOGU_RID: 103167393
 #include<iostream>
 #include<cstdio>
 #include<algorithm>
-#include<cmath>
-#include<climits>
-#define int long long
-#ifdef ONLINE_JUDGE
-#define debug(x)
-#else
-#define debug(x) cout<<' '<<#x<<'='<<x<<endl;
-#endif
+#include<cstring>
+#include<string.h>
+#define mem(a,b) memset(a,b,sizeof(a))
 using namespace std;
-inline int read(){
-    int x=0,f=1;
-    char c=getchar();
-    while(c<'0'||c>'9'){
-        if(c=='-') f=-1;
-        c=getchar();
-    }
-    while(c>='0'&&c<='9'){
-        x=(x<<3)+(x<<1)+(c^48);
-        c=getchar();
-    }
-    return x*f;
-}
-inline void write(int x){
-    if(x<0){x=-x;putchar('-');}
-    if(x>9) write(x/10);
-    putchar(x%10+'0');
-}
-const int maxn=200005;
-int n,c;
-int a[maxn],sell[maxn],buy[maxn];
-signed main()
-{
-    n=read();
-    c=read();
-    for(int i=1;i<=n;++i) a[i]=read();
-    for(int i=0;i<n;++i){
-        buy[i]=read();
-        sell[i]=read();
-    }
-    buy[n]=LONG_LONG_MAX;
-    sell[n]=-1;
-    int bef=0,now=0,to=0,ma=0,mai=0,mi=0,mii=0,ans=0,lft=0,earn;
-    int lzc,lzm;
-    int ANS=LONG_LONG_MAX;
-    while(now!=n){
-        ma=0;
-        mai=-1;
-        mi=LONG_LONG_MAX;
-        mii=-1;
-        to=now;
-        earn=0;
-        while(to+1<=n&&(a[to+1]-a[now])<=c){
-            to++;
-            debug(to);
-            if(sell[to]>ma){
-                ma=sell[to];
-                mai=to;
-            }
-            if(buy[to]<mi){
-                mi=buy[to];
-                mii=to;
-            }
-            if(buy[to]<buy[now]) break;
-        }
-        debug(to+1);
-        if(to==n){
-            if(ma>buy[now]){
-                ans+=buy[now]*(c-lzc);
-                ans-=ma*(c-a[n]+a[now]);
-            }
-            else ans+=buy[now]*(a[n]-a[now]-lzc);
-            write(ans);
-            putchar('\n');
-            return 0;
-        }
-        if(buy[to]<buy[now]){
-            ans+=(a[to]-a[now]-lzc)*buy[now];
-            lzc=0;
-            if(ma>buy[now]){
-                ans-=(c-a[to]+a[now])*ma;
-            }
-        }
-        else{
-            lft=c-a[mii]+a[now];
-            if(ma>mi){
-                ans=ans+c*buy[now]-ma*lft;
-            }
-            else{
-                ans=ans+c*buy[now];
-                lzc=lft;
-            }
-        }
-        now=mii;
-    }
-    return 0;
-}
+const int N=1e5+5,inf=0x3f3f3f3f;
+int n,m,pre[N],suf[N];
+char a[N][15];
+signed main(){
+	scanf("%d %d",&n,&m);
+	mem(pre,0x3f);mem(suf,0x3f);
+	pre[1]=0;suf[n]=0;
+	for(int i=1;i<=n;i++){
+		scanf(" %s",a[i]+1);
+	}
+	for(int i=n;i>=1;i--){
+		for(int j=1;j<=m;j++){
+			if(a[i][j]=='1') suf[i]=min(suf[i],suf[i+j]+1);
+		}
+	}
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=m;j++){
+			if(a[i][j]=='1') pre[i+j]=min(pre[i+j],pre[i]+1);
+		}
+	}
+	for(int i=2;i<n;i++){
+		int res=inf;
+		for(int j=1;j<m&&i-j;j++){
+			for(int k=j+1;k<=m;k++){
+				if(a[i-j][k]=='1'){
+					res=min(res,pre[i-j]+suf[i-j+k]);
+				}
+			}
+		}
+		printf("%d ",res==inf?-1:(res+1));
+	}
+} 
