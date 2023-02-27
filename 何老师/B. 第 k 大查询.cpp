@@ -22,7 +22,7 @@ inline void write(int x){
     if(x>9) write(x/10);
     putchar(x%10+'0');
 }
-const int maxn=500005;
+const int maxn=5000005;
 int n,k,now,ans,ma;
 int a[maxn],t[maxn];
 signed main()
