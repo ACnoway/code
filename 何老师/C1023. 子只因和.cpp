@@ -2,6 +2,7 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
+#define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -26,22 +27,23 @@ inline void write(int x){
     if(x>9) write(x/10);
     putchar(x%10+'0');
 }
-const int maxn=3003;
-int n,m,k;
-char s[maxn][maxn];
-int a[maxn][maxn],f[maxn][maxn],g[maxn][maxn];
-int main()
+int n,m,top;
+int a[60],b[10004],dp[10004];
+signed main()
 {
     n=read();
     m=read();
-    k=read();
-    for(int i=1;i<=n;++i){
-        cin>>s[i]+1;
-        for(int j=1;j<=m;++j) a[i][j]=s[i][j]-'0';
-    }
+    for(int i=0;i<=m;++i) b[i]=read();
+    dp[0]=1;
     for(int i=1;i<=m;++i){
-        f[1][i]=1;
-        
+        while(b[i]>dp[i]){
+            for(int j=m;j>=i;--j){
+                dp[j]+=dp[j-i];
+            }
+            a[++top]=i;
+        }
     }
+    for(int i=1;i<=top;++i) write(a[i]),putchar(' ');
+    putchar('\n');
     return 0;
 }

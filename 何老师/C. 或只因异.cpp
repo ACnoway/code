@@ -2,11 +2,7 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
-#ifdef ONLINE_JUDGE
-#define debug(x)
-#else
-#define debug(x) cout<<' '<<#x<<'='<<x<<endl;
-#endif
+#define int long long
 using namespace std;
 inline int read(){
     int x=0,f=1;
@@ -26,22 +22,13 @@ inline void write(int x){
     if(x>9) write(x/10);
     putchar(x%10+'0');
 }
-const int maxn=3003;
-int n,m,k;
-char s[maxn][maxn];
-int a[maxn][maxn],f[maxn][maxn],g[maxn][maxn];
-int main()
+int n,ans;
+signed main()
 {
     n=read();
-    m=read();
-    k=read();
-    for(int i=1;i<=n;++i){
-        cin>>s[i]+1;
-        for(int j=1;j<=m;++j) a[i][j]=s[i][j]-'0';
+    for(int i=1;i<n;++i){
+        ans+=(i^(n-i));
     }
-    for(int i=1;i<=m;++i){
-        f[1][i]=1;
-        
-    }
+    write(ans);
     return 0;
 }
