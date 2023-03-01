@@ -24,27 +24,21 @@ inline void write(int x){
 }
 const int mod=998244353;
 int t,l,r;
-int L[1000006];
 signed main()
 {
-    L[1]=0;
-    for(int i=2;i<=1000000;++i){
-        L[i]=L[i-1];
-        if((i&(i-1))==0) L[i]++;
-    }
     t=read();
     int ans,cnt;
     while(t--){
         l=read();
         r=read();
-        for(ans=0;l*(1<<ans)<=r;++ans);
+        for(ans=0;l*(1ll<<ans)<=r;++ans);
         ans--;
-        cnt=(r-l*(1<<ans))/(1<<ans);
+        cnt=(r-l*(1ll<<ans))/(1ll<<ans)+1;
         cnt%=mod;
-        if(r>=l*(1<<(ans-1))*3)
-            cnt+=((r-l*(1<<(ans-1))*3)/(1<<(ans-1))/3)*ans;
+        if(r>=l*(1ll<<(ans-1ll))*3ll)
+            cnt+=(1+(r-l*3ll*(1ll<<(ans-1ll)))/(1ll<<(ans-1ll))/3ll)*ans;
         cnt%=mod;
-        cout<<(ans+1)%mod<<' '<<cnt<<endl;
+        cout<<(ans+1ll)%mod<<' '<<cnt<<endl;
     }
     return 0;
 }
