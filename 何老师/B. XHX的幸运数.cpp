@@ -2,11 +2,7 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
-#ifdef ONLINE_JUDGE
-#define debug(x)
-#else
-#define debug(x) cout<<' '<<#x<<'='<<x<<endl
-#endif
+#define int long long
 using namespace std;
 inline int read(){
     int x=0,f=1;
@@ -30,7 +26,7 @@ const int maxn=100005;
 int n,ans;
 char s[maxn];
 int top,st[maxn];
-int main()
+signed main()
 {
     cin>>n;
     cin>>s+1;
