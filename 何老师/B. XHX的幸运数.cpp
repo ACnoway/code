@@ -35,7 +35,12 @@ int main()
     cin>>n;
     cin>>s+1;
     for(int i=1;i<=n;++i){
-        
+        if(s[i]=='4') st[++top]=i;
+        else{
+            ans+=st[top--];
+        }
     }
+    write(ans);
+    putchar('\n');
     return 0;
 }
