@@ -2,10 +2,12 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
-<<<<<<<< HEAD:何老师/B. XHX的幸运数.cpp
 #define int long long
-========
->>>>>>>> 42b360d230f0abca59c934664b32c286ad4837db:何老师/C1015. 锦标赛.cpp
+#ifdef ONLINE_JUDGE
+#define debug(x)
+#else
+#define debug(x) cout<<' '<<#x<<'='<<x<<endl
+#endif
 using namespace std;
 inline int read(){
     int x=0,f=1;
@@ -26,33 +28,32 @@ inline void write(int x){
     putchar(x%10+'0');
 }
 const int maxn=100005;
-<<<<<<<< HEAD:何老师/B. XHX的幸运数.cpp
-int n,ans;
+int n,ans,cnt,now;
 char s[maxn];
-int top,st[maxn];
+int top,st[maxn],cut[maxn];
+int pre[maxn],nxt[maxn];
 signed main()
 {
     cin>>n;
     cin>>s+1;
+    nxt[0]=1;
     for(int i=1;i<=n;++i){
-        if(s[i]=='4') st[++top]=i;
-        else{
-            ans+=st[top--];
+        pre[i]=i-1;
+        nxt[i]=i+1;
+    }
+    while(1){
+        cnt=0;
+        now=nxt[0];
+        for(int i=1;now<=n;++i){
+            if(nxt[now]<=n&&s[now]=='4'&&s[nxt[now]]=='7'){
+                cnt++;
+                ans+=i;
+                nxt[pre[now]]=nxt[nxt[now]];
+                pre[nxt[nxt[now]]]=pre[now];
+            }
+            now=nxt[now];
         }
-========
-int n,k;
-int a[maxn];
-int main()
-{
-    n=read();
-    k=read();
-    for(int i=1;i<=n;++i) a[i]=read();
-    sort(a+1,a+n+1);
-    int ans=1;
-    for(int i=1;i<n;++i){
-        if(a[i+1]-a[i]>k) ans=1;
-        else ans++;
->>>>>>>> 42b360d230f0abca59c934664b32c286ad4837db:何老师/C1015. 锦标赛.cpp
+        if(!cnt) break;
     }
     write(ans);
     putchar('\n');
