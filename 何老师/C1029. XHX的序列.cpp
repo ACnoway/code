@@ -26,26 +26,13 @@ inline void write(int x){
     if(x>9) write(x/10);
     putchar(x%10+'0');
 }
-const int maxn=100005;
+const int maxn=100005,B=60;
 int n,ans;
-int a[maxn],b[maxn],to[maxn];
+int cf[maxn];
+int f[B];
 int main()
 {
     n=read();
-    for(int i=1;i<=n;++i) a[i]=read();
-    for(int i=1;i<=n;++i) b[i]=read();
-    for(int i=1;i<=n;++i){
-        if(b[i]<a[i]) to[i]=b[i]+4-a[i];
-        else to[i]=b[i]-a[i];
-    }
-    for(int i=1;i<=n;++i){
-        if(to[i]>to[i-1]){
-            if(i>=3&&to[i]==to[i-2]&&to[i]-2>=to[i-1]) continue;
-            ans+=to[i]-to[i-1];
-        }
-        //debug(ans);
-    }
-    write(ans);
-    putchar('\n');
+    
     return 0;
 }
