@@ -27,22 +27,30 @@ inline void write(int x){
     if(x>9) write(x/10);
     putchar(x%10+'0');
 }
-int n,ans,now;
-int a[200005];
+const int mod=1000000007;
+int n,m,k,ans;
+struct node{
+    int x,y;
+}a[1003];
+bool cmp(node a,node b){
+    if(a.x==b.x) return a.y<b.y;
+    return a.x<b.x;
+}
 signed main()
 {
     n=read();
-    for(int i=1;i<=n;++i){
-        a[i]=read();
+    m=read();
+    k=read();
+    for(int i=1;i<=k;++i){
+        a[i].x=read();
+        a[i].y=read();
     }
-    for(int i=n;i;--i){
-        now+=a[i];
-        if(now>=0){
-            now=0;
-            ans++;
+    sort(a+1,a+n+1,cmp);
+    for(int i=1;i<=k;++i){
+        ans=(ans+(a[i].x*a[i].y)%mod*((n-a[i].x+1)*(m-a[i].y+1))%mod)%mod;
+        for(int j=1;j<i;++j){
+            
         }
     }
-    write((ans?ans:-1));
-    putchar('\n');
     return 0;
 }
