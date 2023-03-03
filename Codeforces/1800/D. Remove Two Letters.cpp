@@ -2,7 +2,6 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
-#include<vector>
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -27,20 +26,19 @@ inline void write(int x){
     if(x>9) write(x/10);
     putchar(x%10+'0');
 }
-const int maxn=500005;
-int ch[maxn][2];
-int val[maxn],budui[maxn];
-int n,cnt,a,ans;
-vector<int> bit[maxn];
+int t,n,ans;
+string s;
 int main()
 {
-    n=read();
-    for(int i=1;i<=n;++i){
-        a=read();
-        ans+=query(a);
-        insert(a);
+    cin>>t;
+    while(t--){
+        cin>>n>>s;
+        ans=n-1;
+        for(int i=0;i+2<n;++i){
+            if(s[i]==s[i+2]) ans--;
+        }
+        write(ans);
+        putchar('\n');
     }
-    write(ans);
-    putchar('\n');
     return 0;
 }
