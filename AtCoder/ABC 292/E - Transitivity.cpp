@@ -29,18 +29,36 @@ inline void write(int x){
     putchar(x%10+'0');
 }
 int n,m,ans;
-bool vis[2003];
-vector<int> e[2003];
+bool vis[2000003];
+vector<int> e[2000003];
 int main()
 {
     n=read();
     m=read();
     for(int i=1;i<=m;++i){
-        e[read()].push_back(read());
+        int u=read(),v=read();
+        e[u].push_back(v);
     }
     for(int i=1;i<=n;++i){
         for(int j=1;j<=n;++j) vis[j]=0;
-        
+        int p,y;
+        vis[i]=1;
+        queue<int> q;
+        q.push(i);
+        while(q.size()){
+            p=q.front();
+            q.pop();
+            for(int j=0;j<e[p].size();++j){
+                y=e[p][j];
+                if(vis[y]) continue;
+                vis[y]=1;
+                q.push(y);
+                ans++;
+            }
+        }
     }
+    ans-=m;
+    write(ans);
+    putchar('\n');
     return 0;
 }
