@@ -32,17 +32,17 @@ signed main()
         n=read();
         k=read();
         x=read();
-        int ans=LONG_LONG_MIN;
+        int ans=INT_MIN;
         for(int i=1;i<=n;++i){
             a[i]=read();
         }
         for(int i=0;i<=n;++i){
-            for(int j=0;j<=k;++j) f[i][j]=LONG_LONG_MIN;
+            for(int j=0;j<=k;++j) f[i][j]=INT_MIN;
         }
         for(int i=1;i<=n;++i){
             for(int j=0;j<=min(k,i);++j){
                 if(i-1>=j) f[i][j]=max(f[i-1][j]+a[i]-x,a[i]-x);
-                if(j){
+                if(j>0){
                     f[i][j]=max(f[i][j],max(f[i-1][j-1]+a[i]+x,a[i]+x));
                 }
                 if(n-i>=k-j) ans=max(ans,f[i][j]);
