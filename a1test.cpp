@@ -1,118 +1,141 @@
 #include <bits/stdc++.h>
 #define int long long
+#define INF 0x3f3f3f3f3f3f3f3f
 using namespace std;
-const int maxn = 1e4 + 5, maxm = 5e4 + 5;
-struct edge
+const int maxn = 4e5 + 5;
+struct ed
 {
-    int u, v, w;
-} e[maxm];
-int read()
-{
-    int x = 0, f = 1;
-    char ch = getchar();
-    while (ch < '0' || ch > '9')
-    {
-        if (ch == '-')
-            f = -1;
-        ch = getchar();
-    }
-    while (ch >= '0' && ch <= '9')
-    {
-        x = (x << 1) + (x << 3) + (ch ^ 48);
-        ch = getchar();
-    }
-    return x * f;
-}
+    int from, to, cd, hb; // 长度与海拔
+} e[maxn];
 struct node
 {
     int to, weight;
 };
-vector<node> edg[maxn];
-int n, m, f[maxn], x, y, fa[maxn][20], dep[maxn], q, minn[maxn][20]; // 统计每个点向上跳
-bool cmp(edge a, edge b) { return a.w > b.w; }
+int T, n, m, dis[maxn], dep[maxn], fa[maxn][20], f[maxn], lastans, s[maxn], Query, K, S; // s记录重构树的点权
 void init(int n)
 {
     for (int i = 1; i <= n; ++i)
         f[i] = i;
 }
 int findf(int i) { return f[i] == i ? f[i] : f[i] = findf(f[i]); }
-void merge(int i, int j) { f[findf(i)] = findf(j); }
-void dfs(int u, int fath, int weight)
+bool vis[maxn];
+vector<node> edge[maxn];
+bool cmp(ed a, ed b) { return a.hb > b.hb; }
+struct dui
 {
-    fa[u][0] = fath;
+    int id, dis;
+    bool operator<(const dui x) const
+    {
+        return dis > x.dis; // 从小到大去更新答案
+    }
+};
+priority_queue<dui> Q;
+void dijkstra()
+{
+    while (!Q.empty())
+    {
+        dui x = Q.top();
+        Q.pop();
+        if (vis[x.id])
+            continue;
+        vis[x.id] = 1;
+        int u = x.id;
+        for (auto [v, w] : edge[u])
+        {
+            if (dis[v] > dis[u] + w)
+            {
+                dis[v] = dis[u] + w;
+                Q.push((dui){v, dis[v]});
+            }
+        }
+    }
+}
+vector<int> cgedge[maxn]; // 重构树
+void dfs(int u, int fath)
+{
     dep[u] = dep[fath] + 1;
-    minn[u][0] = weight;
+    fa[u][0] = fath;
     for (int i = 1; (1 << i) <= dep[u]; ++i)
     {
         fa[u][i] = fa[fa[u][i - 1]][i - 1];
-        minn[u][i] = min(minn[u][i - 1], minn[fa[u][i - 1]][i - 1]);
     }
-    for (auto v : edg[u])
+    for (auto v : cgedge[u])
     {
-        if (v.to == fath)
+        if (v == fath)
             continue;
-        dfs(v.to, u, v.weight);
+        dfs(v, u);
+        dis[u] = min(dis[u], dis[v]);
     }
 }
-int lca(int u, int v)
+int query(int u, int p)
 {
-    int mmin = 0x7fffffff;
-    if (dep[u] < dep[v])
-        swap(u, v);
-    while (dep[u] > dep[v])
+    for (int i = (int)__lg(dep[u]); i >= 0; --i)
     {
-        mmin = min(mmin, minn[u][(int)__lg(dep[u] - dep[v])]);
-        u = fa[u][(int)__lg(dep[u] - dep[v])];
+        if (s[fa[u][i]] > p)
+            u = fa[u][i];
     }
-    if (v == u)
-        return mmin;
-    for (int i = __lg(dep[u]); i >= 0; --i)
-    {
-        if (fa[u][i] != fa[v][i])
-        {
-            mmin = min(mmin, minn[u][i]);
-            mmin = min(mmin, minn[v][i]);
-            u = fa[u][i], v = fa[v][i];
-        }
-    }
-    mmin = min(mmin, minn[u][0]);
-    mmin = min(mmin, minn[v][0]);
-    return mmin;
+    return dis[u];
 }
-int cnt;
-bool vis[maxn];
 signed main()
 {
-    n = read(), m = read();
-    init(n);
-    for (int i = 1; i <= m; ++i)
-        e[i].u = read(), e[i].v = read(), e[i].w = read();
-    sort(e + 1, e + m + 1, cmp);
-    for (int i = 1; i <= m; ++i)
+    ios::sync_with_stdio(0);
+    cin.tie(0), cout.tie(0);
+    cin >> T;
+    while (T--)
     {
-        if (findf(e[i].u) == findf(e[i].v))
-            continue;
-        cnt++;
-        edg[e[i].u].push_back((node){e[i].v, e[i].w});
-        edg[e[i].v].push_back((node){e[i].u, e[i].w});
-        merge(e[i].v, e[i].u);
-    }
-    for (int i = 1; i <= n; ++i)
-    {
-        if (!vis[findf(i)])
+        cin >> n >> m;
+        lastans = 0;
+        memset(dep, 0, sizeof dep);
+        memset(fa, 0, sizeof fa);
+        for (int i = 1; i <= n; ++i)
+            edge[i].clear();
+        for (int i = 1; i <= 2 * n; ++i)
+            cgedge[i].clear();
+        for (int i = 1; i <= m; ++i)
         {
-            dfs(findf(i), 0, 0);
-            vis[findf(i)] = 1;
+            int u, v, l, a;
+            cin >> u >> v >> l >> a;
+            e[i] = (ed){u, v, l, a}; // 存到边数组内
+            edge[u].push_back((node){v, l});
+            edge[v].push_back((node){u, l});
         }
-    }
-    q = read();
-    for (int i = 1; i <= q; ++i)
-    {
-        x = read(), y = read();
-        if (findf(x) != findf(y))
-            printf("-1\n");
-        else
-            printf("%d\n", lca(x, y));
+        while (!Q.empty())
+            Q.pop();
+        memset(vis, 0, sizeof vis);
+        memset(dis, 0x3f, sizeof dis);
+        dis[1] = 0;
+        Q.push((dui){1, dis[1]});
+        dijkstra();
+        sort(e + 1, e + m + 1, cmp); // 按照海拔从大到小加入答案
+        int nod = n;
+        init(2 * n);
+        for (int i = 1; i <= n; ++i)
+            s[i] = INF;
+        s[0] = -INF;
+        for (int i = 1; i <= m; ++i)
+        {
+            int u = findf(e[i].from), v = findf(e[i].to);
+            if (u == v)
+                continue;
+            nod++;
+            s[nod] = e[i].hb;
+            f[u] = f[v] = f[nod] = nod;
+            cgedge[u].push_back(nod);
+            cgedge[v].push_back(nod); // 建好重构树
+            cgedge[nod].push_back(u);
+            cgedge[nod].push_back(v);
+        }
+        dfs(nod, 0);
+        cin >> Query >> K >> S;
+        while (Query--)
+        {
+            int u0, p0;
+            cin >> u0 >> p0;
+            u0 = (u0 + K * lastans - 1) % n + 1;
+            p0 = (p0 + K * lastans) % (S + 1);
+            lastans = query(u0, p0);
+            printf("%lld\n", lastans);
+        }
     }
     return 0;
 }

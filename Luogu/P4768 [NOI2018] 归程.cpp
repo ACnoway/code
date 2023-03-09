@@ -2,6 +2,7 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
+#include<queue>
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -75,7 +76,43 @@ void dfs2(int x,int topf){
         dfs2(v,v);
     }
 }
-
+//-----迪杰斯特拉-----
+struct bian{
+    int to,nxt,dis;
+}E[M<<1];
+int didx,dh[N];
+struct dnode{
+    int dis,pos;
+    bool operator <(const dnode b)const{
+        return b.dis<dis;
+    }
+};
+priority_queue<dnode> q;
+int Dis[N];
+bool dvis[N];
+inline void dij(){
+    for(int i=2;i<=n;++i) Dis[i]=INT_MAX;
+    Dis[1]=0;
+    q.push({0,1});
+    dnode tmp;
+    int x,y,d;
+    while(!q.empty()){
+        tmp=q.top();
+        q.pop();
+        x=tmp.pos;d=tmp.dis;
+        if(vis[x]) continue;
+        vis[x]=1;
+        for(int i=dh[x];i;i=E[i].nxt){
+            y=e[i].to;
+            if(Dis[y]>Dis[x]+E[i].dis){
+                Dis[y]=Dis[x]+E[i].dis;
+                if(!vis[y]){
+                    q.push({Dis[y],y});
+                }
+            }
+        }
+    }
+}
 int main()
 {
     T=read();
