@@ -1,5 +1,5 @@
 var userlist = 
-["houran","ternary_tree","STUDENT0","happydef","Register_int","狂风之息","xyz105","const_int","__int__","Drind"];
+["AC？别闹！","_XHZS_XY_","STUDENT0","happydef","Register_int","狂风之息","xyz105","const_int","__int__","Drind"];
 var pages = 1;
 var cd = 10000;
 function onSearch(obj)
