@@ -4,6 +4,7 @@
 #include<cmath>
 #include<map>
 #include<vector>
+#include<climits>
 #define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
@@ -41,7 +42,6 @@ vector<Node> e[N];
 //-----并查集-----
 int p[N];
 int find(int x){
-    debug(x);
     if(p[x]!=x) p[x]=find(p[x]);
     debug(x);
     return p[x];
