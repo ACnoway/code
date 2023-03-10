@@ -2,8 +2,9 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
-#include<map>
 #include<vector>
+#include<climits>
+#include<queue>
 #define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
@@ -24,116 +25,99 @@ inline int read(){
     }
     return x*f;
 }
-const int N=100005,M=600005;
-int n,m,tot,sum,cnt;
-bool vis[M];
-struct node{
-    int u,v,dis,id;
-    bool operator <(const node b)const{
-        return dis<b.dis;
-    }
-};
-vector<node> edge;
+const int N=1000005,M=2000005;
+int n,m,k,l,cnt,nwei;
+int a[N],b[N],ans[N];
+vector<int> color[N];
+vector<int> bits[70][2];
 struct Node{
     int to,w;
 };
-vector<Node> e[N];
-//-----并查集-----
-int p[N];
-int find(int x){
-    debug(x);
-    if(p[x]!=x) p[x]=find(p[x]);
-    debug(x);
-    return p[x];
-}
-inline void merge(int x,int y){
-    p[find(x)]=find(y);
-}
-int dep[N];
-int fa[25][N],Max[25][N],mMax[25][N];
-void dfs(int x,int die){
-    dep[x]=dep[die]+1;
-    fa[0][x]=die;
-    for(auto now:e[x]){
-        int v=now.to,d=now.w;
-        if(v==die) continue;
-        Max[0][v]=d;
-        dfs(v,x);
+vector<Node> e[N<<1];
+
+//* -----迪杰斯特拉
+struct dnode{
+    int pos,dis;
+    bool operator <(const dnode b)const{
+        return dis<b.dis;
     }
-}
-int lca(int x,int y){
-    if(dep[x]<dep[y]) swap(x,y);
-    for(int i=20;i>=0;--i){
-        if(dep[fa[i][x]]>=dep[y]) x=fa[i][x];
-    }
-    if(x==y) return x;
-    for(int i=20;i>=0;--i){
-        if(fa[i][x]!=fa[i][y]){
-            x=fa[i][x];
-            y=fa[i][y];
+};
+priority_queue<dnode> q;
+int dis[N];
+bool vis[N];
+inline void dij(int s){
+    for(int i=1;i<=n;++i) dis[i]=LONG_LONG_MAX>>1,vis[i]=0;
+    dis[s]=0;
+    priority_queue<dnode>().swap(q);
+    dnode tmp;
+    int x,ds;
+    q.push({s,0});
+    while(!q.empty()){
+        tmp=q.top();
+        q.pop();
+        x=tmp.pos;ds=tmp.dis;
+        if(vis[x]) continue;
+        vis[x]=1;
+        for(auto now:e[x]){
+            int y=now.to;
+            if(dis[y]>dis[x]+now.w){
+                dis[y]=dis[x]+now.w;
+                if(!vis[y]){
+                    q.push({y,dis[y]});
+                }
+            }
         }
     }
-    return fa[0][x];
 }
-int fmax(int x,int tt,int w){
-    int ans=0;
-    for(int i=20;i>=0;--i){
-        if(dep[fa[i][x]]>=dep[tt]){
-            if(Max[i][x]==w) ans=max(ans,mMax[i][x]);
-            else ans=max(ans,Max[i][x]);
-            x=fa[i][x];
-        }
-    }
-    return ans;
-}
+
 signed main()
 {
     n=read();
     m=read();
+    k=read();
+    l=read();
+    cnt=n;
+    for(int i=1;i<=n;++i) ans[i]=LONG_LONG_MAX>>1;
+    for(int i=1;i<=n;++i){
+        a[i]=read();
+    }
+    for(int i=1;i<=l;++i){
+        b[i]=read();
+        color[a[b[i]]].push_back(b[i]);
+    }
     for(int i=1;i<=m;++i){
-        int x=read(),y=read(),d=read();
+        int x=read(),y=read(),c=read();
         if(x==y) continue;
-        edge.push_back({x,y,d,++cnt});
-        debug(cnt);
+        e[x].push_back({y,c});
+        e[y].push_back({x,c});
     }
-    sort(edge.begin(),edge.end());
-    for(int i=1;i<=n;++i) p[i]=i;
-    for(auto now:edge){
-        int x=now.u,y=now.v,d=now.dis,i=now.id;
-        if(find(x)!=find(y)){
-            debug(i);
-            sum+=d;
-            tot++;
-            vis[i]=1;
-            merge(x,y);
-            e[x].push_back({y,d});
-            e[y].push_back({x,d});
+    //处理二进制
+    for(int i=1;i<=k;++i){
+        int tmp=i,wei=0;
+        while(tmp){
+            for(auto j:color[i])
+                bits[wei][tmp&1].push_back(j);
+            wei++;
+            tmp>>=1;
         }
-        if(tot==n-1) break;
-        debug(endl);
+        nwei=max(nwei,wei);
     }
-    dfs(1,0);
-    //倍增处理最大值和次大值
-    for(int i=1;i<=20;++i){
-        for(int j=1;j<=n;++j){
-            fa[i][j]=fa[i-1][fa[i-1][j]];
-            Max[i][j]=max(Max[i-1][j],Max[i-1][fa[i-1][j]]);
-            mMax[i][j]=max(mMax[i-1][j],mMax[i-1][fa[i-1][j]]);
-            if(Max[i-1][j]!=Max[i-1][fa[i-1][j]]){
-                mMax[i][j]=max(mMax[i][j],min(Max[i-1][j],Max[i-1][fa[i-1][j]]));
+    for(int i=0;i<nwei;++i){
+        for(int j=0;j<2;++j){
+            ++cnt;
+            for(auto now:bits[i][j]){
+                e[cnt].push_back({now,0});
+            }
+            dij(cnt);
+            for(int now=1;now<=n;++now){
+                if(((a[now]>>i)&1)!=j)
+                    ans[now]=min(ans[now],dis[now]);
             }
         }
     }
-    int ans=LONG_LONG_MAX;
-    for(auto now:edge){
-        int u=now.u,v=now.v,d=now.dis,i=now.id;
-        if(vis[i]) continue;
-        //找这两个点在最小生成树中的lca
-        //把这几条边换掉
-        int tt=lca(u,v);
-        int xma=fmax(u,tt,d),yma=fmax(v,tt,d);
-        if(max(xma,yma)!=d) ans=min(ans,sum+d-max(xma,yma));
+    for(int i=1;i<=n;++i){
+        if(ans[i]==LONG_LONG_MAX>>1) printf("-1 ");
+        else printf("%lld ",ans[i]);
     }
-    printf("%lld\n",ans);
     return 0;
 }
