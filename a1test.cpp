@@ -1,43 +1,71 @@
-int n, m, u, v, del[MAX];
-int du[MAX][2]; // 记录入度和出度
-stack<int> st;
-vector<int> G[MAX];
-void dfs(int now)
-{
-    for (int i = del[now]; i < G[now].size(); i = del[now])
-    {
-        del[now] = i + 1;
-        dfs(G[now][i]);
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<vector>
+#ifdef ONLINE_JUDGE
+#define debug(x)
+#else
+#define debug(x) cout<<' '<<#x<<'='<<x<<endl
+#endif
+using namespace std;
+inline int read(){
+    int x=0,f=1;
+    char c=getchar();
+    while(c<'0'||c>'9'){
+        if(c=='-') f=-1;
+        c=getchar();
     }
-    st.push(now);
+    while(c>='0'&&c<='9'){
+        x=(x<<3)+(x<<1)+(c^48);
+        c=getchar();
+    }
+    return x*f;
+}
+const int N=10004,M=100005;
+int n,m;
+int top,st[N];
+int du[N],nxt[N];
+vector<int> e[N];
+void dfs(int x){
+    for(int i=nxt[x];i<e[x].size();i=nxt[i]){
+        nxt[x]=i+1;
+        dfs(e[x][i]);
+    }
+    st[++top]=x;
+}
+// -----并查集
+int p[N];
+int find(int x){
+    while(p[x]!=x) x=p[x]=p[p[x]];
+    return p[x];
+}
+void merge(int x,int y){
+    p[find(x)]=find(y);
 }
 int main()
 {
-    scanf("%d%d", &n, &m);
-    for (int i = 1; i <= m; i++)
-        scanf("%d%d", &u, &v), G[u].push_back(v), du[u][1]++, du[v][0]++;
-    for (int i = 1; i <= n; i++)
-        sort(G[i].begin(), G[i].end());
-    int S = 1, cnt[2] = {0, 0}; // 记录
-    bool flag = 1;              // flag=1表示,所有的节点的入度都等于出度,
-    for (int i = 1; i <= n; i++)
-    {
-        if (du[i][1] != du[i][0])
-        {
-            flag = 0;
-            if (du[i][1] - du[i][0] == 1 /*出度比入度多1*/)
-                cnt[1]++, S = i;
-            else if (du[i][0] - du[i][1] == 1 /*入度比出度多1*/)
-                cnt[0]++;
-            else
-                return puts("No"), 0;
-        }
+    n=read();
+    debug(n);
+    m=read();
+    for(int i=0;i<=n;++i) p[i]=i;
+    for(int i=1;i<=m;++i){
+        int u=read(),v=read();
+        int uu=find(u),vv=find(v);
+        if(uu==vv) continue;
+        p[uu]=vv;
+        e[u].push_back(v);
+        e[v].push_back(u);
     }
-    if ((!flag) && !(cnt[0] == cnt[1] && cnt[0] == 1))
-        return !puts("No"), 0;
-    // 不满足欧拉回路的判定条件，也不满足欧拉路径的判定条件，直接输出"No"
-    dfs(S);
-    while (!st.empty())
-        printf("%d ", st.top()), st.pop();
+    for(int i=1;i<=n;++i){
+        sort(e[i].begin(),e[i].end());
+    }
+    dfs(1);
+    int tmp=top;
+    while(top){
+        printf("%d\n",st[top]);
+        top--;
+    }
+    for(int i=1;i<=tmp;++i) printf("%d\n",st[i]);
     return 0;
 }
