@@ -22,19 +22,22 @@ inline int read(){
     }
     return x*f;
 }
-const int N=128,M=3003;
+const int N=260,M=3003;
 int n,ma,mi=N,top;
-char st[M];
+char st[N*N];
 string s;
 int du[N],nxt[N];
-bool vis[N];
+bool vis[N][N];
 vector<int> e[N];
 void dfs(int x){
-    for(int i=nxt[x];i<e[x].size();i=nxt[x]){
-        nxt[x]=i+1;
-        dfs(e[x][i]);
+    for(auto i:e[x]){
+        if(!vis[x][i]){
+            vis[x][i]=1;
+            vis[i][x]=1;
+            dfs(i);
+        }
     }
-    st[++top]=x+'A';
+    st[++top]=x;
 }
 //* -----并查集
 int p[N];
@@ -48,39 +51,51 @@ void merge(int x,int y){
 int main()
 {
     cin>>n;
+    for(int i=0;i<N;++i) p[i]=i;
     for(int i=1;i<=n;++i){
         cin>>s;
-        int u=s[0]-'A',v=s[1]-'A';
+        int u=s[0],v=s[1];
         ma=max(ma,max(u,v));
         mi=min(mi,min(u,v));
+        merge(u,v);
         du[u]++;
         du[v]++;
         e[u].push_back(v);
         e[v].push_back(u);
-        merge(u,v);
     }
     for(int i=mi;i<=ma;++i){
+        if(e[i].empty()) continue;
         sort(e[i].begin(),e[i].end());
     }
-    bool flag=0;
-    int cnt=0,stt=0;
-    debug(mi);
-    debug(ma);
+    int flag=0,cnt=0,stt=0;
     for(int i=mi;i<=ma;++i){
         if(p[i]==i&&du[i]){
-            if(flag){
-                flag=0;
-                break;
-            }
-            flag=1;
+            flag++;
         }
     }
-    if(!flag&&cnt>2){
+    if(flag!=1){
+        puts("No Solution\n");
+        return 0;
+    }
+    for(int i=mi;i<=ma;++i){
+        if(du[i]&1){
+            cnt++;
+            if(!stt) stt=i;
+        }
+    }
+    if(!stt){
+        for(int i=mi;i<=ma;++i){
+            if(du[i]){
+                stt=i;
+                break;
+            }
+        }
+    }
+    if(cnt&&cnt!=2){
         puts("No Solution\n");
         return 0;
     }
     dfs(stt);
-    debug(top);
     while(top){
         putchar(st[top]);
         top--;
