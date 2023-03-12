@@ -1,0 +1,1 @@
+{"name":"Local: A","url":"e:\\OI\\code\\Codeforces\\1804\\A. Lame King.cpp","tests":[{"id":1678632321306,"input":"5\n-4 1\n4 4\n0 -6\n-5 -4\n7 -8","output":"7\n8\n11\n9\n15"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\OI\\code\\Codeforces\\1804\\A. Lame King.cpp","group":"local","local":true}
