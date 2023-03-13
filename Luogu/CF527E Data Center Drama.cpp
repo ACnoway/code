@@ -41,12 +41,9 @@ void dfs(int x){
     //因为要删边所以i要加取地址符更改head[x]
     for(int &i=head[x];i;i=e[i].nxt){
         if(vis[i]) continue;
-        //debug(x);
-        //debug(head[x]);
         vis[i]=vis[i^1]=1;
         int y=e[i].to;
         dfs(y);
-        //debug(cnt);
         if((++cnt)&1) printf("%d %d\n",x,y);
         else printf("%d %d\n",y,x);
     }
