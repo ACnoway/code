@@ -1,85 +1,54 @@
-#include <iostream>
 #include <cstdio>
 #include <algorithm>
-#include <cmath>
-#include <map>
-#define int long long
 using namespace std;
-const int N = 500003;
-int n, sum;
-string a[N], now[N], ans[N];
-int m[N];
-map<char, int> chu, ru;
-int flag, vis[N];
-void dfs(int bef, int step)
+const int N = 1e6 + 10;
+typedef long long ll;
+int v[N];
+int x[N];
+int ct;
+int al[N];
+int col[N];
+int n;
+int lstu[N];
+int lstv[N];
+inline void add(int u, int V)
 {
-    if (flag == 1)
-        return;
-    if (step == n)
-    {
-        flag = 1;
-        for (int i = 1; i <= sum; ++i)
-            ans[i] = now[i];
-        return;
-    }
-    for (int i = 1; i <= n; ++i)
-    {
-        if (vis[i] == 1)
-            continue;
-        if (a[bef][a[bef].length()-1] == a[i][0])
-        {
-            now[++sum] = a[i];
-            vis[i] = 1;
-            dfs(i, step + 1);
-            sum--;
-            vis[i] = 0;
-        }
-    }
+    v[++ct] = V;
+    x[ct] = al[u];
+    al[u] = ct;
 }
-signed main()
+inline void dfs(int u, int tw)
 {
-    ios::sync_with_stdio(false);
-    cin >> n;
-    for (int i = 1; i <= n; ++i)
+    col[u] = tw;
+    for (int i = al[u]; i; i = x[i])
+        if (col[v[i]] == -1)
+            dfs(v[i], tw ^ 1);
+}
+int main()
+{
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i++)
+        col[i] = -1;
+    for (int i = 1, x, y; i <= n; i++)
     {
-        cin >> a[i];
-        m[i] = a[i].length();
-        chu[a[i][0]]++;
-        ru[a[i][m[i]-1]]++;
-    }
-    int st = 1;
-    sort(a + 1, a + 1 + n);
-    char s, t;
-    for (char i = 'a'; i <= 'z'; ++i)
-    {
-        if (abs(chu[i] - ru[i]) == 1)
+        scanf("%d%d", &x, &y);
+        if (lstu[x])
         {
-            if (chu[i] - ru[i] == 1)
-                s = i;
-            else if (ru[i] - chu[i] == 1)
-                t = i;
+            add(lstu[x], i), add(i, lstu[x]), lstu[x] = 0;
         }
-    }
-    int cnt = ru[t];
-    for (int i = 1; i <= n; ++i)
-    {
-        if (a[i][0] == s && (a[i][m[i]-1] != t || cnt != 1))
+        else
+            lstu[x] = i;
+        if (lstv[y])
         {
-            st = i;
-            break;
+            add(lstv[y], i), add(i, lstv[y]), lstv[y] = 0;
         }
+        else
+            lstv[y] = i;
     }
-    vis[st] = 1;
-    now[++sum] = a[st];
-    dfs(st, 1);
-    if (flag == 0)
-    {
-        cout << "***" << endl;
-        return 0;
-    }
-    for (int i = 1; i <= n; ++i)
-    {
-        cout << ans[i] << ".\n"[i == n];
-    }
+    for (int i = 1; i <= n; i++)
+        if (col[i] == -1)
+            dfs(i, 0);
+    for (int i = 1; i <= n; i++)
+        putchar((col[i]) ? 'r' : 'b');
     return 0;
 }
