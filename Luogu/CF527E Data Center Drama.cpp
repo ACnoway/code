@@ -3,6 +3,7 @@
 #include<algorithm>
 #include<cmath>
 #include<vector>
+#define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -40,15 +41,17 @@ void dfs(int x){
     //因为要删边所以i要加取地址符更改head[x]
     for(int &i=head[x];i;i=e[i].nxt){
         if(vis[i]) continue;
+        //debug(x);
+        //debug(head[x]);
         vis[i]=vis[i^1]=1;
         int y=e[i].to;
         dfs(y);
-        ++cnt;
-        if(cnt&1) printf("%d %d\n",x,y);
+        //debug(cnt);
+        if((++cnt)&1) printf("%d %d\n",x,y);
         else printf("%d %d\n",y,x);
     }
 }
-int main()
+signed main()
 {
     n=read(); m=read();
     int x,y;
@@ -60,11 +63,15 @@ int main()
     for(int i=1;i<=n;++i){
         if(du[i]&1) ji.push_back(i);
     }
-    for(int i=0;i<ji.size();i+=2){
+    for(int i=0;i+1<ji.size();i+=2){
+        ++du[ji[i]]; ++du[ji[i+1]];
         add(ji[i],ji[i+1]);
+        add(ji[i+1],ji[i]);
         ++m;
     }
     if(m&1){
+        du[1]+=2;
+        add(1,1);
         add(1,1);
         ++m;
     }
