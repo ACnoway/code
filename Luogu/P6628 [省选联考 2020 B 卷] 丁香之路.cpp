@@ -89,13 +89,13 @@ int main()
         sort(e.begin(),e.end());
         //计算最小生成树的代价
         for(int j=0;j<e.size();++j){
-            if(find(e[i].u)!=find(e[i].v)){
+            if(find(e[j].u)!=find(e[j].v)){
                 merge(e[j].u,e[j].v);
                 ans+=e[j].w*2;
             }
         }
         --du[s]; --du[i];
-        printf("%lld\n",ans);
+        printf("%lld ",ans);
     }
     return 0;
 }
