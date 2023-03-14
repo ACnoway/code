@@ -60,7 +60,7 @@ signed main()
     for(int i=1;i<=n;++i){
         if(du[i]&1) ji.push_back(i);
     }
-    for(int i=0;i+1<ji.size();i+=2){
+    for(int i=0;i<ji.size();i+=2){
         ++du[ji[i]]; ++du[ji[i+1]];
         add(ji[i],ji[i+1]);
         add(ji[i+1],ji[i]);
