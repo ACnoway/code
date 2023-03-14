@@ -36,7 +36,7 @@ void dfs(int bef,int step){
     }
     for(int i=1;i<=n;++i){
         if(vis[i]) continue;
-        if(a[bef][a[bef].length()-1]==a[i][0]){
+        if(a[bef][a[bef].size()-1]==a[i][0]){
             now[++sum]=a[i];
             vis[i]=1;
             dfs(i,step+1);
@@ -61,9 +61,8 @@ int main()
         if(chu[i]-ru[i]==1) s=i;
         else if(ru[i]-chu[i]==1) t=i;
     }
-    int cnt=ru[t];
     for(int i=1;i<=n;++i){
-        if(a[i][0]==s&&(a[i][m[i]]!=t||cnt!=1)){
+        if(a[i][0]==s&&(a[i][m[i]]!=t||ru[t]!=1)){
             st=i;
             break;
         }
