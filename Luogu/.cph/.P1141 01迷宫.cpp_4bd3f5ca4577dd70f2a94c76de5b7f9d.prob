@@ -1,1 +1,0 @@
-{"name":"Local: P1141 01迷宫","url":"e:\\lou\\code\\Luogu\\P1141 01迷宫.cpp","tests":[{"id":1665036858970,"input":"2 2\n01\n10\n1 1\n2 2","output":"4\n4"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\lou\\code\\Luogu\\P1141 01迷宫.cpp","group":"local","local":true}

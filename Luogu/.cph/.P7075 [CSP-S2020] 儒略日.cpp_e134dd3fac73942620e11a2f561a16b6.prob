@@ -1,1 +1,0 @@
-{"name":"Local: P7075 [CSP-S2020] 儒略日","url":"f:\\lou\\code\\Luogu\\P7075 [CSP-S2020] 儒略日.cpp","tests":[{"id":1657497779059,"input":"3\n10\n100\n1000","output":"11 1 4713 BC\n10 4 4713 BC\n27 9 4711 BC"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"f:\\lou\\code\\Luogu\\P7075 [CSP-S2020] 儒略日.cpp","group":"local","local":true}

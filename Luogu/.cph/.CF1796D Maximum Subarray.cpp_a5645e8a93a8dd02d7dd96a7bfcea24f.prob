@@ -1,1 +1,0 @@
-{"name":"Local: CF1796D Maximum Subarray","url":"e:\\OI\\code\\Luogu\\CF1796D Maximum Subarray.cpp","tests":[{"id":1678248265551,"input":"4\n4 1 2\n2 -1 2 3\n2 2 3\n-1 2\n3 0 5\n3 2 4\n6 2 -8\n4 -1 9 -3 7 -8","output":"5\n7\n0\n44"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\OI\\code\\Luogu\\CF1796D Maximum Subarray.cpp","group":"local","local":true}

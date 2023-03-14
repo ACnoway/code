@@ -1,1 +1,0 @@
-{"name":"Local: P7814 「小窝 R3」心の記憶","url":"f:\\lou\\code\\Luogu\\P7814 「小窝 R3」心の記憶.cpp","tests":[{"id":1653905173598,"input":"4\n1 1\n1\n3 5\n010\n4 8\n1101\n5 6\n11111","output":"-1\n01110\n10100101\n111101"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"f:\\lou\\code\\Luogu\\P7814 「小窝 R3」心の記憶.cpp","group":"local","local":true}

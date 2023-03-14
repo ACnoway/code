@@ -1,1 +1,0 @@
-{"name":"Local: T308430 「MYOI-R1」幻想字符串","url":"e:\\OI\\code\\Luogu\\T308430 「MYOI-R1」幻想字符串.cpp","tests":[{"id":1675470350298,"input":"5\n112324314\nduanfeitong\ncq_zry\nSaintRelief\nStarry_sky700","output":"9\n61\n50\n80\n275"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\OI\\code\\Luogu\\T308430 「MYOI-R1」幻想字符串.cpp","group":"local","local":true}

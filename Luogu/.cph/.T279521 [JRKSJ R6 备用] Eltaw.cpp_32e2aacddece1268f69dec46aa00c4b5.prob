@@ -1,1 +1,0 @@
-{"name":"Local: T279521 [JRKSJ R6 备用] Eltaw","url":"e:\\lou\\code\\Luogu\\T279521 [JRKSJ R6 备用] Eltaw.cpp","tests":[{"id":1664863539659,"input":"7 2 3\n1 1 4 5 1 4 0\n1 9 1 9 8 1 0\n6 7\n5 7\n1 3","output":"4\n9\n11"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\lou\\code\\Luogu\\T279521 [JRKSJ R6 备用] Eltaw.cpp","group":"local","local":true}
