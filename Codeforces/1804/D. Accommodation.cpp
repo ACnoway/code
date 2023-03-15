@@ -21,38 +21,29 @@ inline int read(){
     }
     return x*f;
 }
-int n,m,ans,ama,c1,c2,c3;
+int n,m,ans,ama,lianxu,nlianxu,cnt;
 string s;
 int main()
 {
     cin>>n>>m;
     for(int i=1;i<=n;++i){
         cin>>s;
-        c1=c2=c3=0;
-        for(int j=0;j<m;++j){
-            if(s[j]=='1'){
-                c1++;
-            }
-            if(j&&s[j]=='1'&&s[j-1]=='1'){
-                c2++;
-            }
-            if(j&&s[j]=='0'&&s[j-1]=='0'){
-                c3++;
+        lianxu=nlianxu=cnt=0;
+        for(int j=0;j<m;++j) cnt+=(s[j]-'0');
+        for(int j=0;j+1<m;++j){
+            if(s[j]=='1'&&s[j+1]=='1'){
+                ++lianxu;
+                ++j;
             }
         }
-        if(c2>=m/4){
-            ans+=m/4+c1-c2*2;
+        for(int j=0;j+1<m;++j){
+            if(s[j]=='0'||s[j+1]=='0'){
+                ++nlianxu;
+                ++j;
+            }
         }
-        else{
-            ans+=min(m/4,c1)+max(0,c1-m/4+c2);
-        }
-        //c1=m-c1;
-        if(c3>=m/4){
-            ama+=c1;
-        }
-        else{
-            ama+=m/4-c3+max(0,c1-m/4+c3);
-        }
+        ans+=cnt-min(lianxu,m/4);
+        ama+=cnt-max(0,m/4-nlianxu);
     }
     cout<<ans<<' '<<ama<<endl;
     return 0;
