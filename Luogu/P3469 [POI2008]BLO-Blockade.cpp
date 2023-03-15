@@ -24,7 +24,7 @@ inline int read(){
     return x*f;
 }
 const int N=100005,M=1000006;
-int n,m,sum;
+int n,m;
 int dfid,cnt,dfn[N],low[N],siz[N];
 ll ans[N];
 bool ge[N];
@@ -32,24 +32,24 @@ vector<int> e[N];
 void tarjan(int x,int die){
     dfn[x]=low[x]=++dfid;
     siz[x]=1;
-    int ch=0;
-    sum=0;
+    int ch=0,sum=0;
     for(int v:e[x]){
         if(!dfn[v]){
-            tarjan(v,x);
+            tarjan(v,die);
             siz[x]+=siz[v];
             low[x]=min(low[x],low[v]);
             if(low[v]>=dfn[x]){
-                cnt+=(!ge[x]);
-                ge[x]=1;
                 ans[x]+=(ll)siz[v]*(n-siz[v]);
                 sum+=siz[v];
+                ch++;
+                if(x!=die||ch>1){
+                    cnt+=(!ge[x]);
+                    ge[x]=1;
+                }
             }
-            if(x==die) ch++;
         }
         else low[x]=min(low[x],dfn[v]);
     }
-    if(ch>=2&&x==die) cnt+=(!ge[x]),ge[x]=1;
     if(!ge[x]) ans[x]=2*(n-1);
     else ans[x]+=(ll)(n-sum-1)*(sum+1)+(n-1);
 }
