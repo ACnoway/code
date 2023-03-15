@@ -3,6 +3,7 @@
 #include<algorithm>
 #include<cmath>
 #include<vector>
+#define ll long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -22,45 +23,47 @@ inline int read(){
     }
     return x*f;
 }
-const int N=20004;
-int n,m;
-int dfid,cnt,dfn[N],low[N];
+const int N=100005,M=1000006;
+int n,m,sum;
+int dfid,cnt,dfn[N],low[N],siz[N];
+ll ans[N];
 bool ge[N];
 vector<int> e[N];
 void tarjan(int x,int die){
     dfn[x]=low[x]=++dfid;
+    siz[x]=1;
     int ch=0;
+    sum=0;
     for(int v:e[x]){
-        //如果是树边就遍历下去
         if(!dfn[v]){
-            tarjan(v,die);
+            tarjan(v,x);
+            siz[x]+=siz[v];
             low[x]=min(low[x],low[v]);
-            //如果x不是根节点，判断是否为割点
-            if(low[v]>=dfn[x]&&x!=die)
-                cnt+=(!ge[x]),ge[x]=1;
-            //如果x是根节点，记录孩子数
+            if(low[v]>=dfn[x]){
+                cnt+=(!ge[x]);
+                ge[x]=1;
+                ans[x]+=(ll)siz[v]*(n-siz[v]);
+                sum+=siz[v];
+            }
             if(x==die) ch++;
         }
-        //如果是回边直接更新low
-        low[x]=min(low[x],dfn[v]);
+        else low[x]=min(low[x],dfn[v]);
     }
     if(ch>=2&&x==die) cnt+=(!ge[x]),ge[x]=1;
+    if(!ge[x]) ans[x]=2*(n-1);
+    else ans[x]+=(ll)(n-sum-1)*(sum+1)+(n-1);
 }
 int main()
 {
     n=read(); m=read();
-    int x,y;
     for(int i=1;i<=m;++i){
-        x=read(); y=read();
+        int x=read(),y=read();
         e[x].push_back(y);
         e[y].push_back(x);
     }
     for(int i=1;i<=n;++i){
         if(!dfn[i]) tarjan(i,i);
     }
-    printf("%d\n",cnt);
-    for(int i=1;i<=n;++i){
-        if(ge[i]) printf("%d ",i);
-    }
+    for(int i=1;i<=n;++i) printf("%lld\n",ans[i]);
     return 0;
 }

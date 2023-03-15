@@ -1,0 +1,1 @@
+{"name":"Local: P3469 [POI2008]BLO-Blockade","url":"e:\\OI\\code\\Luogu\\P3469 [POI2008]BLO-Blockade.cpp","tests":[{"id":1678864882093,"input":"5 5\n1 2\n2 3\n1 3\n3 4\n4 5","output":"8\n8\n16\n14\n8"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\OI\\code\\Luogu\\P3469 [POI2008]BLO-Blockade.cpp","group":"local","local":true}
