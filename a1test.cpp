@@ -1,156 +1,110 @@
 #include <iostream>
 #include <cstdio>
-#include <cmath>
-#include <cstring>
+#include <vector>
+#include <stack>
 #include <cstdlib>
-#include <algorithm>
-#include <queue>
-#define debug(x) cout<<#x<<" = "<<x<<endl
-#define INF 0x3f3f3f3f
+
 using namespace std;
+const int MAXN = 400005; // 这里注意要开双倍空间，因为圆方树上点的个数可能到2n的数量
+// n是原图中点的数量，start和target是两个服务器，nn是圆方树上点的数量
+int n, start, target, nn, pre[MAXN], low[MAXN], dt;
+// 分别是原图，和圆方树的邻接表
+vector<int> adj[MAXN], adjT[MAXN];
+stack<int> s;
 
-inline int read()
+void tarjan(int u, int father)
 {
-    int x = 0, f = 1;
-    char ch = getchar();
-    for (; !isdigit(ch); ch = getchar())
-        if (ch == '-')
-            f = -1;
-    for (; isdigit(ch); ch = getchar())
-        x = (x << 3) + (x << 1) + ch - '0';
-    return x * f;
-}
-
-const int N = 5000050;
-const int M = 5050;
-
-int n, m, a[N], Vis[N], tot, dfn[N], low[N], stk[N], sc, Belong[N], Sum[N], t, cnt;
-int pre[N], Size[N], depth[N], fa[N], son[N], Tot, head[N], Head[N], top[N];
-bool vis[N];
-int Cnt, Q;
-struct node
-{
-    int u, v, nxt;
-} edge[N], E[N];
-void Add_edge(int u, int v)
-{
-    edge[++cnt].u = u;
-    edge[cnt].v = v;
-    edge[cnt].nxt = head[u];
-    head[u] = cnt;
-}
-void Add(int u, int v)
-{
-    E[++Cnt].v = v;
-    E[Cnt].u = u;
-    E[Cnt].nxt = Head[u];
-    Head[u] = Cnt;
-}
-
-int dep[N], f[N][21];
-
-int LCA(int x, int y)
-{
-    if (dep[x] > dep[y])
-        swap(x, y);
-    for (int i = 20; i >= 0; i--)
-        if (dep[x] + (1 << i) <= dep[y])
-            y = f[y][i];
-    if (x == y)
-        return x;
-    for (int i = 20; i >= 0; i--)
+    pre[u] = low[u] = ++dt;
+    s.push(u);
+    for (int i = 0; i < adj[u].size(); ++i)
     {
-        if (f[x][i] == f[y][i])
-            continue;
+        int v = adj[u][i];
+        if (pre[v] == 0)
+        {
+            tarjan(v, u);
+            low[u] = min(low[u], low[v]);
+            if (low[v] >= pre[u])
+            {
+                nn++; // 找到一个新的点双连通分量，新增一个方点
+                while (true)
+                {
+                    int t = s.top();
+                    s.pop();
+                    adjT[nn].push_back(t); // 原图中的点到方点连边
+                    adjT[t].push_back(nn);
+                    if (t == v)
+                        break; // 这里pop到v为止，u点保留在栈里面，因为割点可能被很多点双公用
+                }
+                adjT[u].push_back(nn); // u点也在这个点双里面，也像方点连边。
+                adjT[nn].push_back(u);
+            }
+        }
+        else if (v != father)
+        {
+            low[u] = min(low[u], pre[v]);
+        }
+    }
+}
+
+// u是当前访问到的点，ans是目前从根走下来的路径上的答案，father是u的父亲
+void dfs(int u, int ans, int father)
+{
+    if (u == target)
+    {
+        // 如果走到target了
+        if (ans == 0)
+        {
+            // ans还是0，说明路上没经过割点
+            printf("No solution\n");
+        }
         else
         {
-            y = f[y][i];
-            x = f[x][i];
+            printf("%d\n", ans);
         }
+        exit(0);
     }
-    return f[x][0];
-}
-void tarjan(int now, int fath)
-{
-    low[now] = dfn[now] = ++tot;
-    stk[++sc] = now;
-    vis[now] = 1;
-    for (int i = head[now]; i; i = edge[i].nxt)
+    if (u != start && adjT[u].size() > 1 && u <= n)
     {
-        int to = edge[i].v;
-        if (!dfn[to])
-            tarjan(to, now), low[now] = min(low[now], low[to]);
-        else if (vis[to] && to != fath)
-            low[now] = min(low[now], dfn[to]);
-    }
-    if (dfn[now] == low[now])
-    {
-        int pre = stk[sc--];
-        Sum[++t] += a[pre];
-        Belong[pre] = t;
-        vis[pre] = 0;
-        debug(t);
-        while (pre != now)
+        // 遇到非叶子的圆点，说明是割点
+        if (ans == 0)
         {
-            pre = stk[sc--], Sum[t] += a[pre];
-            Belong[pre] = t;
-            vis[pre] = 0;
+            ans = u;
+        }
+        else
+        {
+            ans = min(ans, u);
         }
     }
-}
-long long Ans;
-void Dfs(int now, int fath)
-{
-    for (int i = Head[now]; i; i = E[i].nxt)
+    for (int i = 0; i < adjT[u].size(); ++i)
     {
-        if (E[i].v != fath)
-            Dfs(E[i].v, now),
-                Vis[now] += Vis[E[i].v];
+        int v = adjT[u][i];
+        if (v == father)
+            continue;
+        dfs(v, ans, u);
     }
-    if (Vis[now])
-        Ans += Sum[now];
 }
 
-signed main()
+int main()
 {
-    n = read();
-    m = read();
-    for (int i = 1; i <= n; i++)
-        a[i] = read();
-    for (int i = 1, u, v; i <= m; i++)
+    scanf("%d", &n);
+    int u, v;
+    while (scanf("%d%d", &u, &v))
     {
-        u = read();
-        v = read();
-        Add_edge(u, v);
-        Add_edge(v, u);
+        if (u == 0 && v == 0)
+            break;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
     }
-    Q = read();
-    for (int i = 1; i <= n; i++)
-        if (!dfn[i])
-            tarjan(i, 0);
-    for (int i = 1; i <= cnt; i += 2)
+    scanf("%d%d", &start, &target);
+    nn = n;           // 最开始的时候，圆方树里面点的个数等于圆点个数
+    tarjan(start, 0); // 从其中一个服务器开始跑一遍tarjan
+    if (pre[target] == 0)
     {
-        if (Belong[edge[i].u] ^ Belong[edge[i].v])
-        {
-            Add(Belong[edge[i].u], Belong[edge[i].v]);
-            Add(Belong[edge[i].v], Belong[edge[i].u]);
-        }
+        // 从起点到终点不连通
+        printf("No solution\n");
+        return 0;
     }
-    memset(dfn, 0, sizeof dfn);
-    for (int i = 1; i <= Q; i++)
-    {
-        int u = read(), v = read();
-        int Lca = LCA(Belong[u], Belong[v]);
-        Vis[Belong[u]]++;
-        Vis[Belong[v]]++;
-        Vis[Lca]--;
-        debug(Lca);
-        Vis[fa[Lca]]--;
-        debug(fa[Lca]);
-        Vis[f[Lca][0]]--;
-        debug(f[Lca][0]);
-    }
-    Dfs(Belong[1], 0);
-    printf("%lld\n", Ans);
+    // 这时候以start为根，在圆方树上dfs找target，沿途记录经过的最小的割点编号
+    dfs(start, 0, 0);
     return 0;
 }
