@@ -27,7 +27,12 @@ const int N=200005;
 int t,n,x;
 int cnt[N];
 vector<int> al[N];
-struct ma[N];
+struct node{
+    int v,p,c;
+    bool operator <(const node b)const{
+        if(v==b.v) return ;
+    }
+}ma[N];
 int main()
 {
     t=read();
