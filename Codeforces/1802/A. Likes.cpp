@@ -22,22 +22,15 @@ inline int read(){
     return x*f;
 }
 int t,n,x,same;
-bool ton[102];
 int main()
 {
     t=read();
     while(t--){
         n=read();
         same=0;
-        for(int i=0;i<=n;++i) ton[i]=0;
         for(int i=1;i<=n;++i){
             x=read();
-            if(x>0){
-                ton[x]=1;
-            }
-            else{
-                same++;
-            }
+            if(x<=0) same++;
         }
         for(int i=1;i<=n-same;++i){
             printf("%d ",i);
