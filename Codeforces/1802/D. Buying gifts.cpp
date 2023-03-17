@@ -30,7 +30,7 @@ struct node{
         return v<x.v;
     }
 }a[N],b[N];
-int tong[N];
+bool tong[N];
 int main()
 {
     t=read();
@@ -46,19 +46,17 @@ int main()
         sort(a+1,a+1+n);
         sort(b+1,b+1+n);
         int x=n,ma,cha=INT_MAX;
-        //for(int i=1;i<=n;++i) debug(a[i].v),debug(b[i].v);
         if(a[n].v<b[n].v){
             for(int i=1;i<=n;++i){
                 tong[a[i].p]=1;
                 ma=lower_bound(b+1,b+n+1,a[i])-b;
-                int j;
                 for(;x&&tong[b[x].p];--x);
                 if(ma<=x){
                     cha=min(cha,abs(a[i].v-b[x].v));
                 }
                 else{
-                    for(int k=max(1,ma-2);k<=min(ma+1,n);++k){
-                        if(b[k].p!=a[i].p) cha=min(cha,abs(a[i].v-b[k].v));
+                    for(int j=max(1,ma-2);j<=min(ma+1,n);++j){
+                        if(b[j].p!=a[i].p) cha=min(cha,abs(a[i].v-b[j].v));
                     }
                 }
             }
@@ -67,14 +65,13 @@ int main()
             for(int i=1;i<=n;++i){
                 tong[b[i].p]=1;
                 ma=lower_bound(a+1,a+n+1,b[i])-a;
-                int j;
                 for(;x&&tong[a[x].p];--x);
                 if(ma<=x){
                     cha=min(cha,abs(b[i].v-a[x].v));
                 }
                 else{
-                    for(int k=max(1,ma-2);k<=min(ma+1,n);++k){
-                        if(a[k].p!=b[i].p) cha=min(cha,abs(b[i].v-a[k].v));
+                    for(int j=max(1,ma-2);j<=min(ma+1,n);++j){
+                        if(a[j].p!=b[i].p) cha=min(cha,abs(b[i].v-a[j].v));
                     }
                 }
             }
