@@ -37,7 +37,7 @@ signed main()
     a=read();
     x=read();
     m=read();
-    int Len=sqrt(x),num=x/Len,sum;
+    int Len=sqrt(x),num=x/Len,sum=0;
     for(int i=0;i<Len;++i) sum+=power(a,i),sum%=m;
     int l,r,ans=0;
     for(int i=1;i<=num;++i){
