@@ -1,151 +1,151 @@
-// 请使用C++11编译
 #include <bits/stdc++.h>
+typedef long long LL;
 using namespace std;
-constexpr int N = 1000001;
+const int M = 1100000;
+inline int read()
+{
+    int x = 0;
+    char c = getchar();
+    while (!isdigit(c))
+        c = getchar();
+    for (; isdigit(c); c = getchar())
+        x = x * 10 + c - '0';
+    return x;
+}
+int n, m, tim, top, pat;
+int part, ans, res;
+int has[M], d[M], f[M];
+// has--该连通快中的节点数  ；d--该连通快的入度
+// f--该连通快到达起点（教学楼）的道路数量；
+int dfn[M], low[M], blg[M]; // tarjan重要用的东西
+int last[M], head[M];       // last在二次构图的时候用
+bool is[M];                 // 记录该连通块是否是有环的联通块
+stack<int> stk;
 struct edge
 {
-    int to, next;
-};
-int head[N];
-vector<edge> E;
-void insert(int u, int v)
+    int v, next;
+} e[M], g[M];
+
+void add(int u, int v)
 {
-    E.push_back({v, head[u]});
-    head[u] = E.size() - 1;
-}
-int dfn[N], finish[N], low[N], now;
-int d[N], fa[N][20], lg[N];
-void tarjan(int u, int f)
+    e[pat].next = head[u];
+    e[pat].v = v;
+    head[u] = pat++;
+} // 一次构图的时候用
+void add2(int u, int v)
 {
-    d[u] = d[f] + 1;
-    fa[u][0] = f;
-    for (int i = 1; i <= lg[d[u]]; i++)
-        fa[u][i] = fa[fa[u][i - 1]][i - 1];
-    dfn[u] = low[u] = ++now;
-    for (int i = head[u]; ~i; i = E[i].next)
+    g[pat].next = last[u];
+    g[pat].v = v;
+    last[u] = pat++;
+} // 二次构图的时候用
+void tarjan(int u)
+{
+    bool flag = false; // 记录是否有自环
+    dfn[u] = low[u] = ++tim;
+    stk.push(u);
+    for (int i = head[u]; i != -1; i = e[i].next)
     {
-        int v = E[i].to;
+        int v = e[i].v;
+        if (u == v)
+            flag = true; // 自环的判断
         if (!dfn[v])
-        {
-            tarjan(v, u);
-            low[u] = min(low[u], low[v]);
-        }
-        else if (v != f)
+            tarjan(v), low[u] = min(low[u], low[v]);
+        else if (!blg[v])
             low[u] = min(low[u], dfn[v]);
     }
-    finish[u] = ++now;
-}
-int lca(int x, int y)
-{
-    if (d[x] < d[y])
-        swap(x, y);
-    while (d[x] > d[y])
-        x = fa[x][lg[d[x] - d[y]] - 1];
-    if (x == y)
-        return x;
-    for (int i = lg[d[x]] - 1; i >= 0; i--)
+    if (dfn[u] == low[u])
     {
-        if (fa[x][i] != fa[y][i])
-            x = fa[x][i], y = fa[y][i];
+        int j = 0;
+        ++part;
+        if (flag || stk.top() != u)
+            is[part] = true; // 判断是否有环（或者自环），有的话那么出发点到该联通块后就有无数条路好走了
+        do
+        {
+            j = stk.top();
+            stk.pop();
+            blg[j] = part;
+            ++has[part];
+        } while (j != u);
     }
-    return fa[x][0];
-}
-int n, m, q;
-
-// 判断节点 f 是否包含节点 a
-bool contains(int f, int a)
-{
-    return dfn[f] <= dfn[a] && finish[f] >= finish[a];
 }
 
-// 查找 f 到 a （ f 包含 a ）的路径上，与 f 直接相连的点
-int find_related_child(int f, int a)
+void topo()
 {
-    int df = d[f] + 1;
-    while (d[a] > df)
-        a = fa[a][lg[d[a] - df] - 1];
-    return a;
-}
-bool query1(int a, int b, int g1, int g2)
-{
-    if (a == b)
-        return true;
-    if (dfn[a] > dfn[b])
-        swap(a, b);
-    if (dfn[g1] > dfn[g2])
-        swap(g1, g2);
-    if (d[g2] != d[g1] + 1)
-        return true;    // g1 -> g2 为回边
-    if (contains(a, b)) // a 包含 b
+    queue<int> Q;
+    f[blg[n]] = 1;
+    for (int i = 1; i <= part; ++i)
+        if (!d[i])
+            Q.push(i);
+    while (!Q.empty()) // 把那些没有入度的点（除了出发点）弹出，事实上不弹也没事儿！
     {
-        if (contains(a, g1) && contains(g2, b))
+        int now = Q.front();
+        Q.pop();
+        if (now == blg[n])
+            continue;
+        for (int i = last[now]; i != -1; i = g[i].next)
         {
-            return low[g2] <= dfn[g1];
+            --d[g[i].v];
+            if (!d[g[i].v])
+                Q.push(g[i].v);
         }
-        else
-            return true;
     }
-    else
+    Q.push(blg[n]); // 无论如何要把起点塞回去
+
+    while (!Q.empty()) // 然后一直拓扑就ok了
     {
-        int l = lca(a, b);
-        return query1(a, l, g1, g2) && query1(b, l, g1, g2);
-    }
-}
-bool query2(int a, int b, int c)
-{
-    if (a == b)
-        return a != c;
-    if (a == c || b == c)
-        return false;
-    if (dfn[a] > dfn[b])
-        swap(a, b);
-    if (contains(a, b)) // a 包含 b
-    {
-        if (contains(a, c) && contains(c, b))
+        int now = Q.front();
+        Q.pop();
+        if (is[now] && f[now])
+            f[now] = 36501; // 有环就给最大值
+        for (int i = last[now]; i != -1; i = g[i].next)
         {
-            return low[find_related_child(c, b)] < dfn[c]; // 注意这里是小于
+            f[g[i].v] = min(f[g[i].v] + f[now], 36501); // 最大为36501
+            --d[g[i].v];
+            if (!d[g[i].v])
+                Q.push(g[i].v);
         }
-        else
-            return true;
-    }
-    else
-    {
-        int l = lca(a, b);
-        if (contains(l, c) && (contains(c, a) || contains(c, b)))
-        {
-            return query2(a, fa[l][0], c) && query2(b, fa[l][0], c);
-        }
-        else
-            return true;
     }
 }
+
 int main()
 {
-    memset(head, -1, sizeof head);
-    cin >> n >> m;
-    for (int i = 1; i <= n; i++)
-        lg[i] = lg[i - 1] + (1 << lg[i - 1] == i);
-    for (int i = 1, u, v; i <= m; i++)
+    memset(head, -1, sizeof(head));
+    memset(last, -1, sizeof(last));
+    n = read();
+    m = read();
+    ++n;
+    for (int i = 0; i < m; ++i) // 反着加边，等下 操作会方便很多
     {
-        cin >> u >> v;
-        insert(u, v);
-        insert(v, u);
+        int u = read(), v = read();
+        add(v, u);
     }
-    tarjan(1, 1);
-    cin >> q;
-    for (int i = 1, a, b, c, d; i <= q; i++)
-    {
-        cin >> a;
-        if (a == 1)
-        {
-            cin >> a >> b >> c >> d;
-            cout << (query1(a, b, c, d) ? "yes" : "no") << endl;
-        }
-        else
-        {
-            cin >> a >> b >> c;
-            cout << (query2(a, b, c) ? "yes" : "no") << endl;
-        }
-    }
+    pat = 0;
+
+    for (int i = 1; i <= n; ++i) // tarjan缩点
+        if (!dfn[i])
+            tarjan(i);
+
+    for (int i = 1; i <= n; ++i) // 重构图
+        for (int j = head[i]; j != -1; j = e[j].next)
+            if (blg[i] != blg[e[j].v])
+                add2(blg[i], blg[e[j].v]), ++d[blg[e[j].v]];
+    topo();
+    for (int i = 1; i <= part; ++i)
+        ans = max(ans, f[i]);
+    // 拓扑一下后找到起点道路数最大的点
+    if (ans == 36501)
+        printf("zawsze\n");
+    else
+        printf("%d\n", ans); // 这都是按题目讲的来做了
+    if (ans == f[blg[n]])
+        --res; // 挪，这里就是区别，等会儿讲
+    for (int i = 1; i <= part; ++i)
+        if (ans == f[i])
+            res += has[i];
+    printf("%d\n", res);
+    for (int i = 1; i < n; ++i) // 这里也是区别滴~~~
+        if (ans == f[blg[i]])
+            printf("%d ", i);
+    printf("\n");
     return 0;
 }
