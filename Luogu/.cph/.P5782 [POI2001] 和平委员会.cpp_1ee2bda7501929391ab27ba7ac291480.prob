@@ -1,0 +1,1 @@
+{"name":"Local: P5782 [POI2001] 和平委员会","url":"e:\\OI\\code\\Luogu\\P5782 [POI2001] 和平委员会.cpp","tests":[{"id":1679278283309,"input":"3 2\n1 3\n2 4","output":"1\n4\n5"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\OI\\code\\Luogu\\P5782 [POI2001] 和平委员会.cpp","group":"local","local":true}
