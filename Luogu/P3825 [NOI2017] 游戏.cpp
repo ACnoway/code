@@ -26,8 +26,8 @@ const int N=100005;
 int n,m,d;
 bool flag;
 int xs[N];
-int a[N][3];
-char h[N][3];
+int a[N<<1][3];
+char h[N<<1][3];
 int dfid,col,dfn[N],low[N],color[N];
 int top,st[N];
 string s;
@@ -108,20 +108,21 @@ void dfs(int k){
     //枚举到第k个x
     if(k>d){
         //枚举完了
-        if(work()) flag=1;
+        flag=work();
         return;
     }
     //分别枚举A和B的情况
-    s[xs[k]]='A';
+    s[xs[k]]='a';
     dfs(k+1);
     if(flag) return;
-    s[xs[k]]='B';
+    s[xs[k]]='b';
     dfs(k+1);
 }
 int main()
 {
     n=read(); read();
     cin>>s;
+    debug(s);
     s=' '+s;
     for(int i=1;i<=n;++i){
         //记录地图类型为x的位置
