@@ -1,88 +1,42 @@
-#include <iostream>
+// LUOGU_RID: 97414502
 #include <cstdio>
 #include <algorithm>
-#include <cstring>
-#include <vector>
-using namespace std;
-#define int long long
-#define fi first
-#define se second
-inline int read()
+typedef long long ll;
+const int N = 5e5 + 7;
+int p[N + N], zc;
+ll z[N];
+int exgcd(int a, int b, int &x, int &y)
 {
-    int x = 0, f = 1;
-    char ch = getchar();
-    while (ch < '0' || ch > '9')
-    {
-        if (ch == '-')
-            f = -1;
-        ch = getchar();
-    }
-    while (ch >= '0' && ch <= '9')
-    {
-        x = x * 10 + (ch ^ 48);
-        ch = getchar();
-    }
-    return x * f;
+    if (!b)
+        return x = 1, y = 0, a;
+    int t = exgcd(b, a % b, y, x);
+    return y -= (a / b) * x, t;
 }
-const int mod = 1000000007;
-inline int fpow(int n, int p)
+int main()
 {
-    n %= mod;
-    int ans = 1, base = n;
-    while (p)
-    {
-        if (p & 1)
-            ans = ans * base % mod;
-        base = base * base % mod;
-        p >>= 1;
-    }
-    return ans;
-}
-int n, vis[200010], cj = 1, ans = 1;
-vector<pair<int, int>> mp;
-bool flag = 1;
-signed main()
-{
-    n = read();
+    int n, m, g, x, y, t;
+    ll k, ls;
+    scanf("%d%d%lld", &n, &m, &k);
+    g = exgcd(n, m, x, y);
+    ls = (ll)n * m / g;
+    x = (x + m) % m;
     for (int i = 1; i <= n; ++i)
-        vis[read()]++;
-    for (int i = 1; i <= 200000; ++i)
-        cj = cj * (vis[i] + 1) % (mod - 1);
-    for (int i = 1; i <= 200000; ++i)
-        if (vis[i])
-            mp.push_back(make_pair(vis[i], i));
-    for (int i = 0; i < mp.size(); ++i)
+        scanf("%d", &t), p[t] = i;
+    for (int i = 1; i <= m; ++i)
     {
-        if (mp[i].fi & 1)
+        scanf("%d", &t);
+        if (p[t] && !((i - p[t]) % g))
+            z[++zc] = (((ll)x * ((i - p[t]) / g) * n + p[t] - 1) % ls + ls) % ls + 1;
+    }
+    ll F = ls - zc, f = (k - 1) / F, mf = (k - 1) % F + 1;
+    int pos = zc + 1;
+    std::sort(z + 1, z + zc + 1);
+    for (int i = 1; i <= zc; ++i)
+        if (mf <= z[i] - i)
         {
-            flag = 0;
+            pos = i;
             break;
         }
-    }
-    if (flag)
-    { // 情况 2
-        for (int i = 0; i < mp.size(); ++i)
-            mp[i].fi >>= 1;
-        for (int i = 0; i < mp.size(); ++i)
-            ans = ans * fpow(mp[i].se, cj * mp[i].fi % (mod - 1)) % mod;
-    }
-    else
-    { // 情况 1
-        cj = 1;
-        bool FI = 1;
-        for (int i = 0; i < mp.size(); ++i)
-        {
-            if (mp[i].fi & 1 && FI)
-            {
-                FI = 0;
-                cj = cj * (mp[i].fi + 1) / 2 % (mod - 1);
-            }
-            else
-                cj = cj * (mp[i].fi + 1) % (mod - 1);
-        }
-        for (int i = 0; i < mp.size(); ++i)
-            ans = ans * fpow(mp[i].se, cj * mp[i].fi % (mod - 1)) % mod;
-    }
-    printf("%lld", ans);
+    printf("%lld", f * ls + mf + pos - 1);
     return 0;
 }
