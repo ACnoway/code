@@ -3,6 +3,7 @@
 #include<algorithm>
 #include<cmath>
 #include<vector>
+#define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -23,12 +24,12 @@ inline int read(){
     return x*f;
 }
 const int N=500005;
-int n,m,k,mod,ans;
-int a[N],b[N],tong[N<<1];
-vector<int> t;
-void exgcd(int a,int b,int &x,int &y){
+int n,m,k,x,y,tmp,lcm,g;
+int p[N<<1];
+vector<int> a;
+int exgcd(int a,int b,int &x,int &y){
     int xx=0,yy=1,tmp;
-    x=1,y=0;
+    x=1;y=0;
     while(b){
         tmp=xx;
         xx=x-a/b*xx;
@@ -40,39 +41,35 @@ void exgcd(int a,int b,int &x,int &y){
         b=a%b;
         a=tmp;
     }
+    return a;
 }
-int calc(int x,int y){
-    int d=x-y;
-    //如果不整除的话直接无解
-    if(d%__gcd(n,m)) return -1;
-    d=__gcd(n,m);
-    int p1=n/d,p2=m/d;
-    int r1,r2;
-    exgcd(p1,p2,r1,r2);
-    int z=x+(y-x)*r1*n/d;
-    return x;
-}
-int main()
+signed main()
 {
-    n=read(); m=read(); k=read();
-    for(int i=1;i<=n;++i) a[i]=read(),tong[a[i]]=i;
-    for(int i=1;i<=m;++i) b[i]=read();
-    mod=n*m;
+    n=read();
+    m=read();
+    k=read();
+    g=exgcd(n,m,x,y);
+    lcm=n*m/g;
+    x=(x+m)%m;
+    for(int i=1;i<=n;++i){
+        tmp=read();
+        p[tmp]=i;
+    }
     for(int i=1;i<=m;++i){
-        //没有跟这个值相同的就跳过
-        if(!tong[b[i]]) continue;
-        int cnt=calc(tong[b[i]]-1,i-1)+1;
-        if(!cnt) continue;
-        cnt%=mod;
-        if(cnt=0) cnt+=mod;
-        t.push_back(cnt);
+        tmp=read();
+        if(p[tmp]&&!((i-p[tmp])%g)){
+            a.push_back(((x*(i-p[tmp])/g*n+p[tmp]-1)%lcm+lcm)%lcm+1);
+        }
     }
-    sort(t.begin(),t.end());
-    int now=mod-t.size();
-    while(k>=mod){
-        ans+=k-k%mod;
-        k-=k/mod*now;
+    int d=lcm-a.size(),f=(k-1)/d,mf=(k-1)%d+1;
+    int pos=a.size()+1;
+    sort(a.begin(),a.end());
+    for(int i=0;i<a.size();++i){
+        if(mf<=a[i]-i-1){
+            pos=i+1;
+            break;
+        }
     }
-    cout<<ans<<endl;
+    printf("%lld\n",f*lcm+mf+pos-1);
     return 0;
 }
