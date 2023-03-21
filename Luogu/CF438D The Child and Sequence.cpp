@@ -26,18 +26,7 @@ inline int read(){
 }
 const int N=100005;
 int n,m;
-int a[N],v[N<<2],lz[N<<2],da[N<<2];
-void pushdown(int i,int l,int r){
-    if(lz[i]){
-        lz[lson]+=lz[i];
-        lz[rson]+=lz[i];
-        int mid=(l+r)>>1;
-        v[lson]+=(mid-l+1)*lz[i];
-        v[rson]+=(r-mid)*lz[i];
-        da[lson]+=lz[i];
-        da[rson]+=lz[i];
-    }
-}
+int a[N],v[N<<2],da[N<<2];
 void build(int i,int l,int r){
     if(l==r){
         v[i]=a[l];
@@ -59,6 +48,31 @@ int sum(int i,int l,int r,int L,int R){
     if(mid<R) s+=sum(rson,mid+1,r,L,R);
     return s;
 }
+void mo(int i,int l,int r,int L,int R,int k){
+    if(da[i]<k) return;
+    if(l==r){
+        v[i]%=k;
+        da[i]%=k;
+        return;
+    }
+    int mid=(l+r)>>1;
+    if(L<=mid) mo(lson,l,mid,L,R,k);
+    if(mid<R) mo(rson,mid+1,r,L,R,k);
+    v[i]=v[lson]+v[rson];
+    da[i]=max(da[lson],da[rson]);
+}
+void gai(int i,int l,int r,int y,int k){
+    if(l==y&&r==y){
+        v[i]=k;
+        da[i]=k;
+        return;
+    }
+    int mid=(l+r)>>1;
+    if(y<=mid) gai(lson,l,mid,y,k);
+    if(mid<y) gai(rson,mid+1,r,y,k);
+    v[i]=v[lson]+v[rson];
+    da[i]=max(da[lson],da[rson]);
+}
 signed main()
 {
     n=read();
@@ -73,7 +87,12 @@ signed main()
             printf("%lld\n",sum(1,1,n,x,y));
         }
         else if(op==2){
-            mo()
+            z=read();
+            mo(1,1,n,x,y,z);
+        }
+        else{
+            a[x]=y;
+            gai(1,1,n,x,y);
         }
     }
     return 0;
