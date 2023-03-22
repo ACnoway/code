@@ -1,0 +1,1 @@
+{"name":"Local: D","url":"e:\\OI\\code\\何老师\\D. 【20210806提高组模拟赛】无核餐食.cpp","tests":[{"id":1679469441266,"input":"3 3 10\n1 2 3\n1 3 2\n3 1 2\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9","output":"0\n1\n2\n4\n6\n8\n10\n13\n15\n18"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\OI\\code\\何老师\\D. 【20210806提高组模拟赛】无核餐食.cpp","group":"local","local":true}
