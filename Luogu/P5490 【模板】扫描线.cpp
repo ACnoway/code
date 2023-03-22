@@ -47,11 +47,11 @@ void build(int x,int l,int r){
 }
 void pushup(int x){
     int l=t[x].l,r=t[x].r;
-    if(!t[x].sum){
-        t[x].len=t[lson].len+t[rson].len;
+    if(t[x].sum){
+        t[x].len=xs[r+1]-xs[l];
     }
     else{
-        t[x].len=xs[r+1]-xs[l];
+        t[x].len=t[lson].len+t[rson].len;
     }
 }
 void gai(int x,int L,int R,int k){
@@ -74,10 +74,9 @@ signed main()
     for(int i=1;i<=n;++i){
         xa=read(); ya=read();
         xb=read(); yb=read();
+        xs[i<<1-1]=xa; xs[i<<1]=xb;
         lines[i<<1-1]={xa,xb,ya,1};
         lines[i<<1]={xa,xb,yb,-1};
-        xs[i<<1-1]=xa;
-        xs[i<<1]=xb;
     }
     n<<=1;
     sort(xs+1,xs+n+1);
