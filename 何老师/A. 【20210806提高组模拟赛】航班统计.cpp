@@ -22,14 +22,13 @@ inline int read(){
     }
     return x*f;
 }
-void exgcd(int a,int b,int &x,int &y,int &d){
+void exgcd(int a,int b,int &x,int &y){
     if(b==0){
         x=1;
         y=0;
-        d=a;
         return;
     }
-    exgcd(b,a%b,x,y,d);
+    exgcd(b,a%b,x,y);
     int z=x;
     x=y;
     y=z-y*(a/b);
@@ -39,21 +38,18 @@ signed main()
     int n;
     n=read();
     while(n--){
-        int a=read(),b=read();
-        if(a%2==0&&b%2==0) printf("-1\n");
-        else{
-            bool flag=0;
-            for(int i=1;i<=max(a,b);++i){
-                if((b*i+1)%a==0){
-                    flag=1;
-                    printf("%lld\n",b*i);
-                    break;
-                }
-            }
-            if(!flag)
-                printf("-1\n");
+        int a=read(),b=read(),x,y;
+        exgcd(a,b,x,y);
+        if(a*x+b*y!=1){
+            printf("-1\n");
+            continue;
         }
-        
+        y=-y;
+        int t1=b/__gcd(a,b),t2=a/__gcd(a,b);
+        y=(y%t2+t2)%t2;
+        if(!y) y=t2;
+        if((y*b+1)/a<=0) printf("-1\n");
+        else printf("%lld\n",y*b);
     }
     return 0;
 }
