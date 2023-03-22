@@ -24,15 +24,15 @@ inline int read(){
     }
     return x*f;
 }
-const int N=1000006;
+const int N=2000006;
 int n,m;
-int xs[N<<1];
+int xs[N];
 struct smx{
     int l,r,h,w;
     bool operator <(const smx &x)const{
         return h<x.h;
     }
-}lines[N<<1];
+}lines[N];
 struct node{
     int l,r,sum,len;
 }t[N<<2];
@@ -47,11 +47,11 @@ void build(int x,int l,int r){
 }
 void pushup(int x){
     int l=t[x].l,r=t[x].r;
-    if(t[x].sum){
-        t[x].len=xs[r+1]-xs[l];
+    if(!t[x].sum){
+        t[x].len=t[lson].len+t[rson].len;
     }
     else{
-        t[x].len=t[lson].len+t[rson].len;
+        t[x].len=xs[r+1]-xs[l];
     }
 }
 void gai(int x,int L,int R,int k){
@@ -74,9 +74,10 @@ signed main()
     for(int i=1;i<=n;++i){
         xa=read(); ya=read();
         xb=read(); yb=read();
-        xs[i<<1-1]=xa; xs[i<<1]=xb;
-        lines[i<<1-1]={xa,xb,ya,1};
+        lines[(i<<1)-1]={xa,xb,ya,1};
         lines[i<<1]={xa,xb,yb,-1};
+        xs[(i<<1)-1]=xa;
+        xs[i<<1]=xb;
     }
     n<<=1;
     sort(xs+1,xs+n+1);
