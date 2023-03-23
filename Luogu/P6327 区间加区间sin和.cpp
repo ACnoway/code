@@ -47,7 +47,7 @@ class SegTree{
                 update(lson(x),sinx,cosx);
                 update(rson(x),sinx,cosx);
                 lt[lson(x)]+=lt[x];
-                lt[lson(x)]+=lt[x];
+                lt[rson(x)]+=lt[x];
                 lt[x]=0;
             }
         }
@@ -72,7 +72,7 @@ class SegTree{
             pushdown(x);
             int mid=(l+r)>>1;
             if(L<=mid) modify(lson(x),l,mid,L,R,k);
-            if(mid<R) modify(rson(x),mid+1,r,L,R,k);
+            if(R>mid) modify(rson(x),mid+1,r,L,R,k);
             pushup(x);
         }
         double query(int x,int l,int r,int L,int R){
@@ -81,7 +81,7 @@ class SegTree{
             int mid=(l+r)>>1;
             pushdown(x);
             if(L<=mid) s+=query(lson(x),l,mid,L,R);
-            if(mid<R) s+=query(rson(x),mid+1,r,L,R);
+            if(R>mid) s+=query(rson(x),mid+1,r,L,R);
             return s;
         }
 };
