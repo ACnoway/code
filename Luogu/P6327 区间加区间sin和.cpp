@@ -72,6 +72,7 @@ class SegTree{
             pushdown(x);
             int mid=(l+r)>>1;
             if(L<=mid) modify(lson(x),l,mid,L,R,k);
+            //? 为啥这里换成mid<R就错了？？？
             if(R>mid) modify(rson(x),mid+1,r,L,R,k);
             pushup(x);
         }
@@ -81,6 +82,7 @@ class SegTree{
             int mid=(l+r)>>1;
             pushdown(x);
             if(L<=mid) s+=query(lson(x),l,mid,L,R);
+            //? 为啥这里换成mid<R就错了？？？
             if(R>mid) s+=query(rson(x),mid+1,r,L,R);
             return s;
         }
