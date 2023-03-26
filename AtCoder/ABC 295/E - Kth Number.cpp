@@ -23,21 +23,30 @@ inline int read(){
     return x*f;
 }
 const int N=2003;
-int n,m,k;
+int n,m,k,lcnt;
 int a[N];
 signed main()
 {
     n=read(); m=read();
     k=read();
-    for(int i=1;i<=n;++i) a[i]=read();
-    int ans=0,st=1,cnt;
+    for(int i=1;i<=n;++i){
+        a[i]=read();
+        lcnt+=(!a[i]);
+    }
+    int ans=0,st=1,cnt,xiao,deng;
     sort(a+1,a+1+n);
     for(;a[st]==0;++st);
     for(int i=1;i<=m;++i){
         cnt=0;
         for(int j=st;j<=n;++j){
-            if(a[j]<=i)
+            if(a[j]<i) xiao++;
+            else if(a[j]==i) deng++;
+            else break;
         }
+        if(xiao+deng<k){
+            continue;
+        }
+        
     }
     return 0;
 }
