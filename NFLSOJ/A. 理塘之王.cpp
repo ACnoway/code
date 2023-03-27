@@ -24,23 +24,33 @@ inline int read(){
 }
 const int N=500005;
 int T,n,ans,now,top;
-int a[N],Ans[N],st[N];
+int a[N],Ans[N],st[N],pl[N];
 struct node{
     int v,p;
     bool operator <(const node &x)const{
         return v<x.v;
     }
 }b[N];
-vector<int> e[N];
-void dfs(int x,int die,int da){
-    for(int v:e[x]){
-        if(v==die) continue;
-        if(a[v]>=da){
-            ++ans;
-        }
-        dfs(v,x,max(da,a[v]));
+vector<int> e[N],E[N];
+//* -----并查集
+int p[N];
+int find(int x){
+    while(p[x]!=x) x=p[x]=p[p[x]];
+    return p[x];
+}
+void merge(int x,int y){
+    p[find(x)]=y;
+}
+bool cmp(int x,int y){
+    return a[x]<a[y];
+}
+void dfs(int x){
+    for(int v:E[x]){
+        Ans[v]=Ans[x]+1;
+        dfs(v);
     }
 }
+//并查集yyds
 int main()
 {
     freopen("ltc.in","r",stdin);
@@ -49,62 +59,25 @@ int main()
     T=read();
     while(T--){
         n=read();
-        for(int i=0;i<=n+1;++i) Ans[i]=1,e[i].clear();
-        flag1=flag2=1;
+        for(int i=0;i<=n;++i) e[i].clear(),E[i].clear();
         for(int i=1;i<n;++i){
             int u=read(),v=read();
-            if(u!=1||v!=i+1) flag2=0;
-            if(u!=i||v!=i+1) flag1=0;
             e[u].push_back(v);
             e[v].push_back(u);
         }
-        for(int i=1;i<=n;++i) a[i]=read();
-        if(flag1){
-            top=0;
-            for(int i=1;i<=n;++i){
-                while(top&&st[top]<a[i]) --top;
-                Ans[i]+=top;
-                st[++top]=a[i];
-            }
-            top=0;
-            for(int i=n;i;--i){
-                while(top&&st[top]<a[i]) --top;
-                Ans[i]+=top;
-                st[++top]=a[i];
-            }
-            for(int i=1;i<=n;++i) printf("%d ",Ans[i]);
-            putchar('\n');
-            continue;
-        }
-        if(flag2){
-            int cnt=0,now1;
-            for(int i=1;i<=n;++i){
-                b[i].v=a[i];
-                b[i].p=i;
-            }
-            sort(b+1,b+1+n);
-            for(int i=n;i;--i){
-                if(b[i].p!=1) cnt++;
-                else{
-                    now1=i;
-                    break;
-                }
-            }
-            for(int i=1;i<=n;++i){
-                if(i<=now1) Ans[b[i].p]+=cnt+(i!=now1);
-                else{
-                    Ans[b[i].p]+=n-i;
-                }
-            }
-            for(int i=1;i<=n;++i) printf("%d ",Ans[i]);
-            putchar('\n');
-            continue;
-        }
+        for(int i=1;i<=n;++i) a[i]=read(),p[i]=pl[i]=i;
+        sort(pl+1,pl+1+n,cmp);
         for(int i=1;i<=n;++i){
-            ans=1;
-            dfs(i,0,a[i]);
-            printf("%d ",ans);
+            for(int v:e[pl[i]]){
+                if(a[v]<a[pl[i]]){
+                    E[pl[i]].push_back(find(v));
+                    merge(v,pl[i]);
+                }
+            }
         }
+        Ans[pl[n]]=1;
+        dfs(pl[n]);
+        for(int i=1;i<=n;++i) printf("%d ",Ans[i]);
         putchar('\n');
     }
     fclose(stdin);
