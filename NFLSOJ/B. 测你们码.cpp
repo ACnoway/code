@@ -22,27 +22,23 @@ inline int read(){
     }
     return x*f;
 }
-const int N=1000006,mod=1e9+7;
+const int N=1000006,mod=1000000007;
 int T,n,m;
-int er[N];
+int f[N],jc[N];
 string a,b,c,tmp;
 signed main()
 {
     freopen("zood.in","r",stdin);
     freopen("zood.out","w",stdout);
     T=read();
-    er[2]=2;
-    for(int i=3;i<N;++i) er[i]=(er[i-1]*(i-1))%mod;
-    for(int i=1;i<10;++i) tmp+=i+'0';
-    a=b=tmp;
-    int lastn=0;
+    jc[1]=1;
+    for(int i=2;i<N;++i) jc[i]=(jc[i-1]*i)%mod;
+    f[1]=1;
+    for(int i=2;i<N;++i) f[i]=(((i*f[i-1])%mod+jc[i])%mod-i+mod)%mod;
     while(T--){
         n=read(); m=read();
-        a=b=tmp;
-        if(m==2){
-            printf("%d\n",er[n]);
-            continue;
-        }
+        if(n==m) printf("%lld\n",f[n]);
+        else printf("%lld\n",(f[m]+(jc[m]*((jc[n-m]*n)%mod-m+mod)%mod)%mod)%mod);
     }
     fclose(stdin);
     fclose(stdout);
