@@ -15,93 +15,101 @@ int read(){
     return x*f;
 }
 int T,n,m,b,w;
+int ans[210][210];
+int dx[4]={1,0,-1,0},dy[4]={0,1,0,-1};
 int main()
 {
     freopen("nsdd.in","r",stdin);
     freopen("nsdd.out","w",stdout);
     T=read();
     while(T--){
-        n=read();
-        m=read();
-        b=read();
-        w=read();
-        int cha;
-        if(b==w){
-            for(int i=1;i<=n<<2;++i){
-                for(int j=1;j<=m<<2;++j){
-                    if(!w&&!b){
-                        putchar('.');
-                        continue;
-                    }
-                    if((i+j)&1){
-                        if(!w){putchar('.');continue;}
-                        putchar('W');
-                        --w;
-                    }
-                    else{
-                        if(!b){putchar('.');continue;}
-                        putchar('B');
-                        --b;
-                    }
+        n=read(); m=read();
+        b=read(); w=read();
+        n<<=2; m<<=2;
+        if(!w){
+            for(int i=1;i<=n;++i){
+                for(int j=1;j<=m;++j){
+                    putchar('.');
                 }
                 putchar('\n');
             }
+            continue;
         }
-        else if(w<=(b<<1)){
-            cha=w-b;
-            w=b;
-            for(int i=1;i<=n<<2;++i){
-                for(int j=1;j<=m<<2;++j){
-                    if(!cha&&!w&&!b){
-                        putchar('.');
-                        continue;
-                    }
-                    if(!cha){
-                        if((i+j)&1&&w) putchar('W'),--w;
-                        else if(b) putchar('B'),--b;
-                        else putchar('.');
-                        continue;
-                    }
-                    if(i&1){
-                        if((j&1)&&b) putchar('B'),--b;
-                        else if(w) putchar('W'),--w;
-                        else putchar('.');
-                    }
-                    else{
-                        if((j&1)&&cha) putchar('W'),--cha;
-                        else putchar('.');
-                    }
-                }
-                putchar('\n');
-            }
+        for(int i=1;i<=n;++i){
+            for(int j=1;j<=m;++j) ans[i][j]=-1;
         }
-        else{
-            cha=w-b;
-            w=b;
-            for(int i=1;i<=n<<2;++i){
-                for(int j=1;j<=m<<2;++j){
-                    if(!cha&&!w&&!b){
-                        putchar('.');
-                        continue;
-                    }
-                    if(!cha){
-                        if((i+j)&1&&w) putchar('W'),--w;
-                        else if(b) putchar('B'),--b;
-                        else putchar('.');
-                        continue;
-                    }
-                    if(!(i&1)){
-                        if((j&1)&&b) putchar('B'),--b;
-                        else if(w) putchar('W'),--w;
-                        else putchar('.');
-                    }
-                    else{
-                        if((j&1)&&cha) putchar('W'),--cha;
-                        else putchar('.');
-                    }
+        if(!b){
+            ans[1][2]=1;
+            for(int i=1;i<=n;++i){
+                for(int j=1;j<=m;++j){
+                    if(ans[i][j]==1) putchar('W');
+                    else putchar('.');
                 }
                 putchar('\n');
             }
+            continue;
+        }
+        for(int i=2;i<=n;i+=4){
+            if(!b) break;
+            ans[i-1][2]=1;
+            w--;
+            ans[i][2]=0;
+            b--;
+            for(int j=4;j<m;j+=2){
+                if(!b) break;
+                ans[i][j]=0;
+                ans[i][j-1]=1;
+                w--; b--;
+            }
+            if(!b) break;
+            ans[i+1][2]=1;
+            w--;
+            ans[i+2][2]=0;
+            b--;
+        }
+        bool flag=0;
+        for(int i=2;i<=n;i+=4){
+            for(int j=2;j<m;j+=2){
+                if(ans[i][j]==0){
+                    for(int k=0;k<4;++k){
+                        if(!w){
+                            flag=1;
+                            break;
+                        }
+                        int xx=i+dx[k],yy=j+dy[k];
+                        if(ans[xx][yy]==-1){
+                            ans[xx][yy]=1;
+                            w--;
+                        }
+                    }
+                    if(flag) break;
+                }
+            }
+            if(!w){
+                flag=1;
+                break;
+            }
+            if(ans[i+2][2]==0){
+                for(int k=0;k<4;++k){
+                    if(!w){
+                        flag=1;
+                        break;
+                    }
+                    int xx=i+2+dx[k],yy=2+dy[k];
+                    if(ans[xx][yy]==-1){
+                        ans[xx][yy]=1;
+                        w--;
+                    }
+                }
+            }
+            if(flag) break;
+        }
+        for(int i=1;i<=n;++i){
+            for(int j=1;j<=m;++j){
+                if(ans[i][j]==-1) putchar('.');
+                else putchar("BW"[ans[i][j]]);
+            }
+            putchar('\n');
         }
     }
     fclose(stdin);
