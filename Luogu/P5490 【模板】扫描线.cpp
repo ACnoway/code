@@ -76,18 +76,26 @@ signed main()
         xb=read(); yb=read();
         lines[(i<<1)-1]={xa,xb,ya,1};
         lines[i<<1]={xa,xb,yb,-1};
+        //加边，下面的横线权值为1
+        //上面的权值为-1
+        //类似于差分，扫上去时做类似前缀和的操作
         xs[(i<<1)-1]=xa;
         xs[i<<1]=xb;
+        //x去重
     }
     n<<=1;
-    sort(xs+1,xs+n+1);
     sort(lines+1,lines+n+1);
+    //按照y排序，保证扫上去的时候从小到大
+    sort(xs+1,xs+n+1);
     m=unique(xs+1,xs+n+1)-xs-1;
     build(1,1,m-1);
+    //m-1是因为每个节点的l和r分别为xs[l]和xs[r+1]
     int ans=0;
     for(int i=1;i<n;++i){
         gai(1,lines[i].l,lines[i].r,lines[i].w);
+        //扫到这个线段就把它加进线段树里
         ans+=t[1].len*(lines[i+1].h-lines[i].h);
+        //这里len已经是更新好了的，可以直接统计答案
     }
     printf("%lld\n",ans);
     return 0;
