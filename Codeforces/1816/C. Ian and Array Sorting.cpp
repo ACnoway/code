@@ -37,8 +37,8 @@ signed main()
         int ls=0;
         for(int i=1;i<n;++i){
             a[i]-=ls;
-            ls=a[i]-a[i-1]-1;
-            a[i]=a[i-1]+1;
+            ls=a[i]-a[i-1];
+            a[i]=a[i-1];
         }
         a[n]-=ls;
         if(a[n]<a[n-1]) cout<<"No"<<endl;
