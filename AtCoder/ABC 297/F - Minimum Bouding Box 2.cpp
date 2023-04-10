@@ -2,7 +2,6 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
-#define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -22,55 +21,60 @@ inline int read(){
     }
     return x*f;
 }
-const int mod=998244353;
-int n,m,k,ans,sum,cnt,tmp;
+const int N=1000006,mod=998244353;
+int n,m,k;
+int jc[N],jcinv[N];
 int ksm(int a,int b){
-    int aa=1;
+    a%=mod;
+    int res=1;
     while(b){
-        if(b&1) aa*=a,aa%=mod;
-        a*=a;
-        a%=mod;
+        if(b&1) res=1ll*res*a%mod;
+        a=1ll*a*a%mod;
         b>>=1;
     }
-    return aa;
+    return res;
 }
-int gcd(int a,int b){
-    if(!b) return a;
-    return gcd(b,a%b);
+void init(int u){
+    jc[1]=jcinv[1]=1;
+    for(int i=2;i<=u;++i){
+        jc[i]=1ll*jc[i-1]*i%mod;
+        jcinv[i]=1ll*jcinv[i-1]*ksm(i,mod-2)%mod;
+    }
 }
-signed main()
+int C(int x,int y){
+    if(x<y) return 0;
+    if(y==0||x==y) return 1;
+    return 1ll*jc[x]*jcinv[x-y]%mod*jcinv[y]%mod;
+}
+int calc(int i,int j,int k){
+    int cnt=i*j;
+    if(cnt==k) return 1;
+    int all=C(cnt,k);
+    int a=(1ll*C(cnt-i,k)*2%mod+1ll*C(cnt-j,k)*2%mod)%mod;
+    int b=(1ll*C(cnt-i-j+1,k)*4%mod+C(cnt-2*i,k)+C(cnt-2*j,k))%mod;
+    int c=(1ll*C(cnt-2*i-j+2,k)*2%mod+1ll*C(cnt-2*j-i+2,k)*2%mod)%mod;
+    int d=C(cnt-2*i-2*j+4,k);
+    return ((1ll*all-a+b-c+d)%mod+mod)%mod;
+}
+int main()
 {
     n=read();
     m=read();
     k=read();
-    int kk=1;
-    for(int i=2;i<=k;++i){
-        kk*=i;
-        kk%=mod;
+    if(k==1){
+        cout<<1<<endl;
+        return 0;
     }
-    kk=ksm(kk,mod-2);
+    init(n*m);
+    int all=0,p=0;
     for(int i=1;i<=n;++i){
         for(int j=1;j<=m;++j){
-            if(i*j>=k){
-                tmp=1;
-                for(int p=0;p<k;++p){
-                    tmp*=(i*j-p);
-                }
-                cout<<i<<' '<<j<<endl;
-                cnt=(n-i+1)*(m-j+1)*tmp*kk;
-                cnt%=mod;
-                ans+=i*j*cnt;
-                ans%=mod;
-                sum+=cnt;
-                sum%=mod;
-                cout<<ans<<' '<<sum<<endl;
-            }
+            if(i*j<k) continue;
+            int cnt=1ll*calc(i,j,k)*(n-i+1)%mod*(m-j+1)%mod;
+            p=(p+cnt)%mod;
+            all=(all+1ll*cnt*i%mod*j%mod)%mod;
         }
     }
-    int d=gcd(ans,sum);
-    ans/=d; sum/=d;
-    cout<<ans<<' '<<sum<<endl;
-    sum=ksm(sum,mod-2);
-    printf("%lld\n",(ans*sum)%mod);
+    cout<<1ll*all*ksm(p,mod-2)%mod<<endl;
     return 0;
 }
