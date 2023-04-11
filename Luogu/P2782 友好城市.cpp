@@ -16,10 +16,10 @@ int main()
         cin>>t[i].a>>t[i].b;
     }
     sort(t+1,t+n+1,cmp);
-    f[++len]=t[1].a;
+    f[++len]=t[1].b;
     for(int i=2;i<=n;++i){
-        int d=upper_bound(f+1,f+len+1,t[i].a)-f;
-        f[d]=t[i].a;
+        int d=upper_bound(f+1,f+len+1,t[i].b)-f;
+        f[d]=t[i].b;
         if(d>len) ++len;
     }
     cout<<len<<endl;
