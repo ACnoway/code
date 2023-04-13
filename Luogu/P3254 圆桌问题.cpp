@@ -4,6 +4,7 @@
 #include<cmath>
 #include<vector>
 #include<queue>
+#include<cstring>
 #define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
@@ -24,7 +25,7 @@ inline int read(){
     }
     return x*f;
 }
-const int N=200002,inf=2147483647;
+const int N=502,inf=2147483647;
 int n,m,s,t,ans,maxflow;
 int a[N],dep[N],ped[N];
 struct node{
@@ -38,10 +39,8 @@ void addedge(int u,int v,int w){
     head[u]=idx;
 }
 void bfs(){
-    for(int i=0;i<=n+m+2;++i){
-        dep[i]=-1;
-        ped[i]=0;
-    }
+    memset(dep,-1,sizeof(dep));
+    memset(ped,0,sizeof(ped));
     dep[t]=0;
     ped[0]=1;
     queue<int> q;
@@ -78,14 +77,14 @@ int dfs(int x,int flow){
             if(used==flow) return flow;
         }
     }
-    if(--ped[dep[x]]==0) dep[s]=n+m+2;
+    if(--ped[dep[x]]==0) dep[s]=N-1;
     ++dep[x];
     ++ped[dep[x]];
     return used;
 }
 void isap(){
     bfs();
-    while(dep[s]<n+m){
+    while(dep[s]<n+m+2){
         for(int i=0;i<=t;++i) cur[i]=head[i];
         dfs(s,inf);
     }
@@ -115,10 +114,12 @@ signed main()
     if(maxflow==0){
         printf("1\n");
         for(int i=1;i<=n;++i){
+            debug(i);
             for(int j=head[i];j;j=e[j].nxt){
                 int v=e[j].to;
+                debug(v);
                 if(v!=s&&e[j].w){
-                    printf("%d ",v-n);
+                    printf("%lld ",v-n);
                 }
             }
             putchar('\n');
