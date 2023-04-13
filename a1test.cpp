@@ -1,12 +1,16 @@
-#include <iostream>
+#include<bits/stdc++.h>
 using namespace std;
-//        1111110011011111
-// string s="0TFTFFFFFFTFTTFT";
 int main()
 {
-    int t;
-    while(cin>>t){
-        cout<<"not ez"<<endl;
+    int n;
+    cin>>n;
+    for(int i=0;i<n;++i){
+        cout<<i<<':'<<endl;
+        for(int j=0;j<n;++j){
+            for(int k=0;k<n;++k){
+                if((j+k)%n==i) cout<<j<<' '<<k<<endl;
+            }
+        }
     }
     return 0;
 }
