@@ -3,6 +3,7 @@
 #include<algorithm>
 #include<cmath>
 #include<queue>
+#include<cstring>
 #define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
@@ -38,11 +39,9 @@ void addedge(int u,int v,int w){
     head[u]=idx;
 }
 bool bfs(){
-    for(int i=0;i<=n+2;++i){
-        dep[i]=0;
-        ped[i]=0;
-        cur[i]=head[i];
-    }
+    memset(dep,0,sizeof(dep));
+    memset(ped,0,sizeof(ped));
+    memcpy(cur,head,sizeof(head));
     dep[s]=1;
     int p;
     queue<int> q;
