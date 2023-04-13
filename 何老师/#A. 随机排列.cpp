@@ -22,25 +22,30 @@ inline int read(){
     return x*f;
 }
 const int N=200005;
-int n;
-int a[N],b[N],c[N];
+int n,cnt;
+int a[N],b[N],aa[N],bb[N],c[N];
 bool cmp(int x,int y){
     return x>y;
 }
 int main()
 {
     n=read();
-    for(int i=0;i<n;++i) a[i]=read();
-    // sort(a+1,a+n+1,cmp);
-    for(int i=0;i<n;++i) b[i]=read();
-    // sort(b+1,b+n+1,cmp);
-    for(int i=0;i<n;++i){
-        for(int j=0;j<n;++j){
-            int p=(i+j)%n;
-            c[p]=max(c[p],a[i]+b[j]);
+    for(int i=0;i<n;++i) a[i]=read(),aa[a[i]]=i;
+    for(int i=0;i<n;++i) b[i]=read(),bb[b[i]]=i;
+    for(int i=2*n-2;i>=0;--i){
+        for(int j=i-n+1;j<n;++j){
+            if(!c[(aa[i-j]+bb[j])%n]){
+                ++cnt;
+                c[(aa[i-j]+bb[j])%n]=i;
+                if(cnt==n){
+                    for(int k=0;k<n;++k){
+                        printf("%d ",c[k]);
+                    }
+                    putchar('\n');
+                    return 0;
+                }
+            }
         }
     }
-    for(int i=0;i<n;++i) printf("%d ",c[i]);
-    putchar('\n');
     return 0;
 }
