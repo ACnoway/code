@@ -24,37 +24,27 @@ inline int read(){
 }
 const int N=100005;
 int n;
-int a[N],f[N];
+int a[N],qian[N],hou[N];
 signed main()
 {
     n=read();
-    for(int i=1;i<=n;++i) a[i]=read(),f[i]=f[i-1]+a[i];
-    int l,r,ma=0,ans=0;
+    for(int i=1;i<=n;++i) a[i]=read();
     for(int i=1;i<=n;++i){
-        for(int j=i;j<=n;++j){
-            if(f[j]-f[i-1]>ma){
-                ma=f[j]-f[i-1];
-                l=i; r=j;
-            }
-        }
+        qian[i]=max(qian[i-1],0ll)+a[i];
     }
-    ans+=ma;
-    ma=0;
-    for(int i=1;i<l;++i){
-        for(int j=i;j<l;++j){
-            if(f[j]-f[i-1]>ma){
-                ma=f[j]-f[i-1];
-            }
-        }
+    for(int i=1;i<=n;++i){
+        qian[i]=max(qian[i-1],qian[i]);
     }
-    for(int i=r+1;i<=n;++i){
-        for(int j=i;j<=n;++j){
-            if(f[j]-f[i-1]>ma){
-                ma=f[j]-f[i-1];
-            }
-        }
+    for(int i=n;i;--i){
+        hou[i]=max(hou[i+1],0ll)+a[i];
     }
-    ans+=ma;
+    for(int i=n;i;--i){
+        hou[i]=max(hou[i+1],hou[i]);
+    }
+    int ans=qian[1]+hou[2];
+    for(int i=2;i<n;++i){
+        ans=max(ans,qian[i]+hou[i+1]);
+    }
     printf("%lld\n",ans);
     return 0;
 }
