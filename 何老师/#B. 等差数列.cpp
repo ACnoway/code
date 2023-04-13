@@ -28,28 +28,17 @@ int a[N],f[N];
 signed main()
 {
     n=read(); m=read();
-    if(n<=1000){
-        while(m--){
-            l=read(); r=read();
-            s=read(); e=read();
-            int d=(e-s)/(r-l);
-            for(int i=l;i<=r;++i){
-                a[i]+=(i-l)*d+s;
-            }
-        }
-        for(int i=1;i<=n;++i) ans^=a[i];
-        printf("%lld\n",ans);
-        return 0;
-    }
     while(m--){
         l=read(); r=read();
         s=read(); e=read();
-        if(s==e) a[l]+=s,a[r+1]-=s;
+        int d=(e-s)/(r-l);
+        a[l]+=s;
+        a[l+1]+=d-s;
+        a[r+1]-=e+d;
+        a[r+2]-=s-s-e;
     }
-    for(int i=1;i<=n;++i){
-        a[i]+=a[i-1];
-        ans^=a[i];
-    }
+    for(int i=1;i<=n;++i) a[i]+=a[i-1];
+    for(int i=1;i<=n;++i) a[i]+=a[i-1],ans^=a[i];
     printf("%lld\n",ans);
     return 0;
 }
