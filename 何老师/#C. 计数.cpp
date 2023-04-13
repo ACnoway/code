@@ -2,6 +2,7 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
+#define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -21,27 +22,17 @@ inline int read(){
     }
     return x*f;
 }
+const int N=1e7+10,mod=1e9+7;
 int n,m,ans,tmp;
-int a[20];
-int main()
+int a[20],jc[N];
+signed main()
 {
     n=read();
     m=read();
-    for(int i=1;i<=n;++i) a[i]=i;
-    do{
-        bool flag=1;
-        for(int i=m+1;i<=n;++i){
-            tmp=n+1;
-            for(int j=i-m;j<i;++j){
-                tmp=min(tmp,a[j]);
-            }
-            if(a[i]<=tmp){
-                flag=0;
-                break;
-            }
-        }
-        if(flag) ans++;
-    }while(next_permutation(a+1,a+n+1));
-    printf("%d\n",ans);
+    jc[0]=1;
+    for(int i=1;i<=n;++i) jc[i]=(jc[i-1]*i)%mod;
+    for(int i=1;i<=m;++i){
+        
+    }
     return 0;
 }

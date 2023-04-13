@@ -1,5 +1,5 @@
 var userlist = 
-["AC？别闹！","_XHZS_XY_","zzzzzz2","EZ_XHX"];
+["AC？别闹！","_XHZS_XY_","zzzzzz2","EZ_XHX","Lavaloon","Strelitzia_"];
 var pages = 1;
 var cd = 10000;
 function onSearch(obj)
