@@ -3,6 +3,7 @@
 #include<algorithm>
 #include<cmath>
 #include<queue>
+#include<cstring>
 #define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
@@ -37,10 +38,8 @@ void addedge(int u,int v,int w){
     head[u]=idx;
 }
 void bfs(){
-    for(int i=0;i<=n+2;++i){
-        dep[i]=-1;
-        ped[i]=0;
-    }
+    memset(dep,-1,sizeof(dep));
+    memset(ped,0,sizeof(ped));
     //bfs要逆序
     dep[t]=0;
     ped[0]=1;
@@ -83,7 +82,7 @@ int dfs(int x,int flow){
     //走到这里就说明还有剩余的流量没被用完
     //这样的话就要去更改这个点的深度，把它往后推一个
     //这样就能把这个点和其他的点分开，因为它跑不满给它的流量
-    if(--ped[dep[x]]==0) dep[s]=n+1;
+    if(--ped[dep[x]]==0) dep[s]=N-1;
     ++dep[x];
     ++ped[dep[x]];
     return used;
@@ -92,7 +91,7 @@ int ISAP(){
     maxflow=0;
     bfs();
     while(dep[s]<n){
-        for(int i=0;i<=n;++i) cur[i]=head[i];
+        memcpy(cur,head,sizeof(head));
         dfs(s,inf);
     }
     return maxflow;

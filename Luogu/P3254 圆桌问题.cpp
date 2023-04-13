@@ -38,7 +38,7 @@ void addedge(int u,int v,int w){
     head[u]=idx;
 }
 void bfs(){
-    for(int i=s;i<=t;++i){
+    for(int i=0;i<=n+m+2;++i){
         dep[i]=-1;
         ped[i]=0;
     }
@@ -78,15 +78,15 @@ int dfs(int x,int flow){
             if(used==flow) return flow;
         }
     }
-    if(--ped[dep[x]]==0) dep[s]=t+2;
+    if(--ped[dep[x]]==0) dep[s]=n+m+2;
     ++dep[x];
     ++ped[dep[x]];
     return used;
 }
 void isap(){
     bfs();
-    while(dep[s]<=t){
-        for(int i=s;i<=t;++i) cur[i]=head[i];
+    while(dep[s]<n+m){
+        for(int i=0;i<=t;++i) cur[i]=head[i];
         dfs(s,inf);
     }
 }
@@ -102,9 +102,9 @@ signed main()
     }
     for(int i=1;i<=n;++i){
         int x=read();
+        maxflow+=x;
         addedge(s,i,x);
         addedge(i,s,0);
-        maxflow+=x;
     }
     for(int i=1;i<=m;++i){
         int x=read();
@@ -112,7 +112,7 @@ signed main()
         addedge(t,i+n,0);
     }
     isap();
-    if(!maxflow){
+    if(maxflow==0){
         printf("1\n");
         for(int i=1;i<=n;++i){
             for(int j=head[i];j;j=e[j].nxt){
