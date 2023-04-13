@@ -25,12 +25,12 @@ inline int read(){
     }
     return x*f;
 }
-const int N=502,inf=2147483647;
+const int N=50002,inf=2147483647;
 int n,m,s,t,ans,maxflow;
 int a[N],dep[N],ped[N];
 struct node{
     int to,nxt,w;
-}e[N];
+}e[N<<3];
 int idx=1,head[N],cur[N];
 void addedge(int u,int v,int w){
     e[++idx].to=v;
@@ -84,7 +84,7 @@ int dfs(int x,int flow){
 }
 void isap(){
     bfs();
-    while(dep[s]<n+m+2){
+    while(dep[s]<n+m){
         for(int i=0;i<=t;++i) cur[i]=head[i];
         dfs(s,inf);
     }
@@ -114,11 +114,9 @@ signed main()
     if(maxflow==0){
         printf("1\n");
         for(int i=1;i<=n;++i){
-            debug(i);
             for(int j=head[i];j;j=e[j].nxt){
                 int v=e[j].to;
-                debug(v);
-                if(v!=s&&e[j].w){
+                if(v!=s&&e[j^1].w){
                     printf("%lld ",v-n);
                 }
             }
