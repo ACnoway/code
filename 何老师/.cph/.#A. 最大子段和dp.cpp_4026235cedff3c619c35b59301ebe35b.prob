@@ -1,0 +1,1 @@
+{"name":"Local: #A","url":"e:\\OI\\code\\何老师\\#A. 最大子段和dp.cpp","tests":[{"id":1681368783560,"input":"7\n2 -4 3 -1 2 -4 3","output":"7"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\OI\\code\\何老师\\#A. 最大子段和dp.cpp","group":"local","local":true}

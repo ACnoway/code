@@ -1,0 +1,1 @@
+{"name":"Local: #B","url":"e:\\OI\\code\\何老师\\#B. 等差数列.cpp","tests":[{"id":1681367541760,"input":"5 2\n1 5 2 2\n2 4 1 1","output":"3"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\OI\\code\\何老师\\#B. 等差数列.cpp","group":"local","local":true}
