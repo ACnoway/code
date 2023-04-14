@@ -1,0 +1,1 @@
+{"name":"Local: #A","url":"e:\\OI\\code\\何老师\\#A. 蛇形矩阵.cpp","tests":[{"id":1681454285950,"input":"5\n13\n14\n15\n891747771\n807441728","output":"4 4\n4 3\n4 2\n29863 8727\n28416 27329"},{"id":1681454396004,"input":"1\n999999999999999999","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\OI\\code\\何老师\\#A. 蛇形矩阵.cpp","group":"local","local":true}

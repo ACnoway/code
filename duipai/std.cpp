@@ -1,42 +1,15 @@
 #include<iostream>
-#include<cstdio>
-#include<algorithm>
 #include<cmath>
 #define int long long
-#ifdef ONLINE_JUDGE
-#define debug(x)
-#else
-#define debug(x) cout<<' '<<#x<<'='<<x<<endl
-#endif
 using namespace std;
-inline int read(){
-    int x=0,f=1;
-    char c=getchar();
-    while(c<'0'||c>'9'){
-        if(c=='-') f=-1;
-        c=getchar();
-    }
-    while(c>='0'&&c<='9'){
-        x=(x<<3)+(x<<1)+(c^48);
-        c=getchar();
-    }
-    return x*f;
-}
-const int N=5e5+10;
-int n,m,l,r,s,e,ans;
-int a[N],f[N];
+int t,n,k,l;
 signed main()
 {
-    n=read(); m=read();
-    while(m--){
-        l=read(); r=read();
-        s=read(); e=read();
-        int d=(e-s)/(r-l);
-        a[l]+=s;
-        a[l+1]+=d;
-        a[r+1]-=e;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n,k=ceil(sqrt(n)),l=n-(k-1)*(k-1);
+        if(k&1)cout<<min(k+k-l,k)<<' '<<min(l,k)<<endl;
+        else cout<<min(l,k)<<' '<<min(k+k-l,k)<<endl;
     }
-    for(int i=1;i<=n;++i) a[i]+=a[i-1],ans^=a[i];
-    printf("%lld\n",ans);
-    return 0;
 }
