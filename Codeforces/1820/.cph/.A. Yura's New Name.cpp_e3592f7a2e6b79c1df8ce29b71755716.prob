@@ -1,0 +1,1 @@
+{"name":"Local: A","url":"e:\\OI\\code\\Codeforces\\1820\\A. Yura's New Name.cpp","tests":[{"id":1681550122944,"input":"7\n^______^\n___^_^^^_^___^\n^_\n^\n^_^^^^^_^_^^\n___^^\n_\n","output":"5\n5\n1\n1\n0\n3\n2\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\OI\\code\\Codeforces\\1820\\A. Yura's New Name.cpp","group":"local","local":true}
