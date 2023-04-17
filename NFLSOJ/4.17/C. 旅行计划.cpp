@@ -24,7 +24,7 @@ inline int read(){
 }
 const int N=1000005;
 int n,m,dfid;
-int a[N],fa[N],dfn[N],v[N<<2];
+int a[N],fa[N],dfn[N];
 vector<int> e[N];
 void dfs(int x,int die){
     fa[x]=die;
@@ -34,6 +34,33 @@ void dfs(int x,int die){
         dfs(v,x);
     }
 }
+
+//* -----树剖
+int son[N],fa[N],dep[N],siz[N],top[N];
+bool vis[N];
+void dfs1(int x,int die){
+    siz[x]=1;
+    vis[x]=1;
+    dep[x]=dep[die]+1;
+    fa[x]=die;
+    for(int v:e[x]){
+        if(vis[v]) continue;
+        dfs1(v,x);
+        siz[x]+=siz[v];
+        if(siz[v]>siz[son[x]]) son[x]=v;
+    }
+}
+void dfs2(int x,int topf){
+    top[x]=topf;
+    if(son[x]) dfs2(son[x],topf);
+    for(int v:e[x]){
+        if(v==fa[x]||v==son[x]) continue;
+        dfs2(v,v);
+    }
+}
+
+//* --------线段树
+int v[N<<2];
 void build(int x,int l,int r){
     if(l==r){
         v[x]=a[l];
@@ -73,32 +100,6 @@ int main()
     cout.tie(0);
     cin>>n;
     for(int i=1;i<=n;++i) cin>>a[i];
-    for(int i=1;i<n;++i){
-        int u,v;
-        cin>>u>>v;
-        e[u].push_back(v);
-        e[v].push_back(u);
-    }
-    // dfs(1,0);
-    build(1,1,n);
-    cin>>m;
-    while(m--){
-        char op;
-        int x,y;
-        cin>>op>>x>>y;
-        if(op=='Q'){
-            int ans=1,l=x,r=x+a[x];
-            // while(r<y){
-                int d=query(1,1,n,l,r);
-                r+=d;
-                ++ans;
-            // }
-            cout<<ans<<endl;
-        }
-        else{
-            a[x]=y;
-            modify(1,1,n,y,x);
-        }
-    }
+    
     return 0;
 }
