@@ -1,218 +1,228 @@
-#include <iostream>
-#include <algorithm>
-#define mod 1000000007
-#define int long long
+#include <bits/stdc++.h>
+typedef long long ll;
+typedef unsigned long long ull;
+#define rep(i, a, b) for (int i = (a); i <= (b); i++)
+#define per(i, a, b) for (int i = (a); i >= (b); i--)
+#define Ede(i, u) for (int i = head[u]; i; i = e[i].nxt)
 using namespace std;
-int kd()
+
+bool Mb;
+
+#define eb emplace_back
+typedef pair<int, int> pii;
+#define mp make_pair
+#define fi first
+#define se second
+
+inline int read()
 {
     int x = 0, f = 1;
-    char a = getchar();
-    while (a < '0' || a > '9')
-    {
-        if (a == '-')
-        {
-            f = -1;
-        }
-        a = getchar();
-    }
-    while (a >= '0' && a <= '9')
-    {
-        x = x * 10 + a - '0';
-        a = getchar();
-    }
+    char c = getchar();
+    while (c < '0' || c > '9')
+        f = (c == '-') ? -1 : 1, c = getchar();
+    while (c >= '0' && c <= '9')
+        x = x * 10 + c - 48, c = getchar();
     return x * f;
 }
-int n, g, l;
-int q;
-int dui[100010], cnt;
-int ans[100010];
-bool cmp(int x, int y)
+
+const int N = 1e5 + 10;
+int n, m, a[N];
+vector<int> g[N];
+
+int par[N], siz[N], son[N], dep[N];
+void dfs1(int u, int fa)
 {
-    return x < y;
+    par[u] = fa, siz[u] = 1, dep[u] = dep[fa] + 1;
+    for (auto v : g[u])
+        if (v != fa)
+        {
+            dfs1(v, u), siz[u] += siz[v];
+            if (siz[v] > siz[son[u]])
+                son[u] = v;
+        }
 }
-int gd[2010][2010];
-int lm[2010][2010];
-int f[2010][2010];
-int gcd(int x, int y)
+
+int tim, top[N], dfn[N], rev[N];
+void dfs2(int u, int tp)
 {
-    if (y == 0)
-    {
-        return x;
-    }
-    return gcd(y, x % y);
+    top[u] = tp, dfn[u] = ++tim, rev[tim] = u;
+    if (son[u])
+        dfs2(son[u], tp);
+    for (auto v : g[u])
+        if (v != par[u] && v != son[u])
+            dfs2(v, v);
 }
-int er;
-int ksm(int x, int y)
+
+int calc(int x, int y)
 {
-    int ans = 1;
-    while (y)
+    while (top[x] != top[y])
     {
-        if (y % 2 == 1)
-        {
-            ans = 1ll * ans * x % mod;
-        }
-        x = 1ll * x * x % mod;
-        y /= 2;
+        if (dep[top[x]] < dep[top[y]])
+            swap(x, y);
+        x = par[top[x]];
     }
-    return ans;
+    return dep[x] < dep[y] ? x : y;
 }
-signed main()
+
+struct info
 {
-    er = ksm(2, mod - 2);
-    cin >> n >> g >> l;
-    if (l % g != 0)
+    int num, rng;
+};
+struct vec
+{
+    info f;
+    int g;
+};
+struct mat
+{
+    info f[20];
+    int g[20];
+};
+struct node
+{
+    mat up, dw;
+} dat[N << 2];
+
+bool operator<(const info &a, const info &b) {
+    return a.num == b.num ? a.rng > b.rng : a.num < b.num;
+}
+info operator+(const int &a, const info &b) {
+    return (info){a + b.num, b.rng};
+}
+vec operator+(const vec &a, const mat &b)
+{
+    vec c;
+    c.f = min(a.f.num + b.f[a.f.rng], a.f.num + 1 + b.f[a.g]);
+    c.g = b.g[a.g];
+    return c;
+}
+mat operator+(const mat &a, const mat &b)
+{
+    mat c;
+    rep(i, 0, 19)
+        c.f[i] = min(a.f[i].num + b.f[a.f[i].rng], a.f[i].num + 1 + b.f[a.g[i]]),
+        c.g[i] = b.g[a.g[i]];
+    return c;
+}
+
+void pushup(int p)
+{
+    dat[p].dw = dat[p << 1].dw + dat[p << 1 | 1].dw;
+    dat[p].up = dat[p << 1 | 1].up + dat[p << 1].up;
+}
+
+void bui(int p, int l, int r)
+{
+    if (l == r)
     {
-        cin >> q;
-        while (q--)
-        {
-            int x;
-            x = kd();
-            cout << 0 << endl;
-        }
-        return 0;
+        mat cur;
+        cur.f[0] = (info){1, a[rev[l]] - 1}, cur.g[0] = a[rev[l]] - 1;
+        rep(i, 1, 19) cur.f[i] = (info){0, i - 1}, cur.g[i] = max(a[rev[l]] - 1, i - 1);
+        dat[p].up = dat[p].dw = cur;
+        return;
     }
-    for (int i = 1; i * i <= l; i++)
+    int mid = (l + r) >> 1;
+    bui(p << 1, l, mid), bui(p << 1 | 1, mid + 1, r), pushup(p);
+}
+
+void moi(int p, int l, int r, int k)
+{
+    if (l == r)
     {
-        if (l % i == 0)
-        {
-            if (i % g == 0)
-            {
-                dui[++cnt] = i;
-            }
-            if (i * i < l)
-            {
-                if ((l / i) % g == 0)
-                {
-                    dui[++cnt] = l / i;
-                }
-            }
-        }
+        mat cur;
+        cur.f[0] = (info){1, a[rev[l]] - 1}, cur.g[0] = a[rev[l]] - 1;
+        rep(i, 1, 19) cur.f[i] = (info){0, i - 1}, cur.g[i] = max(a[rev[l]] - 1, i - 1);
+        dat[p].up = dat[p].dw = cur;
+        return;
     }
-    sort(dui + 1, dui + cnt + 1, cmp);
-    for (int i = 1; i <= cnt; i++)
+    int mid = (l + r) >> 1;
+    if (k <= mid)
+        moi(p << 1, l, mid, k);
+    else
+        moi(p << 1 | 1, mid + 1, r, k);
+    pushup(p);
+}
+
+void app1(int p, int l, int r, int L, int R, vec &ans)
+{
+    if (L <= l && r <= R)
+        return ans = ans + dat[p].up, void();
+    int mid = (l + r) >> 1;
+    if (R > mid)
+        app1(p << 1 | 1, mid + 1, r, L, R, ans);
+    if (L <= mid)
+        app1(p << 1, l, mid, L, R, ans);
+}
+
+void app2(int p, int l, int r, int L, int R, vec &ans)
+{
+    if (L <= l && r <= R)
+        return ans = ans + dat[p].dw, void();
+    int mid = (l + r) >> 1;
+    if (L <= mid)
+        app2(p << 1, l, mid, L, R, ans);
+    if (R > mid)
+        app2(p << 1 | 1, mid + 1, r, L, R, ans);
+}
+
+void query(int x, int y)
+{
+    vec ans = (vec){(info){0, 0}, 0};
+    int p = calc(x, y);
+
+    while (top[x] != top[p])
+        app1(1, 1, n, dfn[top[x]], dfn[x], ans), x = par[top[x]];
+    if (x != p)
+        app1(1, 1, n, dfn[p] + 1, dfn[x], ans);
+
+    if (y != p)
     {
-        for (int j = i; j <= cnt; j++)
-        {
-            gd[i][j] = gcd(dui[i], dui[j]);
-            lm[i][j] = dui[i] * dui[j] / gd[i][j];
-            int l = 1, r = cnt;
-            if (gd[i][j] < dui[l] || gd[i][j] > dui[r])
-            {
-                gd[i][j] = 0;
-            }
-            else
-            {
-                while (l < r)
-                {
-                    int mid = (l + r) / 2;
-                    if (dui[mid] >= gd[i][j])
-                    {
-                        r = mid;
-                    }
-                    else
-                    {
-                        l = mid + 1;
-                    }
-                }
-                if (dui[l] == gd[i][j])
-                {
-                    gd[i][j] = l;
-                }
-                else
-                {
-                    gd[i][j] = 0;
-                }
-            }
-            l = 1, r = cnt;
-            if (lm[i][j] < dui[l] || lm[i][j] > dui[r])
-            {
-                lm[i][j] = 0;
-            }
-            else
-            {
-                while (l < r)
-                {
-                    int mid = (l + r) / 2;
-                    if (dui[mid] >= lm[i][j])
-                    {
-                        r = mid;
-                    }
-                    else
-                    {
-                        l = mid + 1;
-                    }
-                }
-                if (dui[l] == lm[i][j])
-                {
-                    lm[i][j] = l;
-                }
-                else
-                {
-                    lm[i][j] = 0;
-                }
-            }
-            gd[j][i] = gd[i][j];
-            lm[j][i] = lm[i][j];
-        }
+        y = par[y];
+        vector<pii> stk;
+        while (top[y] != top[p])
+            stk.eb(mp(dfn[top[y]], dfn[y])), y = par[top[y]];
+        if (dep[y] >= dep[p])
+            stk.eb(mp(dfn[p], dfn[y]));
+        reverse(stk.begin(), stk.end());
+        for (auto o : stk)
+            app2(1, 1, n, o.fi, o.se, ans);
     }
-    for (int i = 1; i <= cnt && dui[i] <= n; i++)
+
+    printf("%d\n", ans.f.num);
+}
+
+bool Me;
+
+int main()
+{
+
+    // cerr << (&Mb - &Me) / 1024.0 / 1024.0 << endl;
+
+    freopen("travel.in", "r", stdin);
+    freopen("travel.out", "w", stdout);
+
+    n = read();
+    rep(i, 1, n) a[i] = read();
+    rep(i, 2, n)
     {
-        for (int j = 1; j <= cnt; j++)
-        {
-            for (int k = cnt; k >= j; k--)
-            {
-                f[gd[i][j]][lm[i][k]] = (f[gd[i][j]][lm[i][k]] + f[j][k]) % mod;
-            }
-        }
-        f[i][i]++;
+        int u = read(), v = read();
+        g[u].eb(v), g[v].eb(u);
     }
-    for (int i = 1; i <= cnt && dui[i] <= n; i++)
+
+    dfs1(1, 0);
+    dfs2(1, 1);
+    bui(1, 1, n);
+
+    m = read();
+    while (m--)
     {
-        for (int j = 1; j <= cnt; j++)
-        {
-            for (int k = j; k <= cnt; k++)
-            {
-                if (gd[i][j] == 1 && lm[i][k] == cnt)
-                {
-                    ans[i] = (ans[i] + f[j][k]) % mod;
-                }
-            }
-        }
-        ans[i] = 1ll * ans[i] * er % mod;
-    }
-    cin >> q;
-    while (q--)
-    {
-        int x;
-        x = kd();
-        int l = 1, r = cnt;
-        if (x < dui[l] || x > dui[r])
-        {
-            cout << 0 << endl;
-        }
+        char c[5];
+        scanf("%s", c);
+        int x = read(), y = read();
+        if (c[0] == 'C')
+            a[x] = y, moi(1, 1, n, dfn[x]);
         else
-        {
-            while (l < r)
-            {
-                int mid = (l + r) / 2;
-                if (dui[mid] >= x)
-                {
-                    r = mid;
-                }
-                else
-                {
-                    l = mid + 1;
-                }
-            }
-            if (dui[l] != x)
-            {
-                cout << 0 << endl;
-            }
-            else
-            {
-                cout << ans[l] << endl;
-            }
-        }
+            query(x, y);
     }
     return 0;
 }
