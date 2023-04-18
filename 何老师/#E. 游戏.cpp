@@ -97,13 +97,13 @@ signed main()
     s=0; t=n+n+1;
     for(int i=1;i<=n;++i){
         a[i]=read();
-        addedge(s,i,a[i]);
-        addedge(i,s,0);
+        addedge(i+n,t,a[i]);
+        addedge(t,i+n,0);
     }
     for(int i=1;i<=n;++i){
         b[i]=read();
-        addedge(i+n,t,b[i]);
-        addedge(t,i+n,0);
+        addedge(s,i,b[i]);
+        addedge(i,s,0);
     }
     for(int i=1;i<=m;++i){
         int u=read(),v=read();
