@@ -23,23 +23,37 @@ inline int read(){
     }
     return x*f;
 }
-const int N=2003;
+const int N=2000003;
 int n,m;
 int a[N];
-bool b[N];
+char ans[N];
+//* -----并查集
+int p[N],val[N];
+int find(int x){
+    if(p[x]!=x){
+        int tmp=p[x];
+        p[x]=find(p[x]);
+        val[x]+=val[tmp];
+    }
+    return p[x];
+}
+void merge(int x,int y){
+    p[find(x)]=find(y);
+}
 signed main()
 {
     n=read(); m=read();
-    for(int i=1;i<=m;++i){
-        int u=read(),v=read(),w=read();
-        if(b[u]&&a[u]!=w){
-            putchar('W');
+    for(int i=1;i<=n;++i) p[i]=i,val[i]=0;
+    while(m--){
+        int u=read(),v=read(),w=read(),uu=find(u),vv=find(v);
+        if(uu==vv){
+            if(val[u]-val[v]!=w) putchar('W');
+            else putchar('R');
+            continue;
         }
-        else{
-            b[u]=1;
-            a[u]=w;
-            putchar('R');
-        }
+        p[uu]=vv;
+        val[uu]=val[v]-val[u]+w;
+        putchar('R');
     }
     return 0;
 }
