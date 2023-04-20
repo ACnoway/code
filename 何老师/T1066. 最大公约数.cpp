@@ -22,16 +22,26 @@ inline int read(){
     return x*f;
 }
 const int N=1000006;
-int n,k;
-int a[N];
+int n,m,k;
+int a[N],tong[N];
 int main()
 {
     n=read(); k=read();
-    for(int i=1;i<=n;++i) a[i]=read();
-    int ans=0;
     for(int i=1;i<=n;++i){
-        for(int j=i+1;j<=n;++j) ans=max(ans,__gcd(a[i],a[j]));
+        a[i]=read();
+        ++tong[a[i]];
+        m=max(m,a[i]);
     }
-    cout<<ans<<endl;
+    int cnt=0;
+    for(int i=m;i;--i){
+        cnt=0;
+        for(int j=i;j<=m;j+=i){
+            cnt+=tong[j];
+        }
+        if(cnt>=k){
+            cout<<i<<endl;
+            return 0;
+        }
+    }
     return 0;
 }
