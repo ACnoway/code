@@ -1,0 +1,1 @@
+{"name":"Local: C","url":"e:\\OI\\code\\Codeforces\\1822\\C. Bun Lover.cpp","tests":[{"id":1682347836752,"input":"4\n4\n5\n6\n179179179","output":"26\n37\n50\n32105178545472401"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\OI\\code\\Codeforces\\1822\\C. Bun Lover.cpp","group":"local","local":true}
