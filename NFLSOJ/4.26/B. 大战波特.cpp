@@ -22,31 +22,26 @@ inline int read(){
     }
     return x*f;
 }
+const int N=1000010;
 int n,x,r,p,k,rc,pc;
 string s;
+int vp[N],vr[N],val[N];
+bool cmp(int x,int y){
+    return x>y;
+}
 signed main()
 {
     freopen("bot.in","r",stdin);
     freopen("bot.out","w",stdout);
     cin>>n>>x>>r>>p>>k>>s;
-    if(r==0){
-        int ans=0;
-        for(int i=0;i<n;++i){
-            if(pc<k) ++pc;
-            ans+=x+pc*p;
-        }
-        cout<<ans<<endl;
+    int ans=0;
+    for(int i=0;i<n;++i){
+        if(s[i]=='0') vp[++pc]=(n-i)*p;
+        else vr[++rc]=(n-i)*(r+p);
+        ans+=x-rc*r;
     }
-    else if(p==0){
-        int ans=0;
-        for(int i=0;i<n;++i){
-            if(s[i]=='1'){
-                ++rc;
-                if(pc<k) ++pc,--rc;
-            }
-            ans+=x+pc*p-rc*r;
-        }
-        cout<<ans<<endl;
-    }
+    merge(vp+1,vp+pc+1,vr+1,vr+rc+1,val+1,cmp);
+    for(int i=1;i<=k;++i) ans+=val[i];
+    cout<<ans<<endl;
     return 0;
 }
