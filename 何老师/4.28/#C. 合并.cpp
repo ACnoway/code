@@ -3,7 +3,8 @@
 #include<algorithm>
 #include<cmath>
 #include<vector>
-#include<map>
+#include<queue>
+#define int long long 
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -23,40 +24,48 @@ inline int read(){
     }
     return x*f;
 }
+typedef pair<int,int> pii;
 const int N=150005,inf=1000000009;
 int n;
 int a[N];
-map<int,int> m;
-vector<int> p;
-int main()
+priority_queue<pii,vector<pii>,greater<pii> > q;
+struct node{
+    int v,id;
+}ans[N];
+int cnt;
+bool cmp(node a,node b){
+    return a.id<b.id;
+}
+signed main()
 {
     n=read();
-    for(int i=1;i<=n;++i) a[i]=read(),++m[a[i]];
-    int mi;
-    while(1){
-        mi=inf;
-        p.clear();
-        for(int i=1;i<=n;++i){
-            if(a[i]<mi&&m[a[i]]>1){
-                mi=a[i];
-                p.clear();
-                p.push_back(i);
-            }
-            else if(a[i]==mi){
-                p.push_back(i);
-            }
+    for(int i=1;i<=n;++i){
+        a[i]=read();
+        q.emplace((pii){a[i],i});
+    }
+    while(!q.empty()){
+        int u=q.top().second;
+        q.pop();
+        if(q.empty()){
+            ans[++cnt].v=a[u];
+            ans[cnt].id=u;
+            break;
         }
-        if(p.size()<2) break;
-        for(int i=0;i+1<p.size();i+=2){
-            m[mi]-=2;
-            a[p[i+1]]=2*mi;
-            ++m[a[p[i+1]]];
-            a[p[i]]=inf+1;
+        if(a[u]!=q.top().first){
+            ans[++cnt].v=a[u];
+            ans[cnt].id=u;
+        }
+        else{
+            u=q.top().second;
+            q.pop();
+            a[u]=a[u]*2;
+            q.emplace((pii){a[u],u});
         }
     }
-    p.clear();
-    for(int i=1;i<=n;++i) if(a[i]!=inf+1) p.push_back(a[i]);
-    printf("%d\n",p.size());
-    for(int i:p) printf("%d ",i);
+    cout<<cnt<<endl;
+    sort(ans+1,ans+cnt+1,cmp);
+    for(int i=1;i<=cnt;++i){
+        cout<<ans[i].v<<' ';
+    }
     return 0;
 }
