@@ -26,30 +26,30 @@ inline int read(){
 const int N=50;
 int n,m;
 int a[N];
-set<int> sa,sb;
-void dfs(int x,int sum,int r,set<int> &s){
+int f[2][1000010];
+void dfs(int x,int r,int sum,int d){
     if(x>r){
-        s.insert(sum%m);
+        f[d][++f[d][0]]=sum%m;
         return;
     }
-    dfs(x+1,sum,r,s);
-    dfs(x+1,sum+a[x],r,s);
+    dfs(x+1,r,sum,d);
+    dfs(x+1,r,sum+a[x],d);
 }
 signed main()
 {
     n=read(); m=read();
     for(int i=1;i<=n;++i) a[i]=read();
     int mid=n>>1;
-    dfs(1,0,mid,sa);
-    dfs(mid+1,0,n,sb);
-    int ans=0;
-    for(int i:sa){
-        int tmp=m-1-i;
-        while(tmp){
-            if(sb.find(tmp)!=sb.end()) break;
-            --tmp;
+    dfs(1,mid,0,0);
+    dfs(mid+1,n,0,1);
+    sort(f[0]+1,f[0]+f[0][0]+1);
+    sort(f[1]+1,f[1]+f[1][0]+1);
+    int ans=0,j=f[1][0];
+    for(int i=1;i<=f[0][0];++i){
+        while(f[0][i]+f[1][j]>=m&&j>1){
+            --j;
         }
-        ans=max(ans,i+tmp);
+        ans=max(ans,max((f[0][i]+f[1][f[1][0]])%m,(f[0][i]+f[1][j])%m));
     }
     cout<<ans<<endl;
     return 0;
