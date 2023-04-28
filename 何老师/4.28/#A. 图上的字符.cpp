@@ -56,6 +56,7 @@ int main()
         for(int i=1;i<=n;++i){
             a[i]=s[i-1]-'a';
             e[i].clear();
+            ru[i]=0;
             for(int j=0;j<27;++j) f[i][j]=0;
         }
         for(int i=1;i<=m;++i){
