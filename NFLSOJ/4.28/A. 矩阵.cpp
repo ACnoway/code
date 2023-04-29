@@ -25,7 +25,8 @@ inline int read(){
 }
 const int N=3003,mod=998244353;
 int T,n;
-int a[N][N],b[N][N],c[N][N],d[N][N];
+int a[N][N],b[N][N],c[N][N];
+int d[N],sa[N],sb[N],sc[N];
 signed main()
 {
     freopen("matrix.in","r",stdin);
@@ -43,27 +44,34 @@ signed main()
         for(int i=1;i<=n;++i){
             for(int j=1;j<=n;++j) c[i][j]=read();
         }
-        if(n>300){
-            if(rand()%2) cout<<"Yes"<<endl;
-            else cout<<"No"<<endl;
-            continue;
+        for(int i=1;i<=n;++i){
+            d[i]=rand()%mod+1;
+            sa[i]=sb[i]=sc[i]=0;
         }
-        for(int i=0;i<=n;++i){
-            for(int j=0;j<=n;++j) d[i][j]=0;
+        for(int i=1;i<=n;++i){
+            for(int k=1;k<=n;++k){
+                sa[i]+=d[k]*a[k][i]%mod;
+                sa[i]%=mod;
+            }
+        }
+        for(int i=1;i<=n;++i){
+            for(int k=1;k<=n;++k){
+                sb[i]+=sa[k]*b[k][i]%mod;
+                sb[i]%=mod;
+            }
+        }
+        for(int i=1;i<=n;++i){
+            for(int k=1;k<=n;++k){
+                sc[i]+=d[k]*c[k][i]%mod;
+                sc[i]%=mod;
+            }
         }
         bool flag=1;
         for(int i=1;i<=n;++i){
-            for(int j=1;j<=n;++j){
-                for(int k=1;k<=n;++k){
-                    d[i][j]+=a[i][k]*b[k][j]%mod;
-                    d[i][j]%=mod;
-                }
-                if(d[i][j]!=c[i][j]){
-                    flag=0;
-                    break;
-                }
+            if(sc[i]!=sb[i]){
+                flag=0;
+                break;
             }
-            if(!flag) break;
         }
         if(flag) cout<<"Yes"<<endl;
         else cout<<"No"<<endl;
