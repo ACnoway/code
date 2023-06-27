@@ -2,7 +2,6 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
-#define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -22,21 +21,23 @@ inline int read(){
     }
     return x*f;
 }
-const int mod=5000011;
-int n,m,k,ans=0;
-int f[100005];
-signed main()
+const int mod=1e9+7;
+int T,n,m;
+int main()
 {
-    n=read();
-    m=read();
-    k=1;
-    for(int i=1;i<=n;++i) f[i]=i;
-    int lt=0;
-    for(int i=m;i<=m;++i){
-        lt=n-(i-1)*(k+1);
-        ans+=f[lt];
-        for(int j=1;j<=lt;++j) f[j]+=f[j-1];
+    T=read();
+    int ok,all;
+    while(T--){
+        n=read(); m=read();
+        if(m>n){
+            printf("0.000000\n");
+            continue;
+        }
+        if(m==0){
+            printf("1.000000\n");
+            continue;
+        }
+        printf("%.6lf\n",(double)(n-m+1)/(double)(n+1));
     }
-    cout<<ans<<endl;
     return 0;
 }

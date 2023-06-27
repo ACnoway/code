@@ -23,20 +23,18 @@ inline int read(){
     return x*f;
 }
 const int mod=5000011;
-int n,m,k,ans=0;
+int n,k,ans=1;
 int f[100005];
 signed main()
 {
     n=read();
-    m=read();
-    k=1;
+    k=read();
     for(int i=1;i<=n;++i) f[i]=i;
     int lt=0;
-    for(int i=m;i<=m;++i){
+    for(int i=1;i<=(n-1)/(k+1)+1;++i){
         lt=n-(i-1)*(k+1);
-        ans+=f[lt];
-        for(int j=1;j<=lt;++j) f[j]+=f[j-1];
+         
     }
-    cout<<ans<<endl;
+    cout<<ans%mod<<endl;
     return 0;
 }
