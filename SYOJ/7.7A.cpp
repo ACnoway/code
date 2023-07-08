@@ -1,13 +1,12 @@
 #include<iostream>
 #include<cstdio>
 #include<cmath>
-#define int long long
 using namespace std;
 const int N=300005;
 int n,cnt,ans;
 char ch;
 double a[N],b[N],c[N];
-signed main()
+int main()
 {
 	cin>>n;
 	for(int i=1;i<=n;++i){
