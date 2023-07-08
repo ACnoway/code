@@ -14,13 +14,67 @@ struct pig{
     int id,hp;
     int pre,nxt;
     //手牌,武器
-    vector<char> cs,wp;
-    bool istiao,isdead;
-    pig(){id=0;hp=4;cs.clear();wp.clear();istiao=isdead=0;}
+    vector<char> cs;
+    bool istiao,isdead,havewp;
+    pig(){id=0;hp=4;cs.clear();istiao=isdead=havewp=0;}
 }a[20];
-int n,m,top;
+int n,m,top,fcnt;
+int jd[2];
+bool think[20];
 char pai[2003];
 
+//判断死亡
+bool cdead(int x){
+    if(a[x].hp==0){
+        auto it=find(a[x].cs.begin(),a[x].cs.end(),'P');
+        if(it==a[x].cs.end()){
+            //死了
+            a[x].isdead=1;
+            a[a[x].pre].nxt=a[x].nxt;
+            a[a[x].nxt].pre=a[x].pre;
+            return 1;
+        }
+    }
+}
+
+//出杀
+void sha(int from,int to){
+    if(a[from].id==1){
+        //主猪
+        //判断是否杀
+        if(!think[to]) return;
+        //去掉出的杀
+        a[from].cs.erase(find(a[from].cs.begin(),a[from].cs.end(),'K'));
+        //查找目标的闪
+        auto it=find(a[to].cs.begin(),a[to].cs.end(),'D');
+        if(it==a[to].cs.end()){
+            //没有闪
+            --a[to].hp;
+            bool si=cdead(to);
+            if(si==1){
+                if(a[to].id==2){
+                    //主猪杀死忠猪
+                    a[from].cs.clear();
+                    a[from].havewp=0;
+                }
+                else if(a[to].id==3){
+                    //杀死反猪摸三张牌
+                    
+                }
+            }
+        }
+        else{
+            a[to].cs.erase(it);
+        }
+    }
+    else if(a[from].id==2){
+        //忠猪
+        
+    }
+    else{
+        //反猪
+    }
+}
 int main()
 {
     //输入
@@ -34,7 +88,7 @@ int main()
         cin>>tmp;
         if(tmp[0]=='M') a[i].id=1;
         else if(tmp[0]=='Z') a[i].id=2;
-        else a[i].id=3;
+        else a[i].id=3,++fcnt;
         for(int j=1;j<=4;++j){
             cin>>tmp1;
             a[i].cs.push_back(tmp1);
@@ -42,6 +96,7 @@ int main()
     }
     //牌堆
     for(int i=1;i<=m;++i) cin>>pai[i];
+    
     //开始游戏
     int now=1;
     while(1){
@@ -62,7 +117,7 @@ int main()
                         else ++p.hp,finished=1;
                     }
                     case 'K':{
-                        sha(now);
+                        sha(now,p.nxt);
                     }
                 }
             }
