@@ -14,7 +14,7 @@ int main()
     cin>>n;
     for(int i=n-1;~i;--i){
         t+=n/(n-(double)i);
-        money+=(double)i/(n-(double)i)*(t+1)+t+1;
+        money+=(double)i/(n-(double)i)*(t+1)+t-n/(n-(double)i)+1;
     }
     printf("%.2lf\n",money);
     return 0;
