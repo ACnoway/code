@@ -23,13 +23,40 @@ int jd[2];
 bool think[20];
 char pai[2003];
 
+void win(int who){
+    if(who==1) cout<<"MP\n";
+    else cout<<"FP\n";
+    for(int i=1;i<=n;++i){
+        if(a[i].isdead) cout<<"DEAD\n";
+        else{
+            for(char c:a[i].cs) putchar(c),putchar(' ');
+            putchar('\n');
+        }
+    }
+    cout.flush();
+    exit(0);
+}
 //判断死亡
 bool cdead(int from,int to){
     if(a[to].hp>0) return 0;
+    //找桃
     auto it=find(a[to].cs.begin(),a[to].cs.end(),'P');
     if(it==a[to].cs.end()){
         //死了
         a[to].isdead=1;
+        if(a[to].id==-1){
+            //反猪死了
+            --fcnt;
+            if(fcnt==0){
+                win(1);
+            }
+        }
+        else if(to==1){
+            
+        }
+        else if(a[to].id==1) win(2);
+        //死后行为
+        
         a[a[to].pre].nxt=a[to].nxt;
         a[a[to].nxt].pre=a[to].pre;
         return 1;
