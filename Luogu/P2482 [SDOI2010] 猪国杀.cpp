@@ -24,16 +24,15 @@ bool think[20];
 char pai[2003];
 
 //判断死亡
-bool cdead(int x){
-    if(a[x].hp==0){
-        auto it=find(a[x].cs.begin(),a[x].cs.end(),'P');
-        if(it==a[x].cs.end()){
-            //死了
-            a[x].isdead=1;
-            a[a[x].pre].nxt=a[x].nxt;
-            a[a[x].nxt].pre=a[x].pre;
-            return 1;
-        }
+bool cdead(int from,int to){
+    if(a[to].hp>0) return 0;
+    auto it=find(a[to].cs.begin(),a[to].cs.end(),'P');
+    if(it==a[to].cs.end()){
+        //死了
+        a[to].isdead=1;
+        a[a[to].pre].nxt=a[to].nxt;
+        a[a[to].nxt].pre=a[to].pre;
+        return 1;
     }
 }
 
@@ -88,7 +87,7 @@ int main()
         cin>>tmp;
         if(tmp[0]=='M') a[i].id=1;
         else if(tmp[0]=='Z') a[i].id=2;
-        else a[i].id=3,++fcnt;
+        else a[i].id=-1,++fcnt;
         for(int j=1;j<=4;++j){
             cin>>tmp1;
             a[i].cs.push_back(tmp1);
