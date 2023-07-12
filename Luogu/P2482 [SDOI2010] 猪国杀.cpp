@@ -106,7 +106,16 @@ void sha(int from,int to){
 void nzrq(int from){
     int x=a[from].nxt;
     while(x!=from){
-        
+        auto it=find(a[x].cs.begin(),a[x].cs.end(),'K');
+        if(it!=a[x].cs.end()){
+            //先找杀
+            a[x].cs.erase(it);
+        }
+        else{
+            //再找有没有人给他无懈
+            
+        }
+        x=a[x].nxt;
     }
 }
 
