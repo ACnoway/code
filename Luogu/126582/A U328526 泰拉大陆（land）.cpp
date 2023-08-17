@@ -10,6 +10,19 @@
 #define debug(x) cout<<' '<<#x<<'='<<x<<endl
 #endif
 using namespace std;
+inline int read(){
+    int x=0,f=1;
+    char c=getchar();
+    while(c<'0'||c>'9'){
+        if(c=='-') f=-1;
+        c=getchar();
+    }
+    while(c>='0'&&c<='9'){
+        x=(x<<3)+(x<<1)+(c^48);
+        c=getchar();
+    }
+    return x*f;
+}
 const int N=3003;
 int e[N][N];
 int n,m,ans=1145141919;
@@ -53,10 +66,12 @@ void bfs1(){
 }
 int main()
 {
-    cin>>n>>m;
+    n=read();
+    m=read();
     for(int i=0;i<m;++i){
         int u,v;
-        cin>>u>>v;
+        u=read();
+        v=read();
         e[u][v]=e[v][u]=1;
     }
     if(e[1][n])
@@ -64,9 +79,9 @@ int main()
     else
         bfs();
     if(ans==1145141919){
-        cout<<"-1"<<endl;
+        printf("-1\n");
         return 0;
     }
-    cout<<max(ans,1)<<endl;
+    printf("%d\n",ans);
     return 0;
 }
