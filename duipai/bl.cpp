@@ -2,7 +2,6 @@
 #include<cstdio>
 #include<algorithm>
 #include<cmath>
-#define int long long
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
@@ -22,49 +21,32 @@ inline int read(){
     }
     return x*f;
 }
-int T,k;
-int kai(int x){
-    int l=0,r=x;
-    while(l<=r){
-        int mid=l+(r-l)/2;
-        if(mid==x/mid) return mid;
-        else if(mid>x/mid) r=mid-1;
-        else l=mid+1;
-    }
-    return r;
-}
-signed main()
+const int N=5e6+10,mod=998244353;
+int T,n;
+long long ans;
+bool flag;
+long long a[N];
+int main()
 {
     T=read();
     while(T--){
-        k=read();
-        int kaik=kai(k);
-        int f=kaik,c=kaik;
-        if(f*f!=k) ++c;
-        if(f==c){
-            if(f&1) printf("1 %lld\n",f);
-            else printf("%lld 1\n",f);
+        ans=0;
+        n=read();
+        for(int i=1;i<=n;++i){
+            a[i]=i;
         }
-        else{
-            if(f&1){
-                int mid=((c*c-f*f+1)>>1)+f*f;
-                if(k<=mid){
-                    printf("%lld %lld\n",k-f*f,f+1);
-                }
-                else{
-                    printf("%lld %lld\n",c,f+1-(k-mid));
+        do{
+            flag=1;
+            for(int i=1;i<=n;++i){
+                if(a[i]==i){
+                    flag=0;
+                    break;
                 }
             }
-            else{
-                int mid=((c*c-f*f+1)>>1)+f*f;
-                if(k<=mid){
-                    printf("%lld %lld\n",f+1,k-f*f);
-                }
-                else{
-                    printf("%lld %lld\n",f+1-(k-mid),c);
-                }
-            }
-        }
+            ans+=flag;
+            ans%=mod;
+        }while(next_permutation(a+1,a+n+1));
+        printf("%lld\n",ans);
     }
     return 0;
 }

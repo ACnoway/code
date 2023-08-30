@@ -1,7 +1,11 @@
 import random
 import os
+import time
+import datetime
 
-n = 100
+n = 100000
+k = 100000
+Times = 200000
 cnt = 0
 while True:
     cnt += 1
@@ -10,18 +14,33 @@ while True:
     # 数据部分
     f = open('.\\duipai\\in.txt', 'w', encoding='utf-8')
 
-    f.write(str(n) + '\n')
-    for o in range(0, n):
-        l = random.randint(99999999999999999, 1000000000000000000)
-        f.write(str(l) + '\n')
+    # f.write(str(n)+'\n')
+    # for x in range(0,n):
+    #     f.write(str(random.randint(0,1000000000))+' ')
+    #     # f.write('0 ')
+    # f.write('\n'+str(k)+'\n')
+    # for x in range(0,k):
+    #     f.write(str(random.randint(0,1000000000))+'\n')
+    #     # f.write('1000000000\n')
+
+    f.write(str(Times)+'\n')
+    for x in range(0,Times):
+        f.write(str(random.randint(10,5000000))+'\n')
 
     f.close()
 
     # 对拍部分
-    os.system(".\\duipai\\bl.exe < .\\duipai\\in.txt" + " > .\\duipai\\bl.txt")
+    # os.system(".\\duipai\\bl.exe < .\\duipai\\in.txt" + " > .\\duipai\\bl.txt")
+    st = time.time()
     os.system(".\\duipai\\std.exe < .\\duipai\\in.txt" +
               " > .\\duipai\\std.txt")
-    ret = os.system("fc .\\duipai\\bl.txt .\\duipai\\std.txt")
-    print(ret)
+    en = time.time()
+    # ret = os.system("fc .\\duipai\\bl.txt .\\duipai\\std.txt")
+    # print(ret)
+    st = datetime.datetime.fromtimestamp(st)
+    en = datetime.datetime.fromtimestamp(en)
+    cha = en - st
+    print("std用时："+str(cha.total_seconds()))
+    ret = cha.total_seconds() > 1
     if ret == 1:
         break
