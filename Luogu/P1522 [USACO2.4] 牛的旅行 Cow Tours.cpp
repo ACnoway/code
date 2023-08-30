@@ -62,20 +62,24 @@ int main()
         }
         a[i][i]=0;
     }
+    //floyd最短路
     for(int k=1;k<=n;++k)
         for(int i=1;i<=n;++i)
             for(int j=1;j<=n;++j)
                 a[i][j]=min(a[i][j],a[i][k]+a[k][j]);
-    
+    //染色法确定连通块
     for(int i=1;i<=n;++i){
         if(!bl[i]) ++cnt,bfs(i);
     }
+    //找到块内最远的点
+    //以及找到块内的直径
     for(int i=1;i<=n;++i){
         for(int j=1;j<=n;++j){
             if(bl[i]==bl[j]&&a[j][i]!=inf) far[i]=max(far[i],a[j][i]);
         }
         yuan[bl[i]]=max(yuan[bl[i]],far[i]);
     }
+    //枚举相连的点，记录ans
     double ans=inf;
     for(int i=1;i<=n;++i){
         for(int j=1;j<=n;++j){
