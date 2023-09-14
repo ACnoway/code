@@ -40,21 +40,25 @@ typedef pair<int,int> pii;
 priority_queue<pii> q;
 int dis[N];
 bool vis[N];
+bool operator >(pii a,pii b){
+	return b.first<a.first;
+}
 void dij(){
 	pii p;
-	q.emplace((pii){0,0});
+	q.emplace((pii){0,1});
 	int u,v,d;
-	vis[0]=1;
-	dis[0]=0;
+	dis[1]=0;
 	while(!q.empty()){
 		p=q.top();
 		q.pop();
 		u=p.second,d=p.first;
+		if(vis[u]) continue;
+		vis[u]=1;
 		for(int i=head[u];i;i=nxt[i]){
 			v=to[i];
 			if(dis[v]>d+w[i]){
 				dis[v]=d+w[i];
-				if(!vis[v]) q.emplace((pii){dis[v],v}),vis[v]=1;
+				if(!vis[v]) q.emplace((pii){dis[v],v});
 			}
 		}
 	}
@@ -63,22 +67,22 @@ int main()
 {
 	n=read();
 	for(int i=0;i<=n;++i) dis[i]=inf;
-	for(int i=0;i<n;++i){
+	for(int i=1;i<=n;++i){
 		a[i].x=read();
 		a[i].y=read();
 		a[i].p=i;
 	}
-	sort(a,a+n,cmp1);
-	for(int i=1;i<n;++i){
-		addedge(a[i-1].p,a[i].p,a[i].x-a[i-1].x);
-		addedge(a[i].p,a[i-1].p,a[i].x-a[i-1].x);
+	sort(a+1,a+1+n,cmp1);
+	for(int i=2;i<=n;++i){
+		addedge(a[i-1].p,a[i].p,abs(a[i].x-a[i-1].x));
+		addedge(a[i].p,a[i-1].p,abs(a[i].x-a[i-1].x));
 	}
-	sort(a,a+n,cmp2);
-	for(int i=1;i<n;++i){
-		addedge(a[i-1].p,a[i].p,a[i].y-a[i-1].y);
-		addedge(a[i].p,a[i-1].p,a[i].y-a[i-1].y);
+	sort(a+1,a+n+1,cmp2);
+	for(int i=2;i<=n;++i){
+		addedge(a[i-1].p,a[i].p,abs(a[i].y-a[i-1].y));
+		addedge(a[i].p,a[i-1].p,abs(a[i].y-a[i-1].y));
 	}
 	dij();
-	printf("%d\n",dis[n-1]);
+	printf("%d\n",dis[n]);
 	return 0;
 }

@@ -4,8 +4,9 @@
 #include<algorithm>
 #include<climits>
 using namespace std;
-long long read(){
-	long long x=0,f=1;
+typedef long long ll;
+ll read(){
+	ll x=0,f=1;
 	char c=getchar();
 	while(c<'0'||c>'9'){
 		if(c=='-') f=-1;
@@ -18,41 +19,56 @@ long long read(){
 	return x*f;
 }
 const int N=102;
-const long long inf=LONG_LONG_MAX;
-int T,n,h,t,cur;
-long long a[N][N],f[1003][N][N],da[2][N];
-long long ma,ans,m;
+const ll inf=1ll<<60;
+int T,n,h,t,cnt;
+ll ans,m;
+struct jz{
+	ll mt[N][N];
+	jz(){
+		for(int i=0;i<N-1;++i) for(int j=0;j<N-1;++j) mt[i][j]=0;
+	}
+	jz operator *(const jz &x)const{
+		jz c;
+		for(int i=1;i<=n;++i)
+			for(int j=1;j<=n;++j){
+				c.mt[i][j]=-inf;
+				for(int k=1;k<=n;++k)
+					c.mt[i][j]=max(c.mt[i][j],mt[i][k]+x.mt[k][j]);
+			}
+		return c;
+	}
+}a,f[N];
+bool check(jz x){
+	for(int i=1;i<=n;++i) if(x.mt[1][i]>=m) return 1;
+	return 0;
+}
 int main()
 {
 	T=(int)read();
 	while(T--){
 		n=(int)read();
 		m=read();
-		for(int i=1;i<=n;++i){
+		for(int i=1;i<=n;++i)
 			for(int j=1;j<=n;++j){
-				a[i][j]=read();
-				f[0][i][j]=f[1][i][j]=0;
+				f[1].mt[i][j]=read();
+				if(!f[1].mt[i][j]) f[1].mt[i][j]=-inf;
 			}
-			da[0][i]=da[1][i]=0;
+		ans=1;
+		for(cnt=1;cnt<N-1;++cnt){
+			f[cnt+1]=f[cnt]*f[cnt];
+			if(check(f[cnt+1])) break;
 		}
-		ma=ans=0;
-		cur=0;
-		for(int ti=1;ti<=m;++ti){
-			for(int i=1;i<=n;++i){
-				for(int j=1;j<=n;++j){
-					f[ti][i][j]=max(f[ti][i][j],da[cur][i]+a[i][j]);
-					da[cur^1][j]=max(da[cur^1][j],f[ti][i][j]);
-					ma=max(ma,f[ti][i][j]);
-				}
-				da[cur][i]=0;
+		a=f[1];
+		bool flag=0;
+		for(int i=cnt;i;--i){
+			jz b=a*f[i];
+			if(!check(b)){
+				a=b;
+				ans+=(1ll<<(i-1));
 			}
-			cur^=1;
-			if(ma>=m){
-				ans=ti;
-				break;
-			}
+			else flag=1;
 		}
-		if(ans!=inf) printf("%lld\n",ans);
+		if(flag) printf("%lld\n",ans+1);
 		else printf("-1\n");
 	}
 	return 0;
