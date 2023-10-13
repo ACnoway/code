@@ -24,7 +24,7 @@ inline void add(int u,int v){
 	nxt[idx]=head[u];
 	head[u]=idx;
 }
-int fa[N],p[N],ans[N];
+int fa[N],p[N],ans[N],cnt[N];
 struct node{
 	int op,x,p;
 }qs[N];
@@ -48,17 +48,18 @@ int main()
 	}
 	dfs(1,0);
 	p[1]=1;
+	cnt[1]=1;
 	for(int i=1;i<=m;++i){
 		qs[i].op=read(),qs[i].x=read();
 		qs[i].p=i;
-		if(!qs[i].op) p[qs[i].x]=qs[i].x;
+		if(!qs[i].op) p[qs[i].x]=qs[i].x,++cnt[qs[i].x];
 	}
 	for(int i=m;i;--i){
 		if(qs[i].op){
 			ans[qs[i].p]=find(qs[i].x);
 		}
 		else{
-			p[qs[i].x]=fa[qs[i].x];
+			if(--cnt[qs[i].x]==0) p[qs[i].x]=fa[qs[i].x];
 		}
 	}
 	for(int i=1;i<=m;++i) if(ans[i]) printf("%d\n",ans[i]);

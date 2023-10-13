@@ -77,15 +77,15 @@ inline void dij(int x){
 }
 int main()
 {
-	n=read();
-	m=read();
-	s=read(),t=read();
-	for(int i=0;i<N;++i) head[i]=0;
-	for(int i=1;i<=m;++i){
-		int u=read(),v=read(),_w=read();
-		add(u,v,_w);
+	while(scanf("%d%d%d%d",&n,&m,&s,&t)==4){
+		for(int i=0;i<N;++i) head[i]=0;
+		for(int i=1;i<=m;++i){
+			int u=read(),v=read(),_w=read();
+			add(u,v,_w);
+		}
+		dij(s);
+		printf("%d %d\n",dis[1][t],cnt[1][t]);
 	}
-	dij(s);
-	printf("%d %d\n",dis[1][t],cnt[1][t]);
+	
 	return 0;
 }
