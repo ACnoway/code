@@ -7,6 +7,7 @@ n = 100000
 k = 100000
 Times = 200000
 cnt = 0
+lst=0
 while True:
     cnt += 1
     print("第 %d 组数据" % cnt)
@@ -31,16 +32,17 @@ while True:
 
     # 对拍部分
     # os.system(".\\duipai\\bl.exe < .\\duipai\\in.txt" + " > .\\duipai\\bl.txt")
-    st = time.time()
-    os.system(".\\duipai\\std.exe < .\\duipai\\in.txt" +
+    # st = time.process_time()
+    os.system("\".\\duipai\\std.exe\" < .\\duipai\\in.txt" +
               " > .\\duipai\\std.txt")
-    en = time.time()
+    en = time.process_time()
     # ret = os.system("fc .\\duipai\\bl.txt .\\duipai\\std.txt")
     # print(ret)
-    st = datetime.datetime.fromtimestamp(st)
-    en = datetime.datetime.fromtimestamp(en)
-    cha = en - st
-    print("std用时："+str(cha.total_seconds()))
-    ret = cha.total_seconds() > 1
+    # st = datetime.datetime.fromtimestamp(st)
+    # en = datetime.datetime.fromtimestamp(en)
+    # cha = en - st
+    print("std用时："+str(en-lst))
+    lst=en
+    ret = en-lst > 1
     if ret == 1:
         break
