@@ -5,7 +5,7 @@
 #ifdef ONLINE_JUDGE
 #define debug(x)
 #else
-#define debug(x) cout<<' '<<#x<<'='<<x<<endl;
+#define debug(x) cout<<' '<<#x<<'='<<x<<endl
 #endif
 using namespace std;
 inline int read(){
@@ -21,34 +21,28 @@ inline int read(){
     }
     return x*f;
 }
-inline void write(int x){
-    if(x<0){x=-x;putchar('-');}
-    if(x>9) write(x/10);
-    putchar(x%10+'0');
-}
-const int maxn=100005;
+const int N=100005,M=18;
 int n,m;
-int a[maxn],f[21][maxn];
-int query(int x,int y){
-    int z=log2(y-x+1);
-    return max(f[z][x],f[z][y-(1<<z)+1]);
+int a[N],LOG[M],f[M][N];
+inline int query(int l,int r){
+    int d=LOG[r-l+1];
+    return max(f[d][l],f[d][r-(1<<d)+1]);
 }
 int main()
 {
-    n=read();m=read();
-    for(int i=1;i<=n;++i) a[i]=read();
-    for(int i=1;i<=n;++i) f[0][i]=a[i];
-    //* j=0推出j=1, j=1推出j=2...
-    for(int j=1;j<=20;++j){
+    n=read();
+    m=read();
+    for(int i=1;i<=n;++i) f[0][i]=read();
+    LOG[1]=0;
+    for(int i=2;i<=n;++i) LOG[i]=LOG[i>>1]+1;
+    for(int j=1;j<M;++j){
         for(int i=1;i+(1<<j)-1<=n;++i){
             f[j][i]=max(f[j-1][i],f[j-1][i+(1<<j-1)]);
         }
     }
-    int l,r,ma;
     while(m--){
-        l=read();r=read();
-        write(query(l,r));
-        putchar('\n');
+        int l=read(),r=read();
+        printf("%d\n",query(l,r));
     }
     return 0;
 }
