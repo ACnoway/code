@@ -22,8 +22,30 @@ inline int read(){
     return x*f;
 }
 const int N=1003;
-int n,m;
-int a[N][N],f[N][N];
+int n,m,h,ans;
+int a[N][N],cnt[N][N];
+typedef pair<int,int> pii;
+pii st[N];
+void calc(int x){
+    h=0;
+    int tmp=0,ma=0;
+    st[++h].first=cnt[x][1];
+    st[h].second=1;
+    for(int i=2;i<=m;++i){
+        tmp=0;
+        while(st[h].first>=cnt[x][i]&&h){
+            tmp+=st[h].second;
+            ma=max(ma,st[h--].first*tmp);
+        }
+        st[++h]={cnt[x][i],tmp+1};
+    }
+    tmp=0;
+    while(h){
+        tmp+=st[h].second;
+        ma=max(ma,st[h--].first*tmp);
+    }
+    ans=max(ans,ma);
+}
 int main()
 {
     freopen("makrix.in","r",stdin);
@@ -34,19 +56,12 @@ int main()
             a[i][j]=read();
         }
     }
-    for(int i=1;i<=n;++i){
-        for(int j=1;j<=m;++j){
-            f[i][j]=f[i-1][j]+f[i][j-1]-f[i-1][j-1]+a[i][j];
+    for(int i=1;i<=n;++i) for(int j=1;j<=m;++j) cnt[i][j]=1;
+    for(int i=1;i<n;++i){
+        for(int j=1;j<m;++j){
+            if(a[i][j]+a[i+1][j+1]<=a[i+1][j]+a[i][j+1]) cnt[i][j]=cnt[i-1][j]+1;
         }
     }
-    for(int i=1;i<=n;++i){
-        for(int j=1;j<=m;++j){
-            for(int x=1;x<=n;++x){
-                for(int y=1;y<=m;++y){
-                    return 0;
-                }
-            }
-        }
-    }
+    printf("%d\n",ans);
     return 0;
 }
