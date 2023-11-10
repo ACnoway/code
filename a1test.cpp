@@ -27,16 +27,7 @@ int n,m,k,ans=0;
 int f[100005];
 signed main()
 {
-    n=read();
-    m=read();
-    k=1;
-    for(int i=1;i<=n;++i) f[i]=i;
-    int lt=0;
-    for(int i=m;i<=m;++i){
-        lt=n-(i-1)*(k+1);
-        ans+=f[lt];
-        for(int j=1;j<=lt;++j) f[j]+=f[j-1];
-    }
-    cout<<ans<<endl;
+    int a=19;
+    cout<<(int)(a*0.1)<<endl;
     return 0;
 }
