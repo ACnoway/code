@@ -26,22 +26,21 @@ const int N=100005;
 int T,n;
 int a[N];
 bool vis[N];
-vector<int> b;
 int main()
 {
-    freopen("num.in","r",stdin);
-    freopen("num.out","w",stdout);
+    // freopen("num.in","r",stdin);
+    // freopen("num.out","w",stdout);
     T=read();
     while(T--){
-        b.clear();
-        for(int i=1;i<N;++i) vis[i]=0;
         n=read();
+        int d=0,ma=0;
         for(int i=1;i<=n;++i){
             a[i]=read();
-            vis[a[i]]=1;
-            b.push_back(a[i]);
+            if(i==1) d=a[i];
+            else d=__gcd(d,a[i]);
+            ma=max(ma,a[i]);
         }
-        printf("%d\n",n);
+        printf("%d\n",ma/d);
     }
     return 0;
 }
