@@ -37,7 +37,7 @@ int main()
     for(int i=2;i<=n;++i) LOG[i]=LOG[i>>1]+1;
     for(int j=1;j<M;++j){
         for(int i=1;i+(1<<j)-1<=n;++i){
-            f[j][i]=max(f[j-1][i],f[j-1][i+(1<<j-1)]);
+            f[j][i]=max(f[j-1][i],f[j-1][i+(1<<(j-1))]);
         }
     }
     while(m--){
