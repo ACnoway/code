@@ -30,4 +30,5 @@ signed main()
     int a=19;
     cout<<(int)(a*0.1)<<endl;
     return 0;
+    
 }
