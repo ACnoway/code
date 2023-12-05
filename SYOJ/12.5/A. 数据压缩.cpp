@@ -32,13 +32,14 @@ int main()
         }
         for(int i=0;i<128;++i) if(cnt[i]) q.push(cnt[i]);
         long long res=0;
+        if(q.size()==1) res=s.size();
         while(q.size()>1){
             int t1=q.top();q.pop();
             int t2=q.top();q.pop();
             q.push(t1+t2);
             res+=t1+t2;
         }
-        printf("%d %lld %.1lf\n",s.size()*8,res,(double)s.size()*8.0/(double)res);
+        printf("%d %lld %.1lf\n",s.size()*8,res,(double)s.size()*8.0/(double)(res?res:1));
     }
     return 0;
 }
