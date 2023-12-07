@@ -43,3 +43,4 @@ signed main()
     printf("%Ld\n",ans);
     return 0;
 }
+//bad hash /ll
