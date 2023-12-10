@@ -43,6 +43,7 @@ int main()
     for(int i=1;i<=m;++i){
         for(int j=1;j<=m;++j){
             if(i==j) continue;
+            //算最小曼哈顿距离
             ans[j]=min(ans[j],abs(a[i].first-a[j].first)+abs(a[i].second-a[j].second));
         }
     }
