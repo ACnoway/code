@@ -34,6 +34,7 @@ int main()
     for(int i=1;i<=n;++i){
         for(int j=1;j<=n;++j){
             int x=read();
+            //记录aker位置
             if(x) a[++cnt]={i,j};
         }
     }
