@@ -38,6 +38,7 @@ int main()
             if(x) a[++cnt]={i,j};
         }
     }
+    //初始化ans数组
     for(int i=1;i<=m;++i) ans[i]=1145141919;
     for(int i=1;i<=m;++i){
         for(int j=1;j<=m;++j){
