@@ -1,51 +1,57 @@
 #include<iostream>
+#include<cstdio>
 #include<unordered_map>
 #define int long long
 using namespace std;
+int read(){
+    int x=0,f=1;
+    char c=getchar();
+    while(c<'0'||c>'9'){
+        if(c=='-') f=-1;
+        c=getchar();
+    }
+    while(c>='0'&&c<='9'){
+        x=(x<<3)+(x<<1)+(c^48);
+        c=getchar();
+    }
+    return x*f;
+}
 const int N=400005;
-unordered_map<int,int> m;
+int t,n,cnt,c;
 int p[N];
-int a[N][3];
-int b[N][2];
-int t,n;
+int a[N][2];
+unordered_map<int,int> m;
 int find(int x){
-    if(p[x]!=x) p[x]=find(p[x]);
+    while(x!=p[x]) x=p[x]=p[p[x]];
     return p[x];
 }
 signed main()
 {
-    #ifndef ONLINE_JUDGE
-        freopen("237.txt", "r", stdin);
-    #endif
-    int ca,cb;
+    t=read();
+    int x,y,e;
     bool flag;
-    cin>>t;
     while(t--){
-        cin>>n;
-        ca=0;cb=0;
+        n=read();
+        cnt=0;
+        c=0;
         m.clear();
         for(int i=0;i<N;++i) p[i]=i;
-        for(int i=1;i<=n;++i){
-            cin>>a[i][0]>>a[i][1]>>a[i][2];
-            if(!m[a[i][0]]) m[a[i][0]]=++ca;
-            if(!m[a[i][1]]) m[a[i][1]]=++ca;
-            if(a[i][2]==1){
-                p[find(m[a[i][0]])]=find(m[a[i][1]]);
-            }
-            else{
-                b[++cb][0]=a[i][0];
-                b[cb][1]=a[i][1];
-            }
+        for(int i=0;i<n;++i){
+            x=read();y=read();e=read();
+            if(!m[x]) m[x]=++c;
+            if(!m[y]) m[y]=++c;
+            if(e) p[find(m[x])]=find(m[y]);
+            else a[++cnt][0]=x,a[cnt][1]=y;
         }
         flag=true;
-        for(int i=1;i<=cb;++i){
-            if(find(m[b[i][0]])==find(m[b[i][1]])){
+        for(int i=1;i<=cnt;++i){
+            if(find(m[a[i][0]])==find(m[a[i][1]])){
                 flag=false;
                 break;
             }
         }
-        if(flag) cout<<"YES"<<endl;
-        else cout<<"NO"<<endl;
+        if(flag) printf("YES\n");
+        else printf("NO\n");
     }
     return 0;
 }
