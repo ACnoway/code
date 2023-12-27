@@ -1,67 +1,99 @@
-#include <bits/stdc++.h>
-using namespace std;
-#define maxn 50010
+#include<bits/stdc++.h>
+#define ld long double
 #define ll long long
-#define res register int
-struct Node{
-	int to,next;
-};
-Node edge[maxn<<2]; //链式前向星要多开几倍数组
-int head[maxn<<2],power[maxn],n,m,d[maxn],fa[maxn][30],ans,num;
-
-inline int read(){ //快读
-	int s=0;
+#define ull unsigned long long
+#define inf 1e18
+using namespace std;
+const int N=300005,M=600005;
+int tot,e[M],fa[N],ne[M],h[N],top[N],siz[N],hson[N],dep[N],tim,dfn[N],w[N];
+int n,a[N];
+int read(){
+	int x=0, f=1;
 	char c=getchar();
-	while (c<'0' || c>'9') c=getchar();
-	while (c>='0' && c<='9') s=s*10+c-'0',c=getchar();
-	return s;
+	while(c<'0'||c>'9'){
+		if(c=='-') f=-1;
+		c=getchar();
+	}
+	while(c>='0'&&c<='9'){
+		x=(x<<3)+(x<<1)+(c^48);
+		c=getchar();
+	}
+	return x*f;
 }
-//链式前向星
-inline void add(int x,int y){edge[++num].to=y,edge[num].next=head[x],head[x]=num;}
-//接下来是初始化
-inline void work(int u,int fath){
-	d[u]=d[fath]+1,fa[u][0]=fath;
-	for (res i=0;fa[u][i];++i) fa[u][i+1]=fa[fa[u][i]][i];
-	for (res i=head[u];i;i=edge[i].next){
-		int e=edge[i].to;
-		if (e!=fath) work(e,u);
+int qpow(int a,int b,int mm){
+	int sum=1;
+	while(b){
+		if(b&1) sum=sum*a%mm;
+		a=a*a%mm;
+		b>>=1;
+	}
+	return sum;
+}
+void add(int u,int v){
+	e[++tot]=v;
+	ne[tot]=h[u];
+	h[u]=tot;
+}
+void dfs1(int u,int ff,int d){
+	dep[u]=d+1;
+	siz[u]=1;
+	fa[u]=ff;
+	int maxn=0;
+	for(int i=h[u];i;i=ne[i]){
+		int v=e[i];
+		if(v==ff) continue;
+		dfs1(v,u,d+1);
+		siz[u]+=siz[v];
+		if(siz[v]>maxn) maxn=siz[v],hson[u]=v;
 	}
 }
-//倍增求LCA
-inline int Lca(int u,int v){
-	if (d[u]>d[v]) swap(u,v);
-	for (res i=20;i>=0;--i) if (d[u]<=d[v]-(1<<i)) v=fa[v][i];
-	if (u==v) return u;
-	for (res i=20;i>=0;--i) if (fa[u][i]!=fa[v][i]) u=fa[u][i],v=fa[v][i];
-	return fa[u][0];
-}
-//累计
-inline void Get(int u,int fath){
-	for (res i=head[u];i;i=edge[i].next){
-		int e=edge[i].to;
-		if (e==fath) continue;
-		Get(e,u);
-		power[u]+=power[e];
+void dfs2(int u,int ff){
+	dfn[u]=++tim;
+	if(hson[u]){
+		top[hson[u]]=top[u];
+		dfs2(hson[u],u);
+	}
+	for(int i=h[u];i;i=ne[i]){
+		int v=e[i];
+		if(v==ff) continue;
+		if(!top[v]){
+			top[v]=v;
+			dfs2(v,v);
+		}
 	}
 }
-int op[maxn];
+int get_lca(int x,int y){
+	while(top[x]!=top[y]){
+		if(dep[top[x]]>dep[top[y]]) x=fa[top[x]];
+		else y=fa[top[y]];
+	}
+	return dep[x]>dep[y]?y:x;
+}
+void dfs(int u,int ff){
+	for(int i=h[u];i;i=ne[i]){
+		int v=e[i];
+		if(v==ff) continue;
+		dfs(v,u);
+		w[u]+=w[v];
+	}
+}
 int main(){
-	n=read(),m=n;
-	int x,y;
-    for(int i=1;i<=n;++i) op[i]=read();
-	for (res i=1;i<n;++i){
-		x=read(),y=read();
-		add(x,y); add(y,x);
+	top[1]=1;
+	n=read();
+	for(int i=1;i<=n;i++) a[i]=read();
+	for(int i=1;i<n;i++){
+		int u=read(),v=read();
+		add(u,v),add(v,u);
 	}
-	work(1,0);
-    op[0]=1;
-	for (res i=1; i<=m; ++i){
-		x=op[i-1],y=i;
-		int lca=Lca(x,y);
-		++power[x];++power[y];--power[lca];--power[fa[lca][0]]; //树上差分
+	dfs1(1,0,0);
+	dfs2(1,0);
+	for(int i=1;i<n;i++){
+		int lca=get_lca(a[i],a[i+1]);
+		w[a[i]]++,w[fa[a[i+1]]]++,w[lca]--,w[fa[lca]]--;
 	}
-	Get(1,0);
-    for(int i=1;i<=n;++i) printf("%d\n",power[i]);
+	dfs(1,1);
+	for(int i=1;i<=n;i++){
+		printf("%d\n",i==a[n]?w[i]+1:w[i]);
+	}
 	return 0;
 }
-
