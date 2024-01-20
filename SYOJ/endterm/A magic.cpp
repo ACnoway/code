@@ -22,7 +22,8 @@ int a[N];
 
 int main()
 {
-    /* freopen("magic.in","r",stdin); */
+    freopen("magic.in","r",stdin);
+    freopen("magic.out","w",stdout);
     n=read();
     long long qian=0,hou=0,ans=0;
     for(int i=1;i<=n;++i) a[i]=read(),hou+=a[i];
